@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    <asp:Image runat=”server” ImageURL=”presents.png”></asp:Image>
+    @*<asp:Image runat=”server” ImageURL=”presents.png”></asp:Image>*@
 }
 
 <div class="img-fluid">
@@ -14,22 +14,20 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4">
-        <h3>About</h3>
+    <div class="col-md-6">
+        <h4>About</h4>
         <p>
             Feedback Friend uses Entity Framework Core in an
             ASP.NET Core MVC web application.
         </p>
     </div>
-    <div class="col-md-4" id=" = PNGofPresents">
-         @*style="background-image:url(presents.png); background-repeat:no-repeat">     
+    @*<div class="col-md-4">
+        <img src="presents.png" alt="Photo" />
+        <img src="@Url.Content("presents.png")" alt="IMAGES" />
+    </div>*@
 
-        <img src="presents.png" width="300" height="200" alt="Photo" />
-        <img src="@Url.Content("presents.png")" alt="IMAGES" />*@
-    </div>
-
-    <div class="col-md-4">
-        <h3>Download it</h3>
+    <div class="col-md-6">
+        <h4>Download</h4>
         <p>You can download the completed project from GitHub.</p>
         <p><a class="btn btn-default" href="https://github.com/ColleenWoolsey/Feedback-Friend">See project source code &raquo;</a></p>
     </div>
