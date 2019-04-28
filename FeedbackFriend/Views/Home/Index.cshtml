@@ -1,8 +1,39 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    <asp:Image runat=”server” ImageURL=”~/../Images/present.png”></asp:Image>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center jumbotron">
+    <h1 class="display-4">Welcome to Feedback Friend</h1>
+    <h3>Login to Create, Assign and Complete Your Surveys</h3>
+    @*<p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>*@
+</div>
+
+<div>
+    <asp:Image runat=”server” ImageURL=”~/Images/present.png”></asp:Image>
+</div>
+
+
+@*<div class="jumbotron">
+        <h1>Put an image here</h1>
+    </div>*@
+<div class="row">
+    <div class="col-md-7">
+        <h3>About Feedback Friend</h3>
+        <p>
+            Feedback Friend is a sample application that
+            demonstrates how to use Entity Framework Core in an
+            ASP.NET Core MVC web application.
+        </p>
+    </div>
+    @*<div class="col-md-4">
+            <h2>Build it from scratch</h2>
+            <p>You can build the application by following the steps in a series of tutorials.</p>
+            <p><a class="btn btn-default" href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html">See the tutorial &raquo;</a></p>
+        </div>*@
+    <div class="col-md-5">
+        <h3>Download it</h3>
+        <p>You can download the completed project from GitHub.</p>
+        <p><a class="btn btn-default" href="https://github.com/aspnet/AspNetCore.Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final">See project source code &raquo;</a></p>
+    </div>
 </div>
