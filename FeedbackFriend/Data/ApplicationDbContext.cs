@@ -18,8 +18,12 @@ namespace FeedbackFriend.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
 
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // Create a new user for Identity Framework
             ApplicationUser user = new ApplicationUser
             {               

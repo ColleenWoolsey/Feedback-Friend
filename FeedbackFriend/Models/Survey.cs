@@ -17,13 +17,13 @@ namespace FeedbackFriend.Models
         public ApplicationUser User { get; set; }
 
         [Required]        
-        [StringLength(51, ErrorMessage = "Please shorten the survey name to 55 characters")]       
+        [StringLength(55, ErrorMessage = "Please shorten the survey name to 55 characters")]       
         public string SurveyName { get; set; }
 
-        [StringLength(255)]        
+               
         public string Instructions { get; set; }
 
-        [StringLength(255)]        
+                
         public string Description { get; set; }
 
         [NotMapped]
