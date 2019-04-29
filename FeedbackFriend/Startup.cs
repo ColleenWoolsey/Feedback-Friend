@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using FeedbackFriend.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using FeedbackFriend.Models;
 
 namespace FeedbackFriend
 {
@@ -38,6 +39,7 @@ namespace FeedbackFriend
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

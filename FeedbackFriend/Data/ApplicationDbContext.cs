@@ -13,7 +13,8 @@ namespace FeedbackFriend.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-        public DbSet<Survey> Survey { get; set; }
+
+        public DbSet<Survey> Surveys { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
 
@@ -21,8 +22,7 @@ namespace FeedbackFriend.Data
         {
             // Create a new user for Identity Framework
             ApplicationUser user = new ApplicationUser
-            {
-                UserId = 1,
+            {               
                 FirstName = "admin",
                 LastName = "admin",                
                 UserName = "admin@admin.com",
@@ -43,7 +43,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 1,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Empathy",
                     Description = "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes."
@@ -51,7 +51,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 2,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Listening vs hearing",
                     Description = "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
@@ -59,7 +59,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 3,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Just stop talking already",
                     Description = "The primary objective of this survey is to assess flexibility and responsiveness in communication.",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
@@ -67,7 +67,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 4,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Presentation Feedback",
                     Description = "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
@@ -75,7 +75,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 5,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Problem Solving",
                     Description = "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
@@ -83,7 +83,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 6,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Influence",
                     Description = "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
@@ -91,7 +91,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 7,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Change",
                     Description = "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
@@ -99,7 +99,7 @@ namespace FeedbackFriend.Data
                 new Survey()
                 {
                     SurveyId = 8,
-                    UserId = "1",
+                    UserId = user.Id,
                     SurveyName = "Decision Making",
                     Description = "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."

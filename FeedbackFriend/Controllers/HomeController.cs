@@ -34,8 +34,8 @@ namespace FeedbackFriend.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Survey
-               .Include(s => s.Question)
+            var applicationDbContext = _context.Surveys
+               .Include(s => s.Questions)
                .Include(s => s.User)
                .OrderBy(s => s.SurveyName);
                //.Take(20);
