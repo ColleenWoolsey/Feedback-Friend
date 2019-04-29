@@ -32,6 +32,13 @@ namespace FeedbackFriend.Controllers
             _userManager = userManager;
         }
 
+        public IActionResult AlreadyLoggedIn()
+        {
+            ViewData["Message"] = "Your application description page.";
+
+            return View();
+        }
+
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Surveys
