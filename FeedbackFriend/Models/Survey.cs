@@ -32,7 +32,5 @@ namespace FeedbackFriend.Models
         public int NumQuestions { get; set; }
 
         public ICollection<Question> Questions { get; set; }
-        
-        // public virtual ICollection<Question> Questions { get; set; } ???
     }
 }

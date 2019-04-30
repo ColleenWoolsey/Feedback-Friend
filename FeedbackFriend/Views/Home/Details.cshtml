@@ -1,0 +1,29 @@
+﻿@model FeedbackFriend.Models.Survey
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h2><strong>@Html.DisplayFor(model => model.SurveyName)</strong></h2>
+            </th>
+            <th>
+                <a asp-action="LoggedIn">Back to List</a>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (var item in Model.Questions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionText)                        
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
