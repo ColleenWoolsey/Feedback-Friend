@@ -13,10 +13,12 @@ namespace FeedbackFriend.Models
         public int SurveyId { get; set; }
 
         [Required]
+        [Display(Name = "Created By")]
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
-        [Required]        
+        [Required]
+        [Display(Name = "Survey Name")]
         [StringLength(55, ErrorMessage = "Please shorten the survey name to 55 characters")]       
         public string SurveyName { get; set; }
 
