@@ -32,7 +32,12 @@ namespace FeedbackFriend.Controllers
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> LoggedIn()
         {
             var applicationDbContext = _context.Surveys
                .Include(s => s.Questions)

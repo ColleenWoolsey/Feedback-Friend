@@ -7,6 +7,10 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+loginContainer {
+    border: 5px solid red;
+}
+
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

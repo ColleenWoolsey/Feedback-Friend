@@ -19,7 +19,7 @@ namespace FeedbackFriend.Models
         [Required]
         [Display(Name = "Feedback")]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
-        public Response? Response { get; set; }
+        public int Response { get; set; }
 
         [Required]
         public int ResponderId { get; set; }
@@ -31,6 +31,6 @@ namespace FeedbackFriend.Models
 
         [Required]
         public int UserSurveyId { get; set; }
-        public virtual ICollection<UserSurvey> UserSurveys { get; set; }
+        public UserSurvey UserSurvey { get; set; }
     }    
 }
