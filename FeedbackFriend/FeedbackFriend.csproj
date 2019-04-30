@@ -4,10 +4,12 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <UserSecretsId>aspnet-FeedbackFriend-779ED981-DEEA-40D2-9141-B4A62F31AA9A</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <ApplicationIcon />
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Views\Home\presents.png" />
+    <Content Include="Images\presents.png" />
   </ItemGroup>
 
 
@@ -21,7 +23,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Images\" />
+    <None Include="wwwroot\css\My.css" />
   </ItemGroup>
 
 </Project>
