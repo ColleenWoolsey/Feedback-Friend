@@ -7,8 +7,8 @@ namespace FeedbackFriend.Models
 {
     public class GroupedQuestions
     {
-        public int SurveyId { get; set; }
-        public string SurveyName { get; set; }
+        public int SurveyDetailId { get; set; }
+        public string SurveyDetailName { get; set; }
         public int QuestionCount { get; set; }
         public IEnumerable<Question> Questions { get; set; }
     }

@@ -9,6 +9,7 @@
 @*<p>
     <a asp-action="Create">Create New</a>
 </p>*@
+
 <table class="table">
     <thead>
         <tr>
@@ -28,24 +29,25 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SurveyName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>                
-                <a asp-action="Details" asp-route-id="@item.SurveyId">Details</a>                
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurveyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instructions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.SurveyId">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

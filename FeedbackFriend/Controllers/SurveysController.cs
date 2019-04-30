@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FeedbackFriend.Data;
 using FeedbackFriend.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace FeedbackFriend.Controllers
 {
@@ -14,36 +15,25 @@ namespace FeedbackFriend.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public SurveysController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        public SurveysController(ApplicationDbContext context,
+                                  UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
+
+        //any method that needs to see who the user is can invoke the method
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Surveys.Include(s => s.User);
             return View(await applicationDbContext.ToListAsync());
-        }
+        }        
 
-        // GET: Surveys/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var survey = await _context.Surveys
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.SurveyId == id);
-            if (survey == null)
-            {
-                return NotFound();
-            }
-
-            return View(survey);
-        }
 
         // GET: Surveys/Create
         public IActionResult Create()

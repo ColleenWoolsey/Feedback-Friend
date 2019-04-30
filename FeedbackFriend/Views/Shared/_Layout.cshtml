@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Feedback Friend</title>
 
-    @*@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager*@    
+    @*@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager*@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -43,22 +43,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                    </ul>
 
-                    @*@if (SignInManager.IsSignedIn(User))
-                    {
-                        Hello @UserManager.GetUserAsync(User).Result.FirstName @UserManager.GetUserAsync(User).Result.LastName
-}
-                    else
-                    {
-                        <a asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
-                    }*@
-
-
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <ul class="navbar-nav flex-grow-1">
-
+                        @if (SignInManager.IsSignedIn(User))
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LoggedIn">Existing Surveys</a>
                             </li>
@@ -77,8 +64,10 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Answer" asp-action="Index">Results</a>
                             </li>
-                        </ul>
-                    }
+                        }
+                    </ul>
+
+
                 </div>
             </div>
         </nav>
