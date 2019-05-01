@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FeedbackFriend.Data;
 using FeedbackFriend.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 
 namespace FeedbackFriend.Controllers
 {
@@ -27,37 +28,64 @@ namespace FeedbackFriend.Controllers
         //any method that needs to see who the user is can invoke the method
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
+
+        // Created automatically redirects me to SurveysController Index Action - So I will put the view I
+        // need returned after initializing survey but before adding questions here for now
+
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Surveys.Include(s => s.User);
             return View(await applicationDbContext.ToListAsync());
-        }        
+        }
 
-
-        // GET: Surveys/Create
-        public IActionResult Create()
+        // This is a copy of Survey - Index renamed Generic for now
+        // GET: Surveys
+        public async Task<IActionResult> Generic()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            var applicationDbContext = _context.Surveys.Include(s => s.User);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
+
+        // **************************************************
+        // GET: Surveys/Create
+
+        public async Task<IActionResult> Create()
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
             return View();
         }
 
-        // POST: Surveys/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
         {
+            ModelState.Remove("User");
+            ModelState.Remove("userId");
+            var user = await GetCurrentUserAsync();
+            survey.UserId = user.Id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Create", "Questions", new { survey.SurveyId });
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
+            
             return View(survey);
         }
+               
 
         // GET: Surveys/Edit/5
         public async Task<IActionResult> Edit(int? id)
