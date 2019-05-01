@@ -4,18 +4,43 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h2>Add Questions to Survey</h2>
+<hr />
 
-<h4>Question</h4>
+<div>
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Survey.SurveyName)
+        </dt>
+        <dd class="col-m-2">
+            @Html.DisplayFor(model => model.Survey.SurveyName)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Survey.Description)
+        </dt>
+        <dd class="col-m-5">
+            @Html.DisplayFor(model => model.Survey.Description)
+        </dd>
+        <dt class="col-sm-5">
+            @Html.DisplayNameFor(model => model.Survey.Instructions)
+        </dt>
+        <dd class="col-m-5">
+            @Html.DisplayFor(model => model.Survey.Instructions)
+        </dd>
+    </dl>
+</div>
+
+
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-11">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SurveyId" class="control-label"></label>
-                <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
-            </div>
+            
+            @*<div class="form-group">
+            <label asp-for="SurveyId" class="control-label"></label>
+            <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
+        </div>*@
             <div class="form-group">
                 <label asp-for="QuestionText" class="control-label"></label>
                 <input asp-for="QuestionText" class="form-control" />
@@ -35,3 +60,17 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+@*<div>
+    <dl class="row">
+        <dd class="col-m-2">
+            @Html.DisplayFor(model => model.Survey.SurveyName)
+        </dd>
+        <dd class="col-m-5">
+            @Html.DisplayFor(model => model.Survey.Description)
+        </dd>
+        <dd class="col-m-5">
+            @Html.DisplayFor(model => model.Survey.Instructions)
+        </dd>
+    </dl>
+</div>*@

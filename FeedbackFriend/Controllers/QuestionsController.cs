@@ -45,30 +45,35 @@ namespace FeedbackFriend.Controllers
             return View(question);
         }
 
+        // **************************************************
         // GET: Questions/Create
-        public IActionResult Create()
+        public IActionResult Create()        
         {
-            ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName");
+            var applicationDbContext = _context.Questions.Include(q => q.Survey);           
+            
             return View();
         }
 
-        // POST: Questions/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         public async Task<IActionResult> Create([Bind("QuestionId,SurveyId,QuestionText")] Question question)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(question);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
+
+                //return RedirectToAction("Create", "Questions", new { question.SurveyId });
             }
-            ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName", question.SurveyId);
+
             return View(question);
         }
 
+        
         // GET: Questions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FeedbackFriend.Data;
 using FeedbackFriend.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Routing;
 
 namespace FeedbackFriend.Controllers
 {
@@ -27,16 +28,30 @@ namespace FeedbackFriend.Controllers
         //any method that needs to see who the user is can invoke the method
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
+
+        // Created automatically redirects me to SurveysController Index Action - So I will put the view I
+        // need returned after initializing survey but before adding questions here for now
+
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Surveys.Include(s => s.User);
             return View(await applicationDbContext.ToListAsync());
-        }        
+        }
+
+        // This is a copy of Survey - Index renamed Generic for now
+        // GET: Surveys
+        public async Task<IActionResult> Generic()
+        {
+            var applicationDbContext = _context.Surveys.Include(s => s.User);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+
 
         // **************************************************
         // GET: Surveys/Create
-        
+
         public async Task<IActionResult> Create()
         {
             var user = await GetCurrentUserAsync();
@@ -51,6 +66,7 @@ namespace FeedbackFriend.Controllers
         [ValidateAntiForgeryToken]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
         {
             ModelState.Remove("User");
@@ -62,12 +78,12 @@ namespace FeedbackFriend.Controllers
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(survey);
+                //return RedirectToAction(nameof(Index));
 
-            // ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            // return View(survey);
+                return RedirectToAction("Create", "Questions", new { survey.SurveyId });
+            }
+            
+            return View(survey);
         }
                
 
