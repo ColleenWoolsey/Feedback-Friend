@@ -34,30 +34,42 @@ namespace FeedbackFriend.Controllers
             return View(await applicationDbContext.ToListAsync());
         }        
 
-
+        // **************************************************
         // GET: Surveys/Create
-        public IActionResult Create()
+        
+        public async Task<IActionResult> Create()
         {
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
             return View();
         }
 
-        // POST: Surveys/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
         {
+            ModelState.Remove("User");
+            ModelState.Remove("userId");
+            var user = await GetCurrentUserAsync();
+            survey.UserId = user.Id;
+
             if (ModelState.IsValid)
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             return View(survey);
+
+            // ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
+            // return View(survey);
         }
+               
 
         // GET: Surveys/Edit/5
         public async Task<IActionResult> Edit(int? id)
