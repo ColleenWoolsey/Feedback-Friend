@@ -19,6 +19,8 @@ namespace FeedbackFriend.Controllers
             _context = context;
         }
 
+
+        // ******************************************************************************** INDEX
         // GET: Questions
         public async Task<IActionResult> Index()
         {
@@ -26,6 +28,7 @@ namespace FeedbackFriend.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // ******************************************************************************** DETAILS
         // GET: Questions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -34,132 +37,165 @@ namespace FeedbackFriend.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions
+            var questions = await _context.Questions
                 .Include(q => q.Survey)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.QuestionId == id);
-            if (question == null)
+            if (questions == null)
             {
                 return NotFound();
             }
 
-            return View(question);
+            return View(questions);
         }
 
-        // **************************************************
+        // ******************************************************************************** CREATE
         // GET: Questions/Create
-        public IActionResult Create()        
-        {
-            var applicationDbContext = _context.Questions.Include(q => q.Survey);           
-            
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-        public async Task<IActionResult> Create([Bind("QuestionId,SurveyId,QuestionText")] Question question)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(question);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Create));
-
-                //return RedirectToAction("Create", "Questions", new { question.SurveyId });
-            }
-
-            return View(question);
-        }
-
         
-        // GET: Questions/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Create(int? surveyId)
         {
-            if (id == null)
+            if (surveyId == null)
             {
                 return NotFound();
             }
+            var applicationDbContext = _context.Surveys;
+            
 
-            var question = await _context.Questions.FindAsync(id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-            ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName", question.SurveyId);
-            return View(question);
-        }
-
-        // POST: Questions/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,SurveyId,QuestionText")] Question question)
-        {
-            if (id != question.QuestionId)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(question);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!QuestionExists(question.QuestionId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName", question.SurveyId);
-            return View(question);
-        }
-
-        // GET: Questions/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            var survey = await _context.Surveys
+                .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+            if (survey == null)
             {
                 return NotFound();
             }
 
             var question = await _context.Questions
                 .Include(q => q.Survey)
-                .FirstOrDefaultAsync(m => m.QuestionId == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
 
             return View(question);
         }
 
-        // POST: Questions/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        public async Task<IActionResult> Create([Bind("SurveyId,QuestionText")] Question question)
         {
-            var question = await _context.Questions.FindAsync(id);
-            _context.Questions.Remove(question);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(question);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Create));
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.
+                ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists " +
+                    "see your system administrator.");
+            }
+            return View(question);
         }
 
-        private bool QuestionExists(int id)
+        // TEMPLATE: return RedirectToAction("{controller=Home}/{action=Index}/{id?}");
+        // return RedirectToAction("Create", "Questions", "question.SurveyId");   
+
+
+
+// ****************************************************************************************** EDIT
+// GET: Questions/Edit/5
+public async Task<IActionResult> Edit(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var question = await _context.Questions.FindAsync(id);
+    if (question == null)
+    {
+        return NotFound();
+    }
+    ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName", question.SurveyId);
+    return View(question);
+}
+
+// POST: Questions/Edit/5
+// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+[HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Edit(int id, [Bind("QuestionId,SurveyId,QuestionText")] Question question)
+{
+    if (id != question.QuestionId)
+    {
+        return NotFound();
+    }
+
+    if (ModelState.IsValid)
+    {
+        try
         {
-            return _context.Questions.Any(e => e.QuestionId == id);
+            _context.Update(question);
+            await _context.SaveChangesAsync();
         }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!QuestionExists(question.QuestionId))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
+        return RedirectToAction(nameof(Index));
+    }
+    ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName", question.SurveyId);
+    return View(question);
+}
+
+
+// ****************************************************************************************** DELETE
+// GET: Questions/Delete/5
+public async Task<IActionResult> Delete(int? id)
+{
+    if (id == null)
+    {
+        return NotFound();
+    }
+
+    var question = await _context.Questions
+        .Include(q => q.Survey)
+        .FirstOrDefaultAsync(m => m.QuestionId == id);
+    if (question == null)
+    {
+        return NotFound();
+    }
+
+    return View(question);
+}
+
+// POST: Questions/Delete/5
+[HttpPost, ActionName("Delete")]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> DeleteConfirmed(int id)
+{
+    var question = await _context.Questions.FindAsync(id);
+    _context.Questions.Remove(question);
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
+
+private bool QuestionExists(int id)
+{
+    return _context.Questions.Any(e => e.QuestionId == id);
+}
     }
 }

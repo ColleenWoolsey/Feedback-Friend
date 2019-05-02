@@ -36,17 +36,18 @@
     <div class="col-md-11">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             @*<div class="form-group">
-            <label asp-for="SurveyId" class="control-label"></label>
-            <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
-        </div>*@
+                    <label asp-for="SurveyId" class="control-label"></label>
+                    <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
+                </div>*@
             <div class="form-group">
                 <label asp-for="QuestionText" class="control-label"></label>
                 <input asp-for="QuestionText" class="form-control" />
                 <span asp-validation-for="QuestionText" class="text-danger"></span>
             </div>
             <div class="form-group">
+                @*<input type="submit" value="Create" class="btn btn-primary" asp-route-id="Survey.SurveyId" />*@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -57,20 +58,21 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
+@section Scripts 
+{    
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
 @*<div>
-    <dl class="row">
-        <dd class="col-m-2">
-            @Html.DisplayFor(model => model.Survey.SurveyName)
-        </dd>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Description)
-        </dd>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Instructions)
-        </dd>
-    </dl>
-</div>*@
+        <dl class="row">
+            <dd class="col-m-2">
+                @Html.DisplayFor(model => model.Survey.SurveyName)
+            </dd>
+            <dd class="col-m-5">
+                @Html.DisplayFor(model => model.Survey.Description)
+            </dd>
+            <dd class="col-m-5">
+                @Html.DisplayFor(model => model.Survey.Instructions)
+            </dd>
+        </dl>
+    </div>*@

@@ -32,6 +32,7 @@ namespace FeedbackFriend.Controllers
         // Created automatically redirects me to SurveysController Index Action - So I will put the view I
         // need returned after initializing survey but before adding questions here for now
 
+        // ********************************************************************************
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
@@ -39,17 +40,29 @@ namespace FeedbackFriend.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
-        // This is a copy of Survey - Index renamed Generic for now
-        // GET: Surveys
-        public async Task<IActionResult> Generic()
+
+        // ********************************************************************************
+        // GET: Surveys/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            var applicationDbContext = _context.Surveys.Include(s => s.User);
-            return View(await applicationDbContext.ToListAsync());
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var survey = await _context.Surveys
+                .Include(a => a.Questions)                
+                .FirstOrDefaultAsync(m => m.SurveyId == id);
+            if (survey == null)
+            {
+                return NotFound();
+            }
+
+            return View(survey);
         }
 
 
-
-        // **************************************************
+        // ********************************************************************************
         // GET: Surveys/Create
 
         public async Task<IActionResult> Create()
@@ -67,7 +80,7 @@ namespace FeedbackFriend.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 
-        public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
+        public async Task<IActionResult> Create([Bind("UserId,SurveyName,Instructions,Description")] Survey survey)
         {
             ModelState.Remove("User");
             ModelState.Remove("userId");
@@ -78,15 +91,16 @@ namespace FeedbackFriend.Controllers
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-
-                return RedirectToAction("Create", "Questions", new { survey.SurveyId });
+                
+                 return RedirectToAction("Create", "Questions", new { survey.SurveyId });
+                
             }
             
             return View(survey);
         }
-               
 
+
+        // ********************************************************************************
         // GET: Surveys/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -140,6 +154,8 @@ namespace FeedbackFriend.Controllers
             return View(survey);
         }
 
+
+        // ********************************************************************************
         // GET: Surveys/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
