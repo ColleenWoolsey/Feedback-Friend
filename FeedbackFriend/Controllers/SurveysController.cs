@@ -51,7 +51,7 @@ namespace FeedbackFriend.Controllers
             }
 
             var survey = await _context.Surveys
-                .Include(a => a.Questions)                
+                .Include(a => a.Questions)
                 .FirstOrDefaultAsync(m => m.SurveyId == id);
             if (survey == null)
             {
@@ -91,11 +91,11 @@ namespace FeedbackFriend.Controllers
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
-                
-                 return RedirectToAction("Create", "Questions", new { survey.SurveyId });
-                
+
+                return RedirectToAction("Create", "Questions", new { survey.SurveyId });
+
             }
-            
+
             return View(survey);
         }
 
@@ -155,9 +155,10 @@ namespace FeedbackFriend.Controllers
         }
 
 
-        // ********************************************************************************
+        // ********************************************************************************  DELETE
         // GET: Surveys/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -166,26 +167,43 @@ namespace FeedbackFriend.Controllers
 
             var survey = await _context.Surveys
                 .Include(s => s.User)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.SurveyId == id);
             if (survey == null)
             {
                 return NotFound();
             }
-
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
             return View(survey);
         }
-
         // POST: Surveys/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var survey = await _context.Surveys.FindAsync(id);
-            _context.Surveys.Remove(survey);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            if (survey == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
 
+            try
+            {
+                _context.Surveys.Remove(survey);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
+            }           
+        }
         private bool SurveyExists(int id)
         {
             return _context.Surveys.Any(e => e.SurveyId == id);

@@ -1,4 +1,4 @@
-﻿@model FeedbackFriend.Models.Question
+﻿@model FeedbackFriend.Models.CreateQuestionWithSurveyIdViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -7,72 +7,65 @@
 <h2>Add Questions to Survey</h2>
 <hr />
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Survey.SurveyName)
-        </dt>
-        <dd class="col-m-2">
-            @Html.DisplayFor(model => model.Survey.SurveyName)
-        </dd>
-        <dt class="col-sm-5">
-            @Html.DisplayNameFor(model => model.Survey.Description)
-        </dt>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Description)
-        </dd>
-        <dt class="col-sm-5">
-            @Html.DisplayNameFor(model => model.Survey.Instructions)
-        </dt>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Instructions)
-        </dd>
-    </dl>
-</div>
-
-
-<hr />
 <div class="row">
-    <div class="col-md-11">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            @*<div class="form-group">
-                    <label asp-for="SurveyId" class="control-label"></label>
-                    <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
-                </div>*@
-            <div class="form-group">
-                <label asp-for="QuestionText" class="control-label"></label>
-                <input asp-for="QuestionText" class="form-control" />
-                <span asp-validation-for="QuestionText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                @*<input type="submit" value="Create" class="btn btn-primary" asp-route-id="Survey.SurveyId" />*@
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="col-lg-8">
+        <dl>
+            <dd>
+                @Html.DisplayFor(model => model.Survey.SurveyName)
+                <br />
+            </dd>
+        </dl>
+        <div class="col-sm-8">
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Survey.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Survey.Description)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-sm-8">
+            <dl>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Survey.Instructions)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Survey.Instructions)
+                </dd>
+            </dl>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <hr />
+    <div class="row">
+        <div class="col-md-11">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-@section Scripts 
-{    
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+                @*<div class="form-group">
+                        <label asp-for="SurveyId" class="control-label"></label>
+                        <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
+                    </div>*@
+                <div class="form-group">
+                    <label asp-for="QuestionText" class="control-label"></label>
+                    <input asp-for="QuestionText" class="form-control" />
+                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
 
-@*<div>
-        <dl class="row">
-            <dd class="col-m-2">
-                @Html.DisplayFor(model => model.Survey.SurveyName)
-            </dd>
-            <dd class="col-m-5">
-                @Html.DisplayFor(model => model.Survey.Description)
-            </dd>
-            <dd class="col-m-5">
-                @Html.DisplayFor(model => model.Survey.Instructions)
-            </dd>
-        </dl>
-    </div>*@
+    <div>
+        <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
+    </div>
+
+    @section Scripts
+        {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+

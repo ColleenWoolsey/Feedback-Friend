@@ -744,5 +744,9 @@ namespace FeedbackFriend.Data
                 }
             );
         }
+
+        
+
+        public DbSet<FeedbackFriend.Models.CreateQuestionWithSurveyIdViewModel> CreateQuestionWithSurveyIdViewModel { get; set; }
     }
 }
