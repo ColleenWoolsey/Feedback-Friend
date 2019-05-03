@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,15 +9,18 @@ namespace FeedbackFriend.Models
 {
     public class CreateQuestionWithSurveyIdViewModel
     { 
-        public int Id { get; set; }
-
         public int SurveyId { get; set; }
 
-        public Survey Survey { get; set; }
-              
-        public int QuestionId { get; set; }
-        
-        [Display(Name = "Add a question OR finalize survey")]
-        public string QuestionText { get; set; }
+        [Display(Name = "Survey Name")]        
+        public string SurveyName { get; set; }
+
+        public string Instructions { get; set; }
+
+        public string Description { get; set; }
+
+        [NotMapped]
+        public int NumQuestions { get; set; }
+
+        public ICollection<Question> Questions { get; set; }
     }
 }

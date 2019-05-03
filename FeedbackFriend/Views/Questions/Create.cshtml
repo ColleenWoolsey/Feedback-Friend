@@ -1,37 +1,36 @@
-﻿@model FeedbackFriend.Models.CreateQuestionWithSurveyIdViewModel
+﻿@model FeedbackFriend.Models.SurveysViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h2>Add Questions to Survey</h2>
+<h4>Add Questions to Survey</h4>
 <hr />
-
 <div class="row">
     <div class="col-lg-8">
         <dl>
             <dd>
-                @Html.DisplayFor(model => model.Survey.SurveyName)
+                @Html.DisplayFor(model => model.SurveyName)
                 <br />
             </dd>
         </dl>
         <div class="col-sm-8">
             <dl>
                 <dt>
-                    @Html.DisplayNameFor(model => model.Survey.Description)
+                    @Html.DisplayNameFor(model => model.Description)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.Survey.Description)
+                    @Html.DisplayFor(model => model.Description)
                 </dd>
             </dl>
         </div>
         <div class="col-sm-8">
             <dl>
                 <dt>
-                    @Html.DisplayNameFor(model => model.Survey.Instructions)
+                    @Html.DisplayNameFor(model => model.Instructions)
                 </dt>
                 <dd>
-                    @Html.DisplayFor(model => model.Survey.Instructions)
+                    @Html.DisplayFor(model => model.Instructions)
                 </dd>
             </dl>
         </div>
@@ -49,9 +48,9 @@
                         <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
                     </div>*@
                 <div class="form-group">
-                    <label asp-for="QuestionText" class="control-label"></label>
-                    <input asp-for="QuestionText" class="form-control" />
-                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                    <label asp-for="Question.QuestionText" class="control-label"></label>
+                    <input asp-for="Question.QuestionText" class="form-control" />
+                    <span asp-validation-for="Question.QuestionText" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
@@ -59,6 +58,29 @@
             </form>
         </div>
     </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <h4><strong>Questions added to survey</strong></h4>
+                </th>
+                @*<th>
+                    <a asp-action="LoggedIn">Back to List</a>
+                </th>*@
+            </tr>
+        </thead>
+        @*<tbody>
+            // @foreach (var item in Model.Questions)               
+            {
+            <tr>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionText)
+                </td>
+            </tr>
+            }
+        </tbody>*@
+    </table>
 
     <div>
         <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>

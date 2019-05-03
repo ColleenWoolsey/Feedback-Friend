@@ -18,7 +18,7 @@ namespace FeedbackFriend.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
 
-        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,9 +26,9 @@ namespace FeedbackFriend.Data
 
             // Create a new user for Identity Framework
             ApplicationUser user = new ApplicationUser
-            {               
+            {
                 FirstName = "admin",
-                LastName = "admin",                
+                LastName = "admin",
                 UserName = "admin@admin.com",
                 NormalizedUserName = "ADMIN@ADMIN.COM",
                 Email = "admin@admin.com",
@@ -744,9 +744,5 @@ namespace FeedbackFriend.Data
                 }
             );
         }
-
-        
-
-        public DbSet<FeedbackFriend.Models.CreateQuestionWithSurveyIdViewModel> CreateQuestionWithSurveyIdViewModel { get; set; }
     }
 }

@@ -53,40 +53,85 @@ namespace FeedbackFriend.Controllers
         // ******************************************************************************** CREATE
         // GET: Questions/Create
 
+        //public async Task<IActionResult> Create(int? surveyId)
+        //{
+        //    var applicationDbContext = _context.Surveys;
+
+        //    var SurveysViewModel = await _context.Surveys
+        //        .Include(s => s.Questions)
+        //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+
+        //    //if (SurveysViewModel == null)
+        //    //{
+        //    //    return NotFound();
+        //    //}
+        //    var model = new SurveysViewModel();
+
+        //    model.GroupedQuestions = await (
+        //        from s in _context.Surveys
+        //        join q in _context.Questions
+        //        on s.SurveyId equals q.SurveyId
+        //        group new { s, q } by new { s.SurveyId, s.SurveyName, s.Description, s.Instructions } into grouped
+        //        select new GroupedQuestions
+        //        {
+        //            SurveyDetailId = grouped.Key.SurveyId,
+        //            SurveyDetailName = grouped.Key.SurveyName,
+        //            SurveyDetailDescription = grouped.Key.Description,
+        //            SurveyDetailInstructions = grouped.Key.Instructions,
+
+        //            QuestionCount = grouped.Select(x => x.q.QuestionId).Count(),
+        //            Questions = grouped.Select(x => x.q)
+        //        }).ToListAsync();
+
+        //    return View(model);
+        //}
+        // --------------------------------------------------
         public async Task<IActionResult> Create(int? surveyId)
-        {            
+        {
             var applicationDbContext = _context.Surveys;
-            
-            var survey = await _context.Surveys
+
+            var surveysViewModel = await _context.Surveys
+                .Include(s => s.Questions)
                 .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
-                
-            if (survey == null)
+
+            if (surveysViewModel == null)
             {
                 return NotFound();
             }
-            var viewModel = new CreateQuestionWithSurveyIdViewModel();
-            viewModel.SurveyId = survey.SurveyId;
-            viewModel.Survey = survey;
-
+            var viewModel = new SurveysViewModel();
+            viewModel.SurveyId = surveysViewModel.SurveyId;
+            viewModel.SurveyName = surveysViewModel.SurveyName;
+            viewModel.Description = surveysViewModel.Description;
+            viewModel.Instructions = surveysViewModel.Instructions;
+            
             return View(viewModel);
         }
-
-                       
-        //.FirstOrDefaultAsync(m => m.SurveyId == surveyId);
-        
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.       
 
-        public async Task<IActionResult> Create([Bind("SurveyId,QuestionText")] CreateQuestionWithSurveyIdViewModel createQuestionWithSurveyIdViewModel)
+        public async Task<IActionResult> Create([Bind("SurveyId,QuestionText")] SurveysViewModel viewModel, int surveyId)
         {
             try
             {
+                var SurveysViewModel = await _context.Questions
+                .Include(q => q.Survey)
+                .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+
+                if (SurveysViewModel == null)
+                {
+                    return NotFound();
+                }
+
+                await _context.SaveChangesAsync();
+                var applicationDbContext = _context.Questions;
+
                 if (ModelState.IsValid)
                 {
-                    _context.Add(createQuestionWithSurveyIdViewModel);
+
+                    ViewData.Add("SurveyId", value: "surveyId");
+                    ViewData.Add("QuestionText", value: "Questiontext");
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Create));
                 }
@@ -98,8 +143,7 @@ namespace FeedbackFriend.Controllers
                     "Try again, and if the problem persists " +
                     "see your system administrator.");
             }
-
-            return View(createQuestionWithSurveyIdViewModel);
+            return View(viewModel);
         }
 
         // TEMPLATE: return RedirectToAction("{controller=Home}/{action=Index}/{id?}");

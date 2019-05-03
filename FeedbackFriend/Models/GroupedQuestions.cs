@@ -11,5 +11,10 @@ namespace FeedbackFriend.Models
         public string SurveyDetailName { get; set; }
         public int QuestionCount { get; set; }
         public IEnumerable<Question> Questions { get; set; }
+
+        
+        public string SurveyDetailInstructions { get; set; }
+        public string SurveyDetailDescription { get; set; }        
+        public List<Question> QuestionList { get; set; }
     }
 }
