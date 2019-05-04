@@ -86,65 +86,75 @@ namespace FeedbackFriend.Controllers
         //    return View(model);
         //}
         // --------------------------------------------------
-        public async Task<IActionResult> Create(int? surveyId)
-        {
-            var applicationDbContext = _context.Surveys;
-
-            var surveysViewModel = await _context.Surveys
-                .Include(s => s.Questions)
-                .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
-
-            if (surveysViewModel == null)
-            {
-                return NotFound();
-            }
-            var viewModel = new SurveysViewModel();
-            viewModel.SurveyId = surveysViewModel.SurveyId;
-            viewModel.SurveyName = surveysViewModel.SurveyName;
-            viewModel.Description = surveysViewModel.Description;
-            viewModel.Instructions = surveysViewModel.Instructions;
+        //public async Task<IActionResult> Create(int? surveyId)
+        //{
+        //    var applicationDbContext = _context.Surveys;
             
-            return View(viewModel);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.       
+        //    var surveysViewModel = await _context.Surveys
+        //        .Include(s => s.Questions)
+        //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
 
-        public async Task<IActionResult> Create([Bind("SurveyId,QuestionText")] SurveysViewModel viewModel, int surveyId)
-        {
-            try
-            {
-                var SurveysViewModel = await _context.Questions
-                .Include(q => q.Survey)
-                .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+        //    if (surveysViewModel == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var viewModel = new SurveysViewModel();
+        //    viewModel.SurveyId = surveysViewModel.SurveyId;
+        //    viewModel.SurveyName = surveysViewModel.SurveyName;
+        //    viewModel.Description = surveysViewModel.Description;
+        //    viewModel.Instructions = surveysViewModel.Instructions;
+            
+        //    return View(viewModel);
+        //}
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.       
 
-                if (SurveysViewModel == null)
-                {
-                    return NotFound();
-                }
+        //public async Task<IActionResult> Create([Bind("SurveyId,QuestionText")] SurveysViewModel surveysViewModel, int surveyId)
+        //{
+        //    var applicationDbContext = _context.Questions.Include(a => a.Survey);
+        //    try
+        //    {
+        //        var SurveysViewModel = await _context.Questions
+        //        .Include(q => q.Survey)
+        //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
 
-                await _context.SaveChangesAsync();
-                var applicationDbContext = _context.Questions;
+        //        //if (SurveysViewModel == null)
+        //        //{
+        //        //    return NotFound();
+        //        //}              
 
-                if (ModelState.IsValid)
-                {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var viewModel = new SurveysViewModel();
+        //            {
+        //                viewModel.SurveyId = surveyId;
+        //                viewModel.QuestionText = surveysViewModel.QuestionText;
+        //            };
 
-                    ViewData.Add("SurveyId", value: "surveyId");
-                    ViewData.Add("QuestionText", value: "Questiontext");
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Create));
-                }
-            }
-            catch (DbUpdateException /* ex */)
-            {
-                //Log the error (uncomment ex variable name and write a log.
-                ModelState.AddModelError("", "Unable to save changes. " +
-                    "Try again, and if the problem persists " +
-                    "see your system administrator.");
-            }
-            return View(viewModel);
-        }
+                    
+                   
+        //            await _context.SaveChangesAsync();
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        // PopulateDepartmentsDropDownList(question.DepartmentId);
+        //        return View(surveysViewModel);
+        //        //ViewData.Add("SurveyId", value: "surveyId");
+        //        //     ViewData.Add("QuestionText", value: "Questiontext");
+        //        //    await _context.SaveChangesAsync();
+        //        //    return RedirectToAction(nameof(Create));
+                
+        //    }
+        //    catch (DbUpdateException /* ex */)
+        //    {
+        //        //Log the error (uncomment ex variable name and write a log.
+        //        ModelState.AddModelError("", "Unable to save changes. " +
+        //            "Try again, and if the problem persists " +
+        //            "see your system administrator.");
+        //    }
+        //    return View(surveysViewModel);
+        //}
 
         // TEMPLATE: return RedirectToAction("{controller=Home}/{action=Index}/{id?}");
         // return RedirectToAction("Create", "Questions", "question.SurveyId");   
@@ -241,5 +251,120 @@ namespace FeedbackFriend.Controllers
         {
             return _context.Questions.Any(e => e.QuestionId == id);
         }
+
+        //-----------------------------------------------------------------------------------------------------
+
+        // GET: Surveys with Questions/Create
+
+        public async Task<IActionResult> Create(int? surveyId)
+        {
+            var applicationDbContext = _context.Surveys;
+
+            var surveysViewModel = await _context.Surveys
+                .Include(s => s.Questions)
+                .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+
+            if (surveysViewModel == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new SurveysViewModel();
+            viewModel.SurveyId = surveysViewModel.SurveyId;
+            viewModel.SurveyName = surveysViewModel.SurveyName;
+            viewModel.Description = surveysViewModel.Description;
+            viewModel.Instructions = surveysViewModel.Instructions;
+
+            return View(viewModel);
+        }
+        //public async Task<IActionResult> Create(int? surveyId, SurveysViewModel surveysViewModel)
+        //{
+        //    var applicationDbContext = _context.Surveys;
+
+            //    var survey = await _context.Surveys
+            //        .Include(s => s.Questions)
+            //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+
+            //    if (surveysViewModel == null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    var viewModel = new SurveysViewModel();
+
+            //    if (surveyId == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    //var survey = await _context.Surveys
+            //    //    .Include(s => s.Questions)
+            //    //    .AsNoTracking()
+            //    //    .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+            //    //if (survey == null)
+            //    //{
+            //    //    return NotFound();
+            //    //}
+
+            //    survey.Questions = new List<Question>();
+            //    // PopulateAssignedQuestionData(surveysViewModel);
+            //    return View(surveysViewModel);
+            //}
+
+            // POST: Surveys/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("SurveyName,Instructions,Description,QuestionId,SurveyId,QuestionText")] SurveysViewModel surveysViewModel, int? surveyId)
+        {
+            var survey = await _context.Surveys
+                    .Include(s => s.Questions)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+            if (survey == null)
+            {
+                return NotFound();
+            }
+            if (surveysViewModel != null)
+            {
+                surveysViewModel.Questions = new List<Question>();
+                foreach (var question in surveysViewModel.Questions)
+                {
+                    var questionToAdd = new Question
+                    {
+                        QuestionId = surveysViewModel.QuestionId,
+                        SurveyId = surveysViewModel.SurveyId,                    
+                        QuestionText = surveysViewModel.QuestionText,
+                    };
+                    surveysViewModel.Questions.Add(questionToAdd);
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                _context.Add(surveysViewModel.Question);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+             PopulateAssignedQuestionData(surveysViewModel);
+            return View(surveysViewModel);
+        }
+
+        private void PopulateAssignedQuestionData(SurveysViewModel surveysViewModel)
+        {
+            var allQuestions = _context.Questions;
+            var surveyQuestions = new HashSet<int>(surveysViewModel.Questions.Select(q => q.QuestionId));
+            var viewModel = new List<SurveysViewModel>();
+            foreach (var question in allQuestions)
+            {
+                viewModel.Add(new SurveysViewModel
+                {
+                    QuestionId = question.QuestionId,
+                    SurveyId = question.SurveyId,
+                    QuestionText = question.QuestionText,
+                    Assigned = surveyQuestions.Contains(question.QuestionId)
+                });
+            }
+            ViewData["Questions"] = viewModel;
+        }
+
+
+
     }
 }

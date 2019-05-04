@@ -4,90 +4,72 @@
     ViewData["Title"] = "Create";
 }
 
-<h4>Add Questions to Survey</h4>
+<h5>Add Questions to Survey</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-md-2">@Html.DisplayNameFor(model => model.SurveyName)</th>
+            <th class="col-md-5">@Html.DisplayNameFor(model => model.Description)</th>
+            <th class="col-md-5">@Html.DisplayNameFor(model => model.Instructions)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-md-2">@Html.DisplayFor(model => model.SurveyName)</td>
+            <td class="col-md-5">@Html.DisplayFor(model => model.Description)</td>
+            <td class="col-md-5">@Html.DisplayFor(model => model.Instructions)</td>
+        </tr>
+    </tbody>
+</table>
 <hr />
+
+
 <div class="row">
-    <div class="col-lg-8">
-        <dl>
-            <dd>
-                @Html.DisplayFor(model => model.SurveyName)
-                <br />
-            </dd>
-        </dl>
-        <div class="col-sm-8">
-            <dl>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Description)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Description)
-                </dd>
-            </dl>
-        </div>
-        <div class="col-sm-8">
-            <dl>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Instructions)
-                </dt>
-                <dd>
-                    @Html.DisplayFor(model => model.Instructions)
-                </dd>
-            </dl>
-        </div>
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @*<div class="form-group">
+            <label asp-for="SurveyId" class="control-label"></label>
+            <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="Question.QuestionText" class="control-label"></label>
+                <input asp-for="Question.QuestionText" class="form-control" />
+                <span asp-validation-for="Question.QuestionText" class="text-danger"></span>
+            </div>
+            <div class="form-group text-xl-center">
+                <input type="submit" value="Add" class="btn btn-primary" />
+                <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
+            </div>            
+        </form>
     </div>
 </div>
 
-    <hr />
-    <div class="row">
-        <div class="col-md-11">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                @*<div class="form-group">
-                        <label asp-for="SurveyId" class="control-label"></label>
-                        <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
-                    </div>*@
-                <div class="form-group">
-                    <label asp-for="Question.QuestionText" class="control-label"></label>
-                    <input asp-for="Question.QuestionText" class="form-control" />
-                    <span asp-validation-for="Question.QuestionText" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    <h4><strong>Questions added to survey</strong></h4>
-                </th>
-                @*<th>
-                    <a asp-action="LoggedIn">Back to List</a>
-                </th>*@
-            </tr>
-        </thead>
-        @*<tbody>
-            // @foreach (var item in Model.Questions)               
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h5>List of Survey Questions Added</h5>
+            </th>
+            @*<th><a asp-action="LoggedIn">Back to List</a></th>*@
+        </tr>
+    </thead>
+    @*<tbody>
+            // @foreach (var item in Model.Questions)
             {
-            <tr>                
+            <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.QuestionText)
                 </td>
             </tr>
             }
         </tbody>*@
-    </table>
+</table>
 
-    <div>
-        <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
-    </div>
-
-    @section Scripts
-        {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
 
