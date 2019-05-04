@@ -110,59 +110,59 @@ namespace FeedbackFriend.Controllers
         }
 
 
-        // ********************************************************************************
-        // GET: Surveys/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// ********************************************************************************
+        //// GET: Surveys/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var survey = await _context.Surveys.FindAsync(id);
-            if (survey == null)
-            {
-                return NotFound();
-            }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
-        }
+        //    var survey = await _context.Surveys.FindAsync(id);
+        //    if (survey == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
+        //    return View(survey);
+        //}
 
-        // POST: Surveys/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
-        {
-            if (id != survey.SurveyId)
-            {
-                return NotFound();
-            }
+        //// POST: Surveys/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
+        //{
+        //    if (id != survey.SurveyId)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(survey);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SurveyExists(survey.SurveyId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(LoggedIn));
-            }
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
-            return View(survey);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(survey);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!SurveyExists(survey.SurveyId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(LoggedIn));
+        //    }
+        //    ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
+        //    return View(survey);
+        //}
 
 
         // ********************************************************************************  DELETE
@@ -220,7 +220,10 @@ namespace FeedbackFriend.Controllers
         }
 
 
-        // GET: Instructors/Edit/5
+
+
+        // ****************************************************************************************  EDIT
+        // GET: Surveys/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -228,65 +231,60 @@ namespace FeedbackFriend.Controllers
                 return NotFound();
             }
 
-            var instructor = await _context.Instructors
-                .Include(i => i.OfficeAssignment)
-                .Include(i => i.CourseAssignments).ThenInclude(i => i.Course)
+            var survey = await _context.Surveys                
+                .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (instructor == null)
+                .FirstOrDefaultAsync(m => m.SurveyId == id);
+            if (survey == null)
             {
                 return NotFound();
             }
-            PopulateAssignedCourseData(instructor);
-            return View(instructor);
+            PopulateAssignedQuestionData(survey);
+            return View(survey);
         }
 
-        private void PopulateAssignedCourseData(Instructor instructor)
+        private void PopulateAssignedQuestionData(Survey survey)
         {
-            var allCourses = _context.Courses;
-            var instructorCourses = new HashSet<int>(instructor.CourseAssignments.Select(c => c.CourseID));
-            var viewModel = new List<AssignedCourseData>();
-            foreach (var course in allCourses)
+            var allQuestions = _context.Questions;
+            var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(c => c.QuestionId));
+            var viewModel = new List<SurveyQuestionsEDITViewModel>();
+            foreach (var question in allQuestions)
             {
-                viewModel.Add(new AssignedCourseData
+                viewModel.Add(new SurveyQuestionsEDITViewModel
                 {
-                    CourseID = course.CourseID,
-                    Title = course.Title,
-                    Assigned = instructorCourses.Contains(course.CourseID)
+                    QuestionId = question.QuestionId,
+                    QuestionText = question.QuestionText,
+                    Assigned = surveyQuestions.Contains(question.QuestionId)
                 });
             }
-            ViewData["Courses"] = viewModel;
+            ViewData["Questions"] = viewModel;
         }
 
-        // POST: Instructors/Edit/5
+        // POST: Surveys/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, string[] selectedCourses)
+        public async Task<IActionResult> Edit(int? id, string[] selectedQuestions)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var instructorToUpdate = await _context.Instructors
-                .Include(i => i.OfficeAssignment)
-                .Include(i => i.CourseAssignments)
-                    .ThenInclude(i => i.Course)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var surveyToUpdate = await _context.Surveys
+                .Include(i => i.QuestionAssignments)
+                    .ThenInclude(i => i.Question)
+                .FirstOrDefaultAsync(m => m.SurveyId == id);
 
-            if (await TryUpdateModelAsync<Instructor>(
-                instructorToUpdate,
+            if (await TryUpdateModelAsync<Survey>(
+                surveyToUpdate,
                 "",
-                i => i.FirstMidName, i => i.LastName, i => i.HireDate, i => i.OfficeAssignment))
+                i => i.Description, i => i.Instructions, i => i.SurveyName))
             {
-                if (String.IsNullOrWhiteSpace(instructorToUpdate.OfficeAssignment?.Location))
-                {
-                    instructorToUpdate.OfficeAssignment = null;
-                }
-                UpdateInstructorCourses(selectedCourses, instructorToUpdate);
+                
+                UpdateSurveyQuestions(selectedQuestions, surveyToUpdate);
                 try
                 {
                     await _context.SaveChangesAsync();
@@ -300,38 +298,38 @@ namespace FeedbackFriend.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            UpdateInstructorCourses(selectedCourses, instructorToUpdate);
-            PopulateAssignedCourseData(instructorToUpdate);
-            return View(instructorToUpdate);
+            UpdateSurveyQuestions(selectedQuestions, surveyToUpdate);
+            PopulateAssignedQuestionData(surveyToUpdate);
+            return View(surveyToUpdate);
         }
 
-        private void UpdateInstructorCourses(string[] selectedCourses, Instructor instructorToUpdate)
+        private void UpdateSurveyQuestions(string[] selectedQuestions, Survey surveyToUpdate)
         {
-            if (selectedCourses == null)
+            if (selectedQuestions == null)
             {
-                instructorToUpdate.CourseAssignments = new List<CourseAssignment>();
+                surveyToUpdate.QuestionAssignments = new List<QuestionAssignment>();
                 return;
             }
 
-            var selectedCoursesHS = new HashSet<string>(selectedCourses);
-            var instructorCourses = new HashSet<int>
-                (instructorToUpdate.CourseAssignments.Select(c => c.Course.CourseID));
-            foreach (var course in _context.Courses)
+            var selectedQuestionsHS = new HashSet<string>(selectedQuestions);
+            var surveyQuestions = new HashSet<int>
+                (surveyToUpdate.QuestionAssignments.Select(c => c.Question.QuestionId));
+            foreach (var question in _context.Questions)
             {
-                if (selectedCoursesHS.Contains(course.CourseID.ToString()))
+                if (selectedQuestionsHS.Contains(question.QuestionId.ToString()))
                 {
-                    if (!instructorCourses.Contains(course.CourseID))
+                    if (!surveyQuestions.Contains(question.QuestionId))
                     {
-                        instructorToUpdate.CourseAssignments.Add(new CourseAssignment { InstructorID = instructorToUpdate.ID, CourseID = course.CourseID });
+                        surveyToUpdate.QuestionAssignments.Add(new QuestionAssignment { SurveyId = surveyToUpdate.SurveyId, QuestionId = question.QuestionId });
                     }
                 }
                 else
                 {
 
-                    if (instructorCourses.Contains(course.CourseID))
+                    if (surveyQuestions.Contains(question.QuestionId))
                     {
-                        CourseAssignment courseToRemove = instructorToUpdate.CourseAssignments.FirstOrDefault(i => i.CourseID == course.CourseID);
-                        _context.Remove(courseToRemove);
+                        QuestionAssignment questionToRemove = surveyToUpdate.QuestionAssignments.FirstOrDefault(i => i.QuestionId == question.QuestionId);
+                        _context.Remove(questionToRemove);
                     }
                 }
             }
