@@ -164,3 +164,17 @@ namespace FeedbackFriend.Controllers
         }
     }
 }
+
+
+//.jumbotron {
+//    padding: 2rem 1rem;
+//    margin-bottom: 2rem;
+//    /*background-image: linear-gradient(to right, #8085ff,#8094ff,#80a3ff,#80b3ff,#80c2ff,#80d1ff,#80e0ff);*/
+//    background-image: radial-gradient(white 5%, #ecf4ff 15%, #80b3ff 60%);
+//    /*background-image: radial-gradient(circle, #ffcc80, #ecf4ff, #80b3ff);*/
+//    /*background-image: repeating-radial-gradient(#ecf4ff, #80b3ff 10%, #b6deff 15%);*/
+//    /*background-image: linear-gradient(#80b3ff, ecf4ff);*/
+//    /*background-color: #80b3ff;*/
+//    /*background-image: url("~/Images/presents.png");*/
+//    border-radius: 0.3rem;
+//}

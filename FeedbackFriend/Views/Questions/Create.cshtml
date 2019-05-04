@@ -4,21 +4,19 @@
     ViewData["Title"] = "Create";
 }
 
-<h5>Add Questions to Survey</h5>
-
 <table class="table">
     <thead>
         <tr>
-            <th class="col-md-2">@Html.DisplayNameFor(model => model.SurveyName)</th>
-            <th class="col-md-5">@Html.DisplayNameFor(model => model.Description)</th>
-            <th class="col-md-5">@Html.DisplayNameFor(model => model.Instructions)</th>
+            <th width="20%">@Html.DisplayNameFor(model => model.SurveyName)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Description)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Instructions)</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td class="col-md-2">@Html.DisplayFor(model => model.SurveyName)</td>
-            <td class="col-md-5">@Html.DisplayFor(model => model.Description)</td>
-            <td class="col-md-5">@Html.DisplayFor(model => model.Instructions)</td>
+            <td>@Html.DisplayFor(model => model.SurveyName)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
         </tr>
     </tbody>
 </table>
@@ -26,23 +24,19 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 d-md-inline-block">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            @*<div class="form-group">
-            <label asp-for="SurveyId" class="control-label"></label>
-            <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
-        </div>*@
             <div class="form-group">
-                <label asp-for="Question.QuestionText" class="control-label"></label>
+                @*<label asp-for="Question.QuestionText" class="control-label"></label>*@
                 <input asp-for="Question.QuestionText" class="form-control" />
-                <span asp-validation-for="Question.QuestionText" class="text-danger"></span>
+                <span asp-validation-for="Question.QuestionText" class="text-danger"></span> 
             </div>
-            <div class="form-group text-xl-center">
-                <input type="submit" value="Add" class="btn btn-primary" />
-                <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
-            </div>            
+
+            <div class="form-group">
+                <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
+            </div>           
         </form>
     </div>
 </div>
@@ -67,6 +61,8 @@
             }
         </tbody>*@
 </table>
+
+<a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
 
 @section Scripts
     {

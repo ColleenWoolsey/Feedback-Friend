@@ -91,9 +91,7 @@ namespace FeedbackFriend.Controllers
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
-
                 return RedirectToAction("Create", "Questions", new { survey.SurveyId });
-
             }
 
             return View(survey);

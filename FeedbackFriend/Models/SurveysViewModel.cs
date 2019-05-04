@@ -21,10 +21,10 @@ namespace FeedbackFriend.Models
 
         public bool Assigned { get; set; }
 
-        public List<Question> QuestionList { get; set; }
+       //  public List<Question> QuestionList { get; set; }
         public IEnumerable<Question> IEnumQuestions { get; set; }
 
-        public ICollection<Question> Questions { get; set; }
+        // public ICollection<Question> Questions { get; set; }
 
     }
 }

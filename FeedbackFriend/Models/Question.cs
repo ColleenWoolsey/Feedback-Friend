@@ -16,8 +16,7 @@ namespace FeedbackFriend.Models
         public int SurveyId { get; set; }
         public Survey Survey { get; set; }
 
-        [Required]
-        [Display(Name = "Add a question OR finalize survey")]
+        [Required]        
         public string QuestionText { get; set; }
     }
 }
