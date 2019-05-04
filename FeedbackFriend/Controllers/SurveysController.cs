@@ -32,7 +32,7 @@ namespace FeedbackFriend.Controllers
         // Created automatically redirects me to SurveysController Index Action - So I will put the view I
         // need returned after initializing survey but before adding questions here for now
 
-        // ********************************************************************************
+        // ******************************************************************************** INDEX
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
@@ -40,8 +40,19 @@ namespace FeedbackFriend.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // ******************************************************************************** LOGGEDIN
+        public async Task<IActionResult> LoggedIn()
+        {
+            var applicationDbContext = _context.Surveys
+               .Include(s => s.Questions)
+               .Include(s => s.User)
+               .OrderBy(s => s.SurveyName);
+            //.Take(20);
 
-        // ********************************************************************************
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        // ******************************************************************************** DETAILS
         // GET: Surveys/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -187,14 +198,14 @@ namespace FeedbackFriend.Controllers
             var survey = await _context.Surveys.FindAsync(id);
             if (survey == null)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LoggedIn));
             }
 
             try
             {
                 _context.Surveys.Remove(survey);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LoggedIn));
             }
             catch (DbUpdateException /* ex */)
             {

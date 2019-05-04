@@ -13,16 +13,16 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th width="10%">
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
-            <th>
+            <th width="20%">
                 @Html.DisplayNameFor(model => model.SurveyName)
             </th>
-            <th>
+            <th width="30%">
                 @Html.DisplayNameFor(model => model.Instructions)
             </th>
-            <th>
+            <th width="30%">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
@@ -46,7 +46,7 @@
                 </td>
                 <td>
                     <a asp-action="Details" asp-route-id="@item.SurveyId">Details</a>
-                    <a asp-action="Delete" asp-route-id="@item.SurveyId">Delete</a>
+                    @*<a asp-controller="Survey" asp-action="Delete" asp-route-id="@item.SurveyId">Delete</a>*@
                 </td>
             </tr>
         }
