@@ -40,6 +40,18 @@ namespace FeedbackFriend.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // ********************************************************************************LoggedIn
+        public async Task<IActionResult> LoggedIn()
+        {
+            var applicationDbContext = _context.Surveys
+               .Include(s => s.Questions)
+               .Include(s => s.User)
+               .OrderBy(s => s.SurveyName);
+            //.Take(20);
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
 
         // ********************************************************************************
         // GET: Surveys/Details/5
@@ -146,7 +158,7 @@ namespace FeedbackFriend.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LoggedIn));
             }
             ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
             return View(survey);
@@ -187,14 +199,14 @@ namespace FeedbackFriend.Controllers
             var survey = await _context.Surveys.FindAsync(id);
             if (survey == null)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LoggedIn));
             }
 
             try
             {
                 _context.Surveys.Remove(survey);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(LoggedIn));
             }
             catch (DbUpdateException /* ex */)
             {
