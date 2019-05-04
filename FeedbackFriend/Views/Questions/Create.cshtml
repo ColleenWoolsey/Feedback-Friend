@@ -1,76 +1,71 @@
-﻿@model FeedbackFriend.Models.Question
+﻿@model FeedbackFriend.Models.SurveysViewModel
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h2>Add Questions to Survey</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(model => model.SurveyName)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Description)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Instructions)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.DisplayFor(model => model.SurveyName)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
+        </tr>
+    </tbody>
+</table>
 <hr />
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Survey.SurveyName)
-        </dt>
-        <dd class="col-m-2">
-            @Html.DisplayFor(model => model.Survey.SurveyName)
-        </dd>
-        <dt class="col-sm-5">
-            @Html.DisplayNameFor(model => model.Survey.Description)
-        </dt>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Description)
-        </dd>
-        <dt class="col-sm-5">
-            @Html.DisplayNameFor(model => model.Survey.Instructions)
-        </dt>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Instructions)
-        </dd>
-    </dl>
-</div>
 
-
-<hr />
 <div class="row">
-    <div class="col-md-11">
+    <div class="col-md-12 d-md-inline-block">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            @*<div class="form-group">
-            <label asp-for="SurveyId" class="control-label"></label>
-            <select asp-for="SurveyId" class ="form-control" asp-items="ViewBag.SurveyId"></select>
-        </div>*@
+
             <div class="form-group">
-                <label asp-for="QuestionText" class="control-label"></label>
-                <input asp-for="QuestionText" class="form-control" />
-                <span asp-validation-for="QuestionText" class="text-danger"></span>
+                @*<label asp-for="Question.QuestionText" class="control-label"></label>*@
+                <input asp-for="Question.QuestionText" class="form-control" />
+                <span asp-validation-for="Question.QuestionText" class="text-danger"></span> 
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
+                <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
+            </div>           
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h5>List of Survey Questions Added</h5>
+            </th>
+            @*<th><a asp-action="LoggedIn">Back to List</a></th>*@
+        </tr>
+    </thead>
+    @*<tbody>
+            // @foreach (var item in Model.Questions)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionText)
+                </td>
+            </tr>
+            }
+        </tbody>*@
+</table>
 
-@section Scripts {
+<a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
+
+@section Scripts
+    {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
 
-@*<div>
-    <dl class="row">
-        <dd class="col-m-2">
-            @Html.DisplayFor(model => model.Survey.SurveyName)
-        </dd>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Description)
-        </dd>
-        <dd class="col-m-5">
-            @Html.DisplayFor(model => model.Survey.Instructions)
-        </dd>
-    </dl>
-</div>*@
