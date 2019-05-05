@@ -16,7 +16,6 @@ namespace FeedbackFriend.Models
         public int SurveyId { get; set; }
         public Survey Survey { get; set; }
 
-                
         public string QuestionText { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace FeedbackFriend.Controllers
         // GET: All Question Detail for each Survey
         public async Task<IActionResult> QuestionsForEachSurvey()       
         {
-            var model = new SurveysViewModel();
+            var model = new GroupedQuestionDetail();
 
             // Build list of Survey instances for display in view
             // The LINQ statement groups the survey entities by surveyId,

@@ -11,6 +11,12 @@ namespace FeedbackFriend.Models
         public Survey Survey { get; set; }
         public List<GroupedQuestions> GroupedQuestions { get; set; }
 
+        public int OpenId { get; set; }
+        public SurveysViewModel(int openId)
+        {
+            this.OpenId = openId;
+        }
+
         public string QuestionText { get; set; }
         public int QuestionId { get; set; }
 
@@ -20,11 +26,7 @@ namespace FeedbackFriend.Models
         public string Description { get; set; }
 
         public bool Assigned { get; set; }
-
-       //  public List<Question> QuestionList { get; set; }
+       
         public IEnumerable<Question> IEnumQuestions { get; set; }
-
-        // public ICollection<Question> Questions { get; set; }
-
     }
 }

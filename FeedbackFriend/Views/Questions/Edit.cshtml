@@ -9,15 +9,11 @@
 <h4>Question</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="QuestionId" />
-            <div class="form-group">
-                <label asp-for="SurveyId" class="control-label"></label>
-                <select asp-for="SurveyId" class="form-control" asp-items="ViewBag.SurveyId"></select>
-                <span asp-validation-for="SurveyId" class="text-danger"></span>
-            </div>
+            
             <div class="form-group">
                 <label asp-for="QuestionText" class="control-label"></label>
                 <input asp-for="QuestionText" class="form-control" />
@@ -31,7 +27,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
 </div>
 
 @section Scripts {
