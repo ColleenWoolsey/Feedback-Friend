@@ -32,7 +32,7 @@ namespace FeedbackFriend.Controllers
         // Created automatically redirects me to SurveysController Index Action - So I will put the view I
         // need returned after initializing survey but before adding questions here for now
 
-        // ******************************************************************************** INDEX
+        // ********************************************************************************
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
@@ -41,7 +41,6 @@ namespace FeedbackFriend.Controllers
         }
 
         // ********************************************************************************LoggedIn
-        // ******************************************************************************** LOGGEDIN
         public async Task<IActionResult> LoggedIn()
         {
             var applicationDbContext = _context.Surveys
@@ -54,9 +53,7 @@ namespace FeedbackFriend.Controllers
         }
 
 
-        }
-
-        // ******************************************************************************** DETAILS
+        // ********************************************************************************
         // GET: Surveys/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -215,7 +212,7 @@ namespace FeedbackFriend.Controllers
             {
                 //Log the error (uncomment ex variable name and write a log.)
                 return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
-            }           
+            }
         }
         private bool SurveyExists(int id)
         {
@@ -234,7 +231,7 @@ namespace FeedbackFriend.Controllers
                 return NotFound();
             }
 
-            var survey = await _context.Surveys                
+            var survey = await _context.Surveys
                 .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.SurveyId == id);
@@ -286,7 +283,7 @@ namespace FeedbackFriend.Controllers
                 "",
                 i => i.Description, i => i.Instructions, i => i.SurveyName))
             {
-                
+
                 UpdateSurveyQuestions(selectedQuestions, surveyToUpdate);
                 try
                 {
