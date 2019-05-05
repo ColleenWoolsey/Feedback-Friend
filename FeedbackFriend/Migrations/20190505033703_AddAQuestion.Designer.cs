@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FeedbackFriend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190504231302_AfterEdit")]
-    partial class AfterEdit
+    [Migration("20190505033703_AddAQuestion")]
+    partial class AddAQuestion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -107,9 +107,9 @@ namespace FeedbackFriend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cb6ef119-9551-4b15-a912-2f6c6223a49f",
+                            Id = "40390e24-519d-4ae1-a4df-dc8a6215598c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "93eeed31-eacd-47b6-be82-21965529abbc",
+                            ConcurrencyStamp = "5d96ef37-6a2e-4429-a842-9b7f2916242c",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "admin",
@@ -117,9 +117,9 @@ namespace FeedbackFriend.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIM/O/mfnKolzH6ySEYOWdqCt44TdP2hy0l2BzzJ/kAlesQHLJBEhq4Z7kroOqZnlQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHqV2n/8f9JtnJdl3OJP8YhE7+rmFhdCVh7VyvhuwH2+4uHoT3Rl990alJrFj8gvRA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b0cfb7b6-ac85-45b1-89f8-7123b26e7134",
+                            SecurityStamp = "e40dc8bf-ca7c-490c-8fde-a9867fc81296",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -131,8 +131,7 @@ namespace FeedbackFriend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("QuestionText")
-                        .IsRequired();
+                    b.Property<string>("QuestionText");
 
                     b.Property<int>("SurveyId");
 
@@ -824,7 +823,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.",
                             SurveyName = "Empathy",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -832,7 +831,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Listening vs hearing",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -840,7 +839,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess flexibility and responsiveness in communication.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Just stop talking already",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -848,7 +847,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Presentation Feedback",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -856,7 +855,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Problem Solving",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -864,7 +863,7 @@ namespace FeedbackFriend.Migrations
                             Description = "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Influence",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -872,7 +871,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Change",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         },
                         new
                         {
@@ -880,7 +879,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Decision Making",
-                            UserId = "cb6ef119-9551-4b15-a912-2f6c6223a49f"
+                            UserId = "40390e24-519d-4ae1-a4df-dc8a6215598c"
                         });
                 });
 
