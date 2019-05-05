@@ -89,7 +89,7 @@ namespace FeedbackFriend.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
+
         public async Task<IActionResult> Create([Bind("UserId,SurveyName,Instructions,Description")] Survey survey)
         {
             ModelState.Remove("User");
@@ -107,7 +107,7 @@ namespace FeedbackFriend.Controllers
             return View(survey);
         }
 
-               
+
         // ********************************************************************************  DELETE
         // GET: Surveys/Delete/5
         // public async Task<IActionResult> Delete(int? id)
@@ -168,7 +168,7 @@ namespace FeedbackFriend.Controllers
         // ****************************************************************************************  EDIT
         // GET: Surveys/Edit/5
         public async Task<IActionResult> Edit(int? id)
-        {            
+        {
             if (id == null)
             {
                 return NotFound();
@@ -182,17 +182,17 @@ namespace FeedbackFriend.Controllers
             {
                 return NotFound();
             }
-            
+
             PopulateAssignedQuestionData(survey);
             return View(survey);
         }
 
         private void PopulateAssignedQuestionData(Survey survey)
-        {            
+        {
             var allQuestions = _context.Questions.Where(q => q.SurveyId == survey.SurveyId);
             var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
             var viewModel = new List<SurveyQuestionsEDITViewModel>();
-            foreach (var question in allQuestions) 
+            foreach (var question in allQuestions)
             {
                 viewModel.Add(new SurveyQuestionsEDITViewModel
                 {
@@ -203,6 +203,11 @@ namespace FeedbackFriend.Controllers
             }
             ViewData["Questions"] = viewModel;
         }
+
+
+        
+    }
+}
 
         // POST: Surveys/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -331,5 +336,4 @@ namespace FeedbackFriend.Controllers
         //    ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", survey.UserId);
         //    return View(survey);
         //}
-    }
-}
+    

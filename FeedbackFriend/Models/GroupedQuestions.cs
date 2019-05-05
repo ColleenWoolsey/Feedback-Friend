@@ -10,6 +10,7 @@ namespace FeedbackFriend.Models
     {
         public int SurveyId { get; set; }
         public int QuestionId { get; set; }
+        public string QuestionText { get; set; }
 
         public int SurveyDetailId { get; set; }
         public string SurveyDetailName { get; set; }

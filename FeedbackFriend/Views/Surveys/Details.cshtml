@@ -4,24 +4,21 @@
     ViewData["Title"] = "Details";
 }
 
-
+<h3>
+    Survey:      @Html.DisplayFor(model => model.SurveyName)     |     <a asp-action="LoggedIn">Back to List</a>
+</h3>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                <h2><strong>@Html.DisplayFor(model => model.SurveyName)</strong></h2>
-            </th>
-            <th>
-                <a asp-action="LoggedIn">Back to List</a>
-            </th>
-        </tr>
     </thead>
     <tbody>
             @foreach (var item in Model.Questions)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.QuestionText)                        
+                        <a asp-controller="Questions" asp-action="Edit" asp-route-id="@item.QuestionId">Edit</a>     |
+                        <a asp-controller="Questions" asp-action="Delete" asp-route-id="@item.QuestionId">Delete</a>     |
+                        @Html.DisplayFor(modelItem => item.QuestionText)
+                        
                     </td>
                 </tr>
             }

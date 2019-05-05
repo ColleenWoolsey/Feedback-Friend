@@ -10,7 +10,7 @@
     <h4>Question</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        @*<dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Survey)
         </dt>
         <dd class = "col-sm-10">
@@ -18,7 +18,7 @@
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.QuestionText)
-        </dt>
+        </dt>*@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.QuestionText)
         </dd>
@@ -26,5 +26,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.QuestionId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Surveys" asp-action="Details">Back to List</a>
 </div>
