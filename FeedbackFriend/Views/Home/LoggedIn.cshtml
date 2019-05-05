@@ -1,0 +1,54 @@
+﻿@model IEnumerable<FeedbackFriend.Models.Survey>
+
+@{
+    ViewData["Title"] = "LoggedIn";
+}
+
+<h2>Existing Surveys</h2>
+
+@*<p>
+        <a asp-action="Create">Create New</a>
+    </p>*@
+
+<table class="table">
+    <thead>
+        <tr>
+            <th width="10%">
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th width="20%">
+                @Html.DisplayNameFor(model => model.SurveyName)
+            </th>
+            <th width="30%">
+                @Html.DisplayNameFor(model => model.Instructions)
+            </th>
+            <th width="30%">
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurveyName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Instructions)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.SurveyId">Details</a>
+                    @*<a asp-controller="Survey" asp-action="Delete" asp-route-id="@item.SurveyId">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -32,7 +32,7 @@ namespace FeedbackFriend.Controllers
         // Created automatically redirects me to SurveysController Index Action - So I will put the view I
         // need returned after initializing survey but before adding questions here for now
 
-        // ********************************************************************************
+        // ******************************************************************************** INDEX
         // GET: Surveys
         public async Task<IActionResult> Index()
         {
@@ -41,6 +41,7 @@ namespace FeedbackFriend.Controllers
         }
 
         // ********************************************************************************LoggedIn
+        // ******************************************************************************** LOGGEDIN
         public async Task<IActionResult> LoggedIn()
         {
             var applicationDbContext = _context.Surveys
@@ -53,7 +54,9 @@ namespace FeedbackFriend.Controllers
         }
 
 
-        // ********************************************************************************
+        }
+
+        // ******************************************************************************** DETAILS
         // GET: Surveys/Details/5
         public async Task<IActionResult> Details(int? id)
         {
