@@ -6,140 +6,78 @@
 
 @{ int rowNo = 0; }
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th width="20%">@Html.DisplayNameFor(model => model.SurveyName)</th>
-                <th width="40%">@Html.DisplayNameFor(model => model.Description)</th>
-                <th width="40%">@Html.DisplayNameFor(model => model.Instructions)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>@Html.DisplayFor(model => model.SurveyName)</td>
-                <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
-                <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
-            </tr>
-        </tbody>
-    </table>
-    <hr />
-    <div class="form-horizontal">
-        <div class="row">
-            <div class="col-md-offset-1 col-md-11">
-                <table class="table">
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.QuestionText)
-                        </th>
-                    </tr>
-                    @if (Model.Questions != null)
-                    {
-                        for (var i = 0; i < Model.Questions.Count(); i++)
-                        {
-                            <tr>
-                                @Html.HiddenFor(x => Model.Questions[i].SurveyId)
-                                <td>
-                                    @Html.TextBoxFor(x => Model.Questions[i].QuestionText, new { @class = "form-control" })
-                                </td>
-                            </tr>
-                        }
-                    }
-                    @*<tr>
-                        <td>
-                            @Html.ActionLink("Add", "Edit", new { customerid = Model.CustomerID, orderid = Model.OrderID }, htmlAttributes: new { @class = "btn btn-success" })
-                        </td>
-                        <td></td>
-                        <td></td>
-                    </tr>*@
-                </table>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-1 col-md-11">
-                <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
-                <a asp-controller="Surveys" asp-action="LoggedIn">Back to List of Surveys</a>
-            </div>
-        </div>
-    </div>
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(model => model.SurveyName)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Description)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Instructions)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.DisplayFor(model => model.SurveyName)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
+        </tr>
+    </tbody>
+</table>
+<hr />
 
 
-@section Scripts
-    {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
-
-@*<div class="form-horizontal">
-    <div class="form-group">
-        @Html.LabelFor(model => model.SurveyName, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.SurveyName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.Instructions, new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Instructions, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-offset-1 col-md-11">
-            <table class="table">
-                <tr>*@
-
-
-@*<div class="row">
+<div class="row">
     <div class="col-md-12 d-md-inline-block">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                @*<label asp-for="" class="control-label"></label>
-                    <input asp-for="QuestionText" class="form-control" />
-                    <span asp-validation-for="QuestionText" class="text-danger"></span>*@
-            
-        @*if (model.question != null) {}*@
+                <label asp-for="QuestionText" class="control-label"></label>
+                <input asp-for="QuestionText" class="form-control" />
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
+            </div>
 
-            @*<div class="form-group">
-                            <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
-                        </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="QuestionId" />
+                <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
+                <a asp-controller="Surveys" asp-action="LoggedIn">Back to List of Existing Surveys</a>
+            </div>
 
-                        <div class="col-md-10">
-                            <table>
-                                <tr>
-                                    @{
-                                        int cnt = 0;
-                                        List<FeedbackFriend.Models.QuestionDisplayViewModel> questions = ViewBag.Questions;
+            <div class="form-group">
+                @*<div class="col-md-offset-2 col-md-10">*@
+                <div class="col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<FeedbackFriend.Models.QuestionDisplayViewModel> questions = ViewBag.Questions;
 
-                                        foreach (var question in questions)
+                                if (questions != null)
+                                {
+
+                                    foreach (var question in questions)
+                                    {
+                                        if (cnt++ % 1 == 0)
                                         {
-                                            if (cnt++ % 1 == 0)
-                                            {
-                                            @:</tr><tr>
-                                            }
-                                            <td>
-                                                @(rowNo += 1).
-                                            </td>
-                                            @:<td>
-                                                @Html.DisplayFor(modelItem => question.QuestionText)
-                                            @:</td>
+                                        @:</tr><tr>
                                         }
-                                    @:</tr>
+                                        <td>
+                                            @(rowNo += 1).
+                                        </td>
+                                        @:<td>
+                                            @Html.DisplayFor(modelItem => question.QuestionText)
+                                        @:</td>
                                     }
-                                </table>
-                            </div>
-                        </form>
+                                @:</tr>
+                            }
+                            }
+                        </table>
                     </div>
-                </div>*@
+                </div>
+            </form>
+        </div>
+    </div>
 
+    @section Scripts
+        {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
