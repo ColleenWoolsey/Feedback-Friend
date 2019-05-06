@@ -10,7 +10,6 @@ namespace FeedbackFriend.Models
     public class Question
     {       
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int QuestionId { get; set; }
 
         [Required]
