@@ -9,7 +9,13 @@ namespace FeedbackFriend.Models
 {
     public class Survey
     {
+        public Survey()
+        {
+            Questions = new HashSet<Question>();
+        }
+
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int SurveyId { get; set; }
 
         [Required]
@@ -19,19 +25,17 @@ namespace FeedbackFriend.Models
 
         [Required]
         [Display(Name = "Survey Name")]
-        [StringLength(55, ErrorMessage = "Please shorten the survey name to 55 characters")]       
+        [StringLength(55, ErrorMessage = "Please shorten the survey name to 55 characters")]
         public string SurveyName { get; set; }
 
-               
         public string Instructions { get; set; }
 
-                
         public string Description { get; set; }
 
         [NotMapped]
         public int NumQuestions { get; set; }
-
-        public ICollection<Question> Questions { get; set; }
-        public ICollection<QuestionAssignment> QuestionAssignments { get; set; }
+        
+        public virtual ICollection<Question> Questions { get; set; }
+        public virtual ICollection<QuestionAssignment> QuestionAssignments { get; set; }
     }
 }

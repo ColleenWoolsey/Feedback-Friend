@@ -4,6 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
+@{ int rowNo = 0; }
+
 <h3>
     Edit Survey     |
     <a asp-action="LoggedIn">Back to List</a>
@@ -16,25 +18,25 @@
             <input type="hidden" asp-for="SurveyId" />
 
             <div class="form-group">
-                <label asp-for="SurveyName" class="control-label"></label>
                 <input asp-for="SurveyName" class="form-control" />
                 <span asp-validation-for="SurveyName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin: 0;">
                 <label asp-for="Description" class="control-label"></label>
                 @Html.TextArea("Description", null, new { @class = "form-control" })
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin: 0;">
                 <label asp-for="Instructions" class="control-label"></label>
                 @Html.TextArea("Instructions", null, new { @class = "form-control" })
                 <span asp-validation-for="Instructions" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <input type="submit" value="Update Survey" class="btn btn-primary" />
-                <a asp-controller="Questions" asp-action="Edit"> | OR Update Survey and Edit Questions Next</a>
+            <div class="form-group"style="margin-top: 5px;">
+                <input type="submit" value="Update" class="btn btn-primary" />
+                <h4>Survey Questions</h4>
             </div>
+
             <div class="form-group">
                 @*<div class="col-md-offset-2 col-md-10">*@
                 <div class="col-md-10">
@@ -50,16 +52,12 @@
                                     {
                                     @:</tr><tr>
                                     }
+                                    <td>
+                                        @(rowNo += 1).  
+                                    </td>
                                     @:<td>
                                         @Html.DisplayFor(modelItem => question.QuestionText)
                                     @:</td>
-                                    @*@:<td>
-                                            <input type="checkbox"
-                                                   name="selectedCourses"
-                                                   value="@question.QuestionId"
-                                                   @(Html.Raw(question.Assigned ? "checked=\"checked\"" : "")) />
-                                            @question.QuestionId @:  @question.QuestionText
-                                        @:</td>*@
                                 }
                             @:</tr>
                             }

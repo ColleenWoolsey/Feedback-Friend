@@ -1,8 +1,10 @@
-﻿@model FeedbackFriend.Models.SurveysViewModel
+﻿@model FeedbackFriend.Models.Survey
 
 @{
     ViewData["Title"] = "Create";
 }
+
+@{ int rowNo = 0; }
 
 <table class="table">
     <thead>
@@ -29,43 +31,49 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                @*<label asp-for="Question.QuestionText" class="control-label"></label>*@
+                @*<label asp-for="" class="control-label"></label>
                 <input asp-for="QuestionText" class="form-control" />
-                <span asp-validation-for="QuestionText" class="text-danger"></span> 
+                <span asp-validation-for="QuestionText" class="text-danger"></span>*@
             </div>
 
             <div class="form-group">
                 <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
-            </div>           
-        </form>
+            </div>
+
+            <div class="col-md-10">
+                <table>
+                    <tr>
+                        @{
+                            int cnt = 0;
+                            List<FeedbackFriend.Models.SurveyQuestionsEDITViewModel> questions = ViewBag.Questions;
+
+                            foreach (var question in questions)
+                            {
+                                if (cnt++ % 1 == 0)
+                                {
+                                @:</tr><tr>
+                                }
+                                <td>
+                                    @(rowNo += 1).
+                                </td>
+                                @:<td>
+                                    @Html.DisplayFor(modelItem => question.QuestionText)
+                                @:</td>
+                            }
+                        @:</tr>
+                        }
+                    </table>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <h5>List of Survey Questions Added</h5>
-            </th>
-            @*<th><a asp-action="LoggedIn">Back to List</a></th>*@
-        </tr>
-    </thead>
-    @*<tbody>
-            // @foreach (var item in Model.Questions)
-            {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.QuestionText)
-                </td>
-            </tr>
-            }
-        </tbody>*@
-</table>
 
-<a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
 
-@section Scripts
-    {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
+
+    @section Scripts
+        {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
 

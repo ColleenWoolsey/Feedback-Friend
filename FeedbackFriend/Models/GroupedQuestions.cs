@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace FeedbackFriend.Models
 {
     public class GroupedQuestions
-    {
+    {       
+        public int ID { get; set; }
         public int SurveyId { get; set; }
         public int QuestionId { get; set; }
         public string QuestionText { get; set; }

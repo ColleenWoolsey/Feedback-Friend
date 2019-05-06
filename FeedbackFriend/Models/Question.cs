@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 namespace FeedbackFriend.Models
 {
     public class Question
-    {
+    {       
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int QuestionId { get; set; }
 
         [Required]
         public int SurveyId { get; set; }
-        public Survey Survey { get; set; }
+        public virtual Survey Survey { get; set; }
 
         public string QuestionText { get; set; }
     }
