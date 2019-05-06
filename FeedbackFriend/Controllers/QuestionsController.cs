@@ -14,7 +14,7 @@ namespace FeedbackFriend.Controllers
 {
     public class QuestionsController : Controller
     {
-        private readonly ApplicationDbContext _context;        
+        private readonly ApplicationDbContext _context;
 
         public QuestionsController(ApplicationDbContext context)
         {
@@ -35,7 +35,7 @@ namespace FeedbackFriend.Controllers
             var applicationDbContext = _context.Questions
                .Include(q => q.Survey)
                .Where(q => q.SurveyId == surveyId);
-            return View(await applicationDbContext.ToListAsync());            
+            return View(await applicationDbContext.ToListAsync());
         }
 
 
@@ -70,7 +70,9 @@ namespace FeedbackFriend.Controllers
                 return NotFound();
             }
 
-            var question = await _context.Questions.FindAsync(id);
+            var question = await _context.Questions
+                .Include(q => q.Survey)
+                .FirstOrDefaultAsync(q => q.QuestionId == id);
             if (question == null)
             {
                 return NotFound();
@@ -84,7 +86,7 @@ namespace FeedbackFriend.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("QuestionId,SurveyId,QuestionText")] Question question)
+        public async Task<IActionResult> Edit(int id, Question question)
         {
             if (id != question.QuestionId)
             {
@@ -109,7 +111,7 @@ namespace FeedbackFriend.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Surveys", "Details", "id=SurveyId");
+                return RedirectToAction("Details", "Surveys", new { id = question.SurveyId });
             }
             ViewData["SurveyId"] = new SelectList(_context.Surveys, "SurveyId", "SurveyName", question.SurveyId);
             return View(question);
@@ -144,8 +146,7 @@ namespace FeedbackFriend.Controllers
             var question = await _context.Questions.FindAsync(id);
             _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "Surveys", new { question.SurveyId });
-
+            return RedirectToAction("Details", "Surveys", new { id = question.SurveyId });
         }
 
         private bool QuestionExists(int id)
@@ -156,190 +157,246 @@ namespace FeedbackFriend.Controllers
 
 
         //--------------------------------------------------------------------------------------------- CREATE
-        //GET: Surveys with Questions/Create        
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(int? id)
         {
-            var survey = await _context.Surveys.FindAsync(id);
+            var surveyQuestionListViewModel = await _context.Surveys.FindAsync(id);
 
-                survey = await _context.Surveys
-                .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(i => i.SurveyId == id);
+            surveyQuestionListViewModel = await _context.Surveys
+                        .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(i => i.SurveyId == id);
 
-            if (survey == null)
+
+            if (surveyQuestionListViewModel == null)
             {
                 return NotFound();
             }
+            var viewModel = new SurveyQuestionsListViewModel();
+            viewModel.SurveyId = surveyQuestionListViewModel.SurveyId;
+            viewModel.SurveyName = surveyQuestionListViewModel.SurveyName;
+            viewModel.Description = surveyQuestionListViewModel.Description;
+            viewModel.Instructions = surveyQuestionListViewModel.Instructions;
 
-            PopulateAssignedQuestionData(survey);
-            return View(survey);
+            return View(viewModel);
         }
-        private void PopulateAssignedQuestionData(Survey survey)
-        {
-            var allQuestions = _context.Questions.Where(q => q.SurveyId == survey.SurveyId);
-            var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
-            var viewModel = new List<SurveyQuestionsEDITViewModel>();
-            foreach (var question in allQuestions)
-            {
-                viewModel.Add(new SurveyQuestionsEDITViewModel
-                {
-                    QuestionId = question.QuestionId,
-                    QuestionText = question.QuestionText,
-                    Assigned = surveyQuestions.Contains(question.QuestionId)
-                });
-            }
-            ViewData["Questions"] = viewModel;
-        }
-
-        // POST: Add questions/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Create(int openId, [Bind("QuestionId, SurveyId, QuestionText")] SurveysViewModel surveysViewModel)
+        public async Task<IActionResult> Create(int id, [Bind("QuestionId, SurveyId, QuestionText")] SurveyQuestionsListViewModel surveyQuestionsListViewModel)
         {
-            surveysViewModel.Question.SurveyId = openId;
+            surveyQuestionsListViewModel.SurveyId = id;
 
             if (ModelState.IsValid)
             {
                 var newQuestion = new Question();
-                newQuestion.SurveyId = surveysViewModel.SurveyId;
-                newQuestion.QuestionText = surveysViewModel.QuestionText;
+                newQuestion.SurveyId = surveyQuestionsListViewModel.SurveyId;
+                newQuestion.QuestionText = surveyQuestionsListViewModel.QuestionText;
 
                 _context.Add(newQuestion);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction(actionName: "Create");
             }
-            return View(surveysViewModel);
+            return View(surveyQuestionsListViewModel);
         }
+    }
 
-            //}
-            //surveyQuestionsCREATEViewModel.Add(new SurveyQuestionsEDITViewModel
-            //{
-            //    QuestionId = question.QuestionId,
-            //    QuestionText = question.QuestionText,
-            //    Assigned = surveyQuestions.Contains(question.QuestionId)
-            //});
+        //GET: Surveys with Questions/Create        
+        //public async Task<IActionResult> Create(int id)
+        //{
+        //    var survey = await _context.Surveys.FindAsync(id);
 
-            //return View(surveyQuestionsEDITViewModel);
+        //    survey = await _context.Surveys
+        //    .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
+        //    .AsNoTracking()
+        //    .FirstOrDefaultAsync(i => i.SurveyId == id);
 
-            //}
-            //private void PopulateAssignedQuestionData()
-            //{
-            //    var allQuestions = _context.Questions.Where(q => q.SurveyId == survey.SurveyId);
-            //    var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
-            //    var viewModel = new List<SurveyQuestionsEDITViewModel>();
-            //    foreach (var question in allQuestions)
-            //    {
-            //        viewModel.Add(new SurveyQuestionsEDITViewModel
-            //        {
-            //            QuestionId = question.QuestionId,
-            //            QuestionText = question.QuestionText,
-            //            Assigned = surveyQuestions.Contains(question.QuestionId)
-            //        });
-            //    }
-            //    ViewData["Questions"] = viewModel;
-            //}
+        //    if (survey == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    SurveyQuestionsListViewModel surveyQuestionsListViewModel = new SurveyQuestionsListViewModel()
+        //    {
+        //        SurveyId = id,
+        //        // SurveyId = surveyQuestionsListViewModel.SurveyId,
+        //        SurveyName = surveyQuestionsListViewModel.SurveyName,
+        //        Description = surveyQuestionsListViewModel.Description,
+        //        Instructions = surveyQuestionsListViewModel.Instructions,
+        //        QuestionId = surveyQuestionsListViewModel.QuestionId,
+        //        QuestionText = surveyQuestionsListViewModel.QuestionText
+        //        // Assigned = surveyQuestions.Contains(question.QuestionId)
+        //    };
 
-            // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  CREATE
-            // GET: Survey to add questions to and List of questions already added/Create/5
+        //    // PopulateAssignedQuestionData(survey);
+        //    return View(surveyQuestionsListViewModel);
+        //}
+        //private void PopulateAssignedQuestionData(Survey survey)
+        //{
+        //    var allQuestions = _context.Questions.Where(q => q.SurveyId == survey.SurveyId);
+        //    var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
+        //    var viewModel = new List<QuestionDisplayViewModel>();
+        //    foreach (var question in allQuestions)
+        //    {
+        //        viewModel.Add(new QuestionDisplayViewModel
+        //        {
+        //            QuestionId = question.QuestionId,
+        //            QuestionText = question.QuestionText,
+        //            Assigned = surveyQuestions.Contains(question.QuestionId)
+        //        });
+        //    }
+        //    ViewData["Questions"] = viewModel;
+        //}
 
-            //public async Task<IActionResult> Create(int? surveyId)
-            //{
-            //    if (surveyId == null)
-            //    {
-            //        return NotFound();
-            //    }
+        // POST: Add questions/Create
+        
 
-            //    var survey = await _context.Surveys
-            //        .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
-            //        .AsNoTracking()
-            //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
-            //    if (survey == null)
-            //    {
-            //        return NotFound();
-            //    }
-            //    PopulateAssignedQuestionData(survey);
-            //    return View(survey);
-            //}
+        
+        //surveyDisplayViewModel = new SurveyDisplayViewModel()
+        //{
+        //    SurveyId = surveyDisplayViewModel.SurveyId,
+        //            SurveyName = surveyDisplayViewModel.SurveyName,
+        //            FullName = surveyDisplayViewModel.FullName,
+        //            Description = surveyDisplayViewModel.Description,
+        //            Instructions = surveyDisplayViewModel.Instructions
+        //        };
 
-            //private void PopulateAssignedQuestionData(Survey survey)
-            //{
-            //    var allQuestions = _context.Questions;
-            //    var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
-            //    var viewModel = new List<SurveyQuestionsCREATEViewModel>();
-            //    foreach (var question in allQuestions)
-            //    {
-            //        viewModel.Add(new SurveyQuestionsCREATEViewModel
-            //        {
-            //            QuestionId = question.QuestionId,
-            //            QuestionText = question.QuestionText,
-            //            Assigned = surveyQuestions.Contains(question.QuestionId)
-            //        });
-            //    }
-            //    ViewData["Questions"] = viewModel;
-            //}
+        //List<QuestionDisplayViewModel> questionList = _context.Questions.AsNoTracking()
+        //    .Where(x => x.SurveyId == Surveyid).Select(x =>
+        //   new QuestionDisplayViewModel
+        //   {
+        //       SurveyId = x.SurveyId,
+        //       QuestionId = x.QuestionId,
+        //       QuestionText = x.QuestionText
+        //   }).ToList();
+        //        return surveyDisplayViewModel;
+        //    }
 
-            //public async Task<IActionResult> Create(int surveyId)
-            //{
-            //    var questionToAdd = await _context.Questions
-            //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
 
-            //    if (await TryUpdateModelAsync<Question>(
-            //        questionToAdd,
-            //        "",
-            //        i => i.QuestionText, i => i.SurveyId))
-            //    {
 
-            //        UpdateSurveyQuestions(selectedQuestions, surveyToAdd);
-            //        try
-            //        {
-            //            await _context.SaveChangesAsync();
-            //        }
-            //        catch (DbUpdateException /* ex */)
-            //        {
-            //            Log the error(uncomment ex variable name and write a log.)
-            //            ModelState.AddModelError("", "Unable to save changes.");
-            //        }
-            //        return RedirectToAction(nameof(Index));
-            //    }
-            //    UpdateSurveyQuestions(selectedQuestions, surveyToAdd);
-            //    PopulateAssignedQuestionData(surveyToAdd);
-            //    return View(questionToAdd);
-            //}
+        //}
+        //surveyQuestionsCREATEViewModel.Add(new SurveyQuestionsEDITViewModel
+        //{
+        //    QuestionId = question.QuestionId,
+        //    QuestionText = question.QuestionText,
+        //    Assigned = surveyQuestions.Contains(question.QuestionId)
+        //});
 
-            //private void UpdateSurveyQuestions(string[] selectedQuestions, Survey surveyToAdd)
-            //{
-            //    if (selectedQuestions == null)
-            //    {
-            //        surveyToAdd.QuestionAssignments = new List<QuestionAssignment>();
-            //        return;
-            //    }
+        //return View(surveyQuestionsEDITViewModel);
 
-            //    var selectedQuestionsHS = new HashSet<string>(selectedQuestions);
-            //    var surveyQuestions = new HashSet<int>
-            //        (surveyToAdd.QuestionAssignments.Select(c => c.Question.QuestionId));
-            //    foreach (var question in _context.Questions)
-            //    {
-            //        if (selectedQuestionsHS.Contains(question.QuestionId.ToString()))
-            //        {
-            //            if (!surveyQuestions.Contains(question.QuestionId))
-            //            {
-            //                surveyToAdd.QuestionAssignments.Add(new QuestionAssignment { SurveyId = surveyToAdd.SurveyId, QuestionId = question.QuestionId });
-            //            }
-            //        }
-            //        else
-            //        {
+        //}
+        //private void PopulateAssignedQuestionData()
+        //{
+        //    var allQuestions = _context.Questions.Where(q => q.SurveyId == survey.SurveyId);
+        //    var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
+        //    var viewModel = new List<SurveyQuestionsEDITViewModel>();
+        //    foreach (var question in allQuestions)
+        //    {
+        //        viewModel.Add(new SurveyQuestionsEDITViewModel
+        //        {
+        //            QuestionId = question.QuestionId,
+        //            QuestionText = question.QuestionText,
+        //            Assigned = surveyQuestions.Contains(question.QuestionId)
+        //        });
+        //    }
+        //    ViewData["Questions"] = viewModel;
+        //}
 
-            //            if (surveyQuestions.Contains(question.QuestionId))
-            //            {
-            //                QuestionAssignment questionToRemove = surveyToAdd.QuestionAssignments.FirstOrDefault(i => i.QuestionId == question.QuestionId);
-            //                _context.Remove(questionToRemove);
-            //            }
-            //        }
-            //    }
-            //}
+        // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx  CREATE
+        // GET: Survey to add questions to and List of questions already added/Create/5
 
-        }
+        //public async Task<IActionResult> Create(int? surveyId)
+        //{
+        //    if (surveyId == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var survey = await _context.Surveys
+        //        .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+        //    if (survey == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    PopulateAssignedQuestionData(survey);
+        //    return View(survey);
+        //}
+
+        //private void PopulateAssignedQuestionData(Survey survey)
+        //{
+        //    var allQuestions = _context.Questions;
+        //    var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
+        //    var viewModel = new List<SurveyQuestionsCREATEViewModel>();
+        //    foreach (var question in allQuestions)
+        //    {
+        //        viewModel.Add(new SurveyQuestionsCREATEViewModel
+        //        {
+        //            QuestionId = question.QuestionId,
+        //            QuestionText = question.QuestionText,
+        //            Assigned = surveyQuestions.Contains(question.QuestionId)
+        //        });
+        //    }
+        //    ViewData["Questions"] = viewModel;
+        //}
+
+        //public async Task<IActionResult> Create(int surveyId)
+        //{
+        //    var questionToAdd = await _context.Questions
+        //        .FirstOrDefaultAsync(m => m.SurveyId == surveyId);
+
+        //    if (await TryUpdateModelAsync<Question>(
+        //        questionToAdd,
+        //        "",
+        //        i => i.QuestionText, i => i.SurveyId))
+        //    {
+
+        //        UpdateSurveyQuestions(selectedQuestions, surveyToAdd);
+        //        try
+        //        {
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateException /* ex */)
+        //        {
+        //            Log the error(uncomment ex variable name and write a log.)
+        //            ModelState.AddModelError("", "Unable to save changes.");
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    UpdateSurveyQuestions(selectedQuestions, surveyToAdd);
+        //    PopulateAssignedQuestionData(surveyToAdd);
+        //    return View(questionToAdd);
+        //}
+
+        //private void UpdateSurveyQuestions(string[] selectedQuestions, Survey surveyToAdd)
+        //{
+        //    if (selectedQuestions == null)
+        //    {
+        //        surveyToAdd.QuestionAssignments = new List<QuestionAssignment>();
+        //        return;
+        //    }
+
+        //    var selectedQuestionsHS = new HashSet<string>(selectedQuestions);
+        //    var surveyQuestions = new HashSet<int>
+        //        (surveyToAdd.QuestionAssignments.Select(c => c.Question.QuestionId));
+        //    foreach (var question in _context.Questions)
+        //    {
+        //        if (selectedQuestionsHS.Contains(question.QuestionId.ToString()))
+        //        {
+        //            if (!surveyQuestions.Contains(question.QuestionId))
+        //            {
+        //                surveyToAdd.QuestionAssignments.Add(new QuestionAssignment { SurveyId = surveyToAdd.SurveyId, QuestionId = question.QuestionId });
+        //            }
+        //        }
+        //        else
+        //        {
+
+        //            if (surveyQuestions.Contains(question.QuestionId))
+        //            {
+        //                QuestionAssignment questionToRemove = surveyToAdd.QuestionAssignments.FirstOrDefault(i => i.QuestionId == question.QuestionId);
+        //                _context.Remove(questionToRemove);
+        //            }
+        //        }
+        //    }
+        //}   
 }
 
 

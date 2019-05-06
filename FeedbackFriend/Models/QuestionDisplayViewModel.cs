@@ -8,12 +8,17 @@ namespace FeedbackFriend.Models
 {
     public class QuestionDisplayViewModel
     {
-        public Guid SurveyId { get; set; }
+        [Key]
+        public int ID { get; set; }
+
+        public int SurveyId { get; set; }
 
         [Display(Name = "Question ID")]
-        public Guid QuestionId { get; set; }
+        public int QuestionId { get; set; }
 
         [Display(Name = "Question Text")]
         public string QuestionText { get; set; }
+
+        public bool Assigned { get; set; }
     }
 }

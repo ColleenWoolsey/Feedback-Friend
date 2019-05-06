@@ -1,4 +1,4 @@
-﻿@model FeedbackFriend.Models.Survey
+﻿@model FeedbackFriend.Models.SurveyQuestionsListViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -31,49 +31,53 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
-                @*<label asp-for="" class="control-label"></label>
+                <label asp-for="QuestionText" class="control-label"></label>
                 <input asp-for="QuestionText" class="form-control" />
-                <span asp-validation-for="QuestionText" class="text-danger"></span>*@
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
             </div>
 
             <div class="form-group">
+                <input type="hidden" asp-for="QuestionId" />
                 <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
+                <a asp-controller="Surveys" asp-action="LoggedIn">Back to List of Existing Surveys</a>
             </div>
 
-            <div class="col-md-10">
-                <table>
-                    <tr>
-                        @{
-                            int cnt = 0;
-                            List<FeedbackFriend.Models.SurveyQuestionsEDITViewModel> questions = ViewBag.Questions;
+            <div class="form-group">
+                @*<div class="col-md-offset-2 col-md-10">*@
+                <div class="col-md-10">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                List<FeedbackFriend.Models.QuestionDisplayViewModel> questions = ViewBag.Questions;
 
-                            foreach (var question in questions)
-                            {
-                                if (cnt++ % 1 == 0)
+                                if (questions != null)
                                 {
-                                @:</tr><tr>
-                                }
-                                <td>
-                                    @(rowNo += 1).
-                                </td>
-                                @:<td>
-                                    @Html.DisplayFor(modelItem => question.QuestionText)
-                                @:</td>
+
+                                    foreach (var question in questions)
+                                    {
+                                        if (cnt++ % 1 == 0)
+                                        {
+                                        @:</tr><tr>
+                                        }
+                                        <td>
+                                            @(rowNo += 1).
+                                        </td>
+                                        @:<td>
+                                            @Html.DisplayFor(modelItem => question.QuestionText)
+                                        @:</td>
+                                    }
+                                @:</tr>
                             }
-                        @:</tr>
-                        }
-                    </table>
+                            }
+                        </table>
+                    </div>
                 </div>
             </form>
         </div>
     </div>
 
-
-
-    <a asp-controller="Home" asp-action="LoggedIn">Back to List of Surveys</a>
-
     @section Scripts
         {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
-

@@ -92,7 +92,6 @@ namespace FeedbackFriend.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
         {
             ModelState.Remove("User");
@@ -100,15 +99,15 @@ namespace FeedbackFriend.Controllers
             var user = await GetCurrentUserAsync();
             survey.UserId = user.Id;
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid)    
             {
                 _context.Add(survey);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Create", "Questions",  new { id=survey.SurveyId } );
+                return RedirectToAction("Create", "Questions", new { id = survey.SurveyId });
                 //return RedirectToAction("Create", "Questions", "Model.SurveysViewModel", "survey.SurveyId");
             }
             
-             return View(survey);
+            return View(survey);
         }
 
 
@@ -244,15 +243,15 @@ namespace FeedbackFriend.Controllers
         }
     }
 }
-        // POST: Surveys/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int? id, string[] selectedQuestions)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
+// POST: Surveys/Edit/5
+//[HttpPost]
+//[ValidateAntiForgeryToken]
+//public async Task<IActionResult> Edit(int? id, string[] selectedQuestions)
+//{
+//    if (id == null)
+//    {
+//        return NotFound();
+//    }
 
 //    var surveyToUpdate = await _context.Surveys
 //        .Include(i => i.QuestionAssignments)

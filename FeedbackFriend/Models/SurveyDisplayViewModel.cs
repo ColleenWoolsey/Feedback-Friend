@@ -11,6 +11,11 @@ namespace FeedbackFriend.Models
         [Display(Name = "Survey ID")]
         public Guid SurveyId { get; set; }
 
+        [Required]
+        [Display(Name = "Created By")]
+        public string UserId { get; set; }
+        public ApplicationUser User { get; set; }
+
         [Display(Name = "Name")]
         public string FullName { get; set; }
 
