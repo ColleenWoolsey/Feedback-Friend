@@ -4,6 +4,8 @@
     ViewData["Title"] = "Edit";
 }
 
+@{ int rowNo = 0; }
+
 <h3>
     Edit Survey     |
     <a asp-action="LoggedIn">Back to List</a>
@@ -32,8 +34,10 @@
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Update Survey" class="btn btn-primary" />
-                <a asp-controller="Questions" asp-action="Edit"> | OR Update Survey and Edit Questions Next</a>
+                <input type="submit" value="Update" class="btn btn-primary" />
+                <h4>Survey Questions</h4>
+                @*<a asp-controller="Questions" asp-action="Edit"> | OR Update Survey and Edit Questions Next</a>*@
+                @*  *@
             </div>
             <div class="form-group">
                 @*<div class="col-md-offset-2 col-md-10">*@
@@ -50,16 +54,12 @@
                                     {
                                     @:</tr><tr>
                                     }
+                                    <td>
+                                        @(rowNo += 1).  
+                                    </td>
                                     @:<td>
                                         @Html.DisplayFor(modelItem => question.QuestionText)
                                     @:</td>
-                                    @*@:<td>
-                                            <input type="checkbox"
-                                                   name="selectedCourses"
-                                                   value="@question.QuestionId"
-                                                   @(Html.Raw(question.Assigned ? "checked=\"checked\"" : "")) />
-                                            @question.QuestionId @:  @question.QuestionText
-                                        @:</td>*@
                                 }
                             @:</tr>
                             }
