@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Details";
 }
+@{ int rowNo = 0; }
 
 <h3>
     Survey:      @Html.DisplayFor(model => model.SurveyName)     |     <a asp-action="LoggedIn">Back to List</a>
@@ -11,16 +12,17 @@
     <thead>
     </thead>
     <tbody>
-            @foreach (var item in Model.Questions)
-            {
-                <tr>
-                    <td>
-                        <a asp-controller="Questions" asp-action="Edit" asp-route-id="@item.QuestionId">Edit</a>     |
-                        <a asp-controller="Questions" asp-action="Delete" asp-route-id="@item.QuestionId">Delete</a>     |
-                        @Html.DisplayFor(modelItem => item.QuestionText)
-                        
-                    </td>
-                </tr>
-            }
+        @foreach (var item in Model.Questions)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Questions" asp-action="Edit" asp-route-id="@item.QuestionId">Edit</a>     |
+                    <a asp-controller="Questions" asp-action="Delete" asp-route-id="@item.QuestionId">Delete</a>     |
+                    @(rowNo += 1).
+                    @Html.DisplayFor(modelItem => item.QuestionText)
+
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

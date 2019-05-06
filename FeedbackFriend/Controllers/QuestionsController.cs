@@ -157,20 +157,38 @@ namespace FeedbackFriend.Controllers
 
         //--------------------------------------------------------------------------------------------- CREATE
         //GET: Surveys with Questions/Create        
-        public async Task<IActionResult> Create(int openId)
+        public async Task<IActionResult> Create(int id)
         {
-            var applicationDbContext = _context.Surveys;
+            var survey = await _context.Surveys.FindAsync(id);
 
-            var surveysViewModel = await _context.Surveys
-                .Include(s => s.Questions)
-                .FirstOrDefaultAsync(m => m.SurveyId == openId);
+                survey = await _context.Surveys
+                .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(i => i.SurveyId == id);
 
-            if (surveysViewModel == null)
+            if (survey == null)
             {
                 return NotFound();
             }
-                        
-            return View(surveysViewModel);
+
+            PopulateAssignedQuestionData(survey);
+            return View(survey);
+        }
+        private void PopulateAssignedQuestionData(Survey survey)
+        {
+            var allQuestions = _context.Questions.Where(q => q.SurveyId == survey.SurveyId);
+            var surveyQuestions = new HashSet<int>(survey.QuestionAssignments.Select(q => q.QuestionId));
+            var viewModel = new List<SurveyQuestionsEDITViewModel>();
+            foreach (var question in allQuestions)
+            {
+                viewModel.Add(new SurveyQuestionsEDITViewModel
+                {
+                    QuestionId = question.QuestionId,
+                    QuestionText = question.QuestionText,
+                    Assigned = surveyQuestions.Contains(question.QuestionId)
+                });
+            }
+            ViewData["Questions"] = viewModel;
         }
 
         // POST: Add questions/Create
