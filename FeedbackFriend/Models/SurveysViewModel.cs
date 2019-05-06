@@ -22,10 +22,12 @@ namespace FeedbackFriend.Models
             this.OpenId = openId;
         }
 
+        [Display(Name = "Question Text")]
         public string QuestionText { get; set; }
         public int QuestionId { get; set; }
 
         public int SurveyId { get; set; }
+        [Display(Name = "Survey Name")]
         public string SurveyName { get; set; }
         public string Instructions { get; set; }
         public string Description { get; set; }
