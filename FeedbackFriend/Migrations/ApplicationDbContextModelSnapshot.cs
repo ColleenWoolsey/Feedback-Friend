@@ -105,9 +105,9 @@ namespace FeedbackFriend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "a8642698-816f-4f01-ba23-6ce5ee36acd2",
+                            Id = "dffe34af-8ddf-4efe-8a47-c87522c31e7a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "811bbd84-c828-41f9-87d2-189bc58a755d",
+                            ConcurrencyStamp = "36d0d822-dafa-48da-8b1c-ab874e66c9b6",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "admin",
@@ -115,9 +115,9 @@ namespace FeedbackFriend.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDxBIqqGoj5+n9Ebx4dZrv6U3jyKruHK9IElUj5RLU/IhU8cA+UwHVcg19h73pfnuA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELApWVq8qpXiBeT1qMZpU8YX3KdpGhcGoMZuqqzVsQCXBAge/h/rH/if0YGaQJphtw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b142e9af-6edb-42ad-bd4c-652be1aaf13f",
+                            SecurityStamp = "349a20f0-ab75-436c-abce-aeacc0735a85",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -129,7 +129,8 @@ namespace FeedbackFriend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("QuestionText");
+                    b.Property<string>("QuestionText")
+                        .IsRequired();
 
                     b.Property<int>("SurveyId");
 
@@ -821,7 +822,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.",
                             SurveyName = "Empathy",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -829,7 +830,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Listening vs hearing",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -837,7 +838,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess flexibility and responsiveness in communication.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Just stop talking already",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -845,7 +846,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Presentation Feedback",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -853,7 +854,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Problem Solving",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -861,7 +862,7 @@ namespace FeedbackFriend.Migrations
                             Description = "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Influence",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -869,7 +870,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Change",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         },
                         new
                         {
@@ -877,7 +878,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Decision Making",
-                            UserId = "a8642698-816f-4f01-ba23-6ce5ee36acd2"
+                            UserId = "dffe34af-8ddf-4efe-8a47-c87522c31e7a"
                         });
                 });
 

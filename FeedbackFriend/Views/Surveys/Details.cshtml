@@ -6,8 +6,29 @@
 @{ int rowNo = 0; }
 
 <h3>
-    Survey:      @Html.DisplayFor(model => model.SurveyName)     |     <a asp-action="LoggedIn">Back to List</a>
+    Survey:      @Html.DisplayFor(model => model.SurveyName)     |
+    <a asp-controller="Questions" asp-action="Create" asp-route-id="@Model.SurveyId">Add a Question</a>     |
+    <a asp-action="LoggedIn">Back to List</a>     |
 </h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th width="20%">@Html.DisplayNameFor(model => model.SurveyName)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Description)</th>
+            <th width="40%">@Html.DisplayNameFor(model => model.Instructions)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Html.DisplayFor(model => model.SurveyName)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
+            <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
+        </tr>
+    </tbody>
+</table>
+
+
 <table class="table">
     <thead>
     </thead>

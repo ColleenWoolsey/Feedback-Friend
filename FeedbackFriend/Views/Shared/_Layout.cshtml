@@ -47,14 +47,11 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Surveys" asp-action="LoggedIn">Existing Surveys</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Surveys" asp-action="LoggedIn">Surveys</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Surveys" asp-action="Index">Complete</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Surveys" asp-action="Create">Create</a>
-                            </li>                            
+                            </li>                                                       
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserSurveys" asp-action="Index">Assign</a>
                             </li>

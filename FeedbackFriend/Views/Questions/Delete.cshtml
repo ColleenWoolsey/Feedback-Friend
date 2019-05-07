@@ -4,9 +4,12 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h3>
+    Delete Question for Survey:      @Html.DisplayFor(model => model.Survey.SurveyName)     |
+    <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
+</h3>
 
-<h3>Are you sure you want to delete this Question?</h3>
+<h4>Are you sure you want to delete this Question?</h4>
 <div>
 
     <hr />
@@ -27,8 +30,5 @@
 
     <form asp-action="Delete">
         <input type="submit" value="Delete" class="btn btn-danger" />
-    </form>
-    <div>
-        <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
-    </div>
+    </form>    
 </div>

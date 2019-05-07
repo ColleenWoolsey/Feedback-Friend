@@ -4,9 +4,11 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h3>
+    Edit Question for Survey:      @Html.DisplayFor(model => model.Survey.SurveyName)     |
+    <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
+</h3>
 
-<h4>Question</h4>
 <hr />
 <div class="row">
     <div class="col-md-12">

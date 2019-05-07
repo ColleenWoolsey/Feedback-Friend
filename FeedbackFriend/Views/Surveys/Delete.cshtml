@@ -4,9 +4,13 @@
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<h3>
+    Delete Survey     |
+    <a asp-action="LoggedIn">Back to List</a>
+</h3>
+
 <p class="text-danger">@ViewData["ErrorMessage"]</p>
-<h3>Are you sure you want to delete this Survey?</h3>
+<h4>Are you sure you want to delete this Survey?</h4>
 <div>
     <hr />
     <dl class="row">
@@ -33,7 +37,6 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="SurveyId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="LoggedIn">Back to List</a>
+        <input type="submit" value="Delete" class="btn btn-danger" />
     </form>
 </div>
