@@ -13,11 +13,10 @@ namespace FeedbackFriend.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
-
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -25,8 +24,8 @@ namespace FeedbackFriend.Data
             // Create a new user for Identity Framework
             ApplicationUser user = new ApplicationUser
             {
-                FirstName = "admin",
-                LastName = "admin",
+                FirstName = "Colleen",
+                LastName = "Woolsey",
                 UserName = "admin@admin.com",
                 NormalizedUserName = "ADMIN@ADMIN.COM",
                 Email = "admin@admin.com",
@@ -742,5 +741,7 @@ namespace FeedbackFriend.Data
                 }
             );
         }
+                
+        public DbSet<FeedbackFriend.Models.ApplicationUser> ApplicationUser { get; set; }
     }
 }

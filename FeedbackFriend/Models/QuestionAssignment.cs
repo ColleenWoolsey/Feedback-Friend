@@ -11,7 +11,10 @@ namespace FeedbackFriend.Models
         [Key]
         public int SurveyId { get; set; }
         public int QuestionId { get; set; }
+        public int ResponderId { get; set; }
+
         public Survey Survey { get; set; }
         public Question Question { get; set; }
+        public ApplicationUser User { get; set; }
     }
 }

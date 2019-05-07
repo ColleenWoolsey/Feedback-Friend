@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FeedbackFriend.Migrations
 {
-    public partial class workingadds : Migration
+    public partial class newERD : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,6 +41,7 @@ namespace FeedbackFriend.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false)
                 },
@@ -164,7 +165,8 @@ namespace FeedbackFriend.Migrations
                     UserId = table.Column<string>(nullable: false),
                     SurveyName = table.Column<string>(maxLength: 55, nullable: false),
                     Instructions = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    Assigned = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -175,28 +177,6 @@ namespace FeedbackFriend.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserSurvey",
-                columns: table => new
-                {
-                    UserSurveyId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ResponderId = table.Column<int>(nullable: false),
-                    SurveyId = table.Column<int>(nullable: false),
-                    FocusId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserSurvey", x => x.UserSurveyId);
-                    table.ForeignKey(
-                        name: "FK_UserSurvey_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -225,11 +205,11 @@ namespace FeedbackFriend.Migrations
                 {
                     AnswerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Response = table.Column<int>(nullable: false),
+                    Response = table.Column<int>(nullable: true),
                     ResponderId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: true),
                     QuestionId = table.Column<int>(nullable: false),
-                    UserSurveyId = table.Column<int>(nullable: false)
+                    FocusId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -246,12 +226,6 @@ namespace FeedbackFriend.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Answers_UserSurvey_UserSurveyId",
-                        column: x => x.UserSurveyId,
-                        principalTable: "UserSurvey",
-                        principalColumn: "UserSurveyId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,7 +235,9 @@ namespace FeedbackFriend.Migrations
                     SurveyId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     QuestionId = table.Column<int>(nullable: false),
-                    SurveyId1 = table.Column<int>(nullable: true)
+                    ResponderId = table.Column<int>(nullable: false),
+                    SurveyId1 = table.Column<int>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -278,26 +254,32 @@ namespace FeedbackFriend.Migrations
                         principalTable: "Surveys",
                         principalColumn: "SurveyId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_QuestionAssignment_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "dffe34af-8ddf-4efe-8a47-c87522c31e7a", 0, "36d0d822-dafa-48da-8b1c-ab874e66c9b6", "admin@admin.com", true, "admin", "admin", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAELApWVq8qpXiBeT1qMZpU8YX3KdpGhcGoMZuqqzVsQCXBAge/h/rH/if0YGaQJphtw==", null, false, "349a20f0-ab75-436c-abce-aeacc0735a85", false, "admin@admin.com" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserId", "UserName" },
+                values: new object[] { "3accbec0-fb2f-47d7-bd92-1922f4e86886", 0, "049f74c4-9e47-43e7-a186-f5b80b41684c", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEEUXsYY8r6j6Ey344U44TSDQw0fn7AKxT3gF5mECYjLGObXNzcDMrPBvWwg1exVZeA==", null, false, "033b63ff-4f1f-44a8-a341-b9184185441a", false, 0, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Surveys",
-                columns: new[] { "SurveyId", "Description", "Instructions", "SurveyName", "UserId" },
+                columns: new[] { "SurveyId", "Assigned", "Description", "Instructions", "SurveyName", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 2, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 3, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 4, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 5, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 6, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 7, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" },
-                    { 8, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "dffe34af-8ddf-4efe-8a47-c87522c31e7a" }
+                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "3accbec0-fb2f-47d7-bd92-1922f4e86886" },
+                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "3accbec0-fb2f-47d7-bd92-1922f4e86886" }
                 });
 
             migrationBuilder.InsertData(
@@ -423,11 +405,6 @@ namespace FeedbackFriend.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Answers_UserSurveyId",
-                table: "Answers",
-                column: "UserSurveyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -477,6 +454,11 @@ namespace FeedbackFriend.Migrations
                 column: "SurveyId1");
 
             migrationBuilder.CreateIndex(
+                name: "IX_QuestionAssignment_UserId",
+                table: "QuestionAssignment",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Questions_SurveyId",
                 table: "Questions",
                 column: "SurveyId");
@@ -484,11 +466,6 @@ namespace FeedbackFriend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Surveys_UserId",
                 table: "Surveys",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserSurvey_UserId",
-                table: "UserSurvey",
                 column: "UserId");
         }
 
@@ -514,9 +491,6 @@ namespace FeedbackFriend.Migrations
 
             migrationBuilder.DropTable(
                 name: "QuestionAssignment");
-
-            migrationBuilder.DropTable(
-                name: "UserSurvey");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
