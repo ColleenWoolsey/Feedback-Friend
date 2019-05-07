@@ -184,15 +184,23 @@ namespace FeedbackFriend.Controllers
 
             return View(survey);
         }
-        // POST: Surveys/Edit/5        
+
+        // POST: Surveys/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Survey survey)
+        public async Task<IActionResult> Edit(int id, [Bind("SurveyId,UserId,SurveyName,Description,Instructions")] Survey survey)
         {
             if (id != survey.SurveyId)
             {
                 return NotFound();
             }
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
+
+            ApplicationUser user = await GetCurrentUserAsync();
+
+            survey.User = user;
+            survey.UserId = user.Id;
 
             if (ModelState.IsValid)
             {
@@ -212,9 +220,8 @@ namespace FeedbackFriend.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("LoggedIn", "Surveys", new { id = survey.SurveyId });
+                return RedirectToAction(nameof(LoggedIn));
             }
-
             return View(survey);
         }
     }
