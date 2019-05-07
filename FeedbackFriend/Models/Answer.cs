@@ -15,22 +15,23 @@ namespace FeedbackFriend.Models
     {
         [Key]
         public int AnswerId { get; set; }
-
-        [Required]
+                
         [Display(Name = "Feedback")]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
-        public int Response { get; set; }
+        public int? Response { get; set; }
 
         [Required]
+        [Display(Name = "Feedback Provider")]
         public int ResponderId { get; set; }
-        public ApplicationUser User { get; set; }
-
+        
         [Required]
         public int QuestionId { get; set; }
-        public Question Question { get; set; }        
+        public Question Question { get; set; }
 
         [Required]
-        public int UserSurveyId { get; set; }
-        public UserSurvey UserSurvey { get; set; }
+        [Display(Name = "Feedback Recipient")]
+        public int FocusId { get; set; }        
+
+        public ApplicationUser User { get; set; }
     }    
 }

@@ -8,9 +8,6 @@ namespace FeedbackFriend.Models
 {
     public class SurveyQuestionsListViewModel
     {
-        //[Key]
-        //public int ID { get; set; }
-
         public int SurveyId { get; set; }
 
         public int QuestionId { get; set; }

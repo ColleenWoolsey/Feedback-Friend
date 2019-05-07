@@ -31,6 +31,8 @@ namespace FeedbackFriend.Models
 
         public string Description { get; set; }
 
+        public bool Assigned { get; set; }
+
         [NotMapped]
         public int NumQuestions { get; set; }
         

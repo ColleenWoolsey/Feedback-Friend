@@ -23,13 +23,13 @@ namespace FeedbackFriend.Controllers
 
         public async Task<IActionResult> ReturnToSurvey()
         {
-            var applicationDbContext = _context.Answers.Include(a => a.Question).Include(a => a.UserSurvey);
+            var applicationDbContext = _context.Answers.Include(a => a.Question);
             return View(await applicationDbContext.ToListAsync());
         }
 
 
         // ******************************************************************************** INDEX
-        // GET: ALL Questions for a Survey
+        // GET: ALL Question Detail for a Survey
         public async Task<IActionResult> Index(int? surveyId)
         {
             var applicationDbContext = _context.Questions

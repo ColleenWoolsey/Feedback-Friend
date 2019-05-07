@@ -42,6 +42,13 @@ namespace FeedbackFriend.Controllers
 
 
 
+        // GET: People
+        public async Task<IActionResult> People()
+        {
+            var applicationDbContext = _context.ApplicationUsers;
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         // ********************************************************************************LoggedIn
         public async Task<IActionResult> LoggedIn()
         {
