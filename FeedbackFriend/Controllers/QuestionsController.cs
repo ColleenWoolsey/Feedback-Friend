@@ -193,7 +193,7 @@ namespace FeedbackFriend.Controllers
 
                 _context.Add(newQuestion);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(actionName: "Create");
+                return RedirectToAction("Details", "Surveys", new { id = newQuestion.SurveyId });
             }
             return View(surveyQuestionsListViewModel);
         }

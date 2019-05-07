@@ -36,6 +36,5 @@ namespace FeedbackFriend.Models
         
         public virtual ICollection<Question> Questions { get; set; }
         public virtual ICollection<QuestionAssignment> QuestionAssignments { get; set; }
-        public List<QuestionDisplayViewModel> QuestionsVM { get; set; }
     }
 }
