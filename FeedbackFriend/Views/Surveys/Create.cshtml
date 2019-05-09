@@ -16,18 +16,18 @@
             @*<input type="hidden" asp-for="SurveyId" /> Only need for Edit?*@
 
             <div class="form-group" style="margin-bottom: 30px;">
-                <input asp-for="SurveyName" class="form-control" />
-                <span asp-validation-for="SurveyName" class="text-danger"></span>
+                <input asp-for="Survey.SurveyName" class="form-control" />
+                <span asp-validation-for="Survey.SurveyName" class="text-danger"></span>
             </div>
             <div class="form-group" style="margin-bottom: 30px;">
-                <label asp-for="Description" class="control-label"></label>
-                @Html.TextArea("Description", null, new { @class = "form-control" })
-                <span asp-validation-for="Description" class="text-danger"></span>
+                <label asp-for="Survey.Description" class="control-label"></label>
+                @Html.TextArea("Survey.Description", null, new { @class = "form-control" })
+                <span asp-validation-for="Survey.Description" class="text-danger"></span>
             </div>
             <div class="form-group" style="margin-bottom: 30px;">
-                <label asp-for="Instructions" class="control-label"></label>
-                @Html.TextArea("Instructions", null, new { @class = "form-control" })
-                <span asp-validation-for="Instructions" class="text-danger"></span>
+                <label asp-for="Survey.Instructions" class="control-label"></label>
+                @Html.TextArea("Survey.Instructions", null, new { @class = "form-control" })
+                <span asp-validation-for="Survey.Instructions" class="text-danger"></span>
             </div>
 
             <div class="form-group">

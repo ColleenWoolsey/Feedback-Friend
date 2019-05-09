@@ -1,14 +1,14 @@
-﻿@model FeedbackFriend.Models.SurveyQuestionsListViewModel
+﻿@model FeedbackFriend.Models.Survey
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Details";
 }
-
 @{ int rowNo = 0; }
 
 <h3>
-    Add Question for Survey:      @Html.DisplayFor(model => model.SurveyName)     |
-    <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
+    Survey:      @Html.DisplayFor(model => model.SurveyName)     |
+    @*<a asp-controller="Questions" asp-action="Create" asp-route-id="@Model.SurveyId"></a>     |*@
+    <a asp-action="LoggedIn">Back to List</a>     |
 </h3>
 
 <table class="table">
@@ -27,8 +27,6 @@
         </tr>
     </tbody>
 </table>
-<hr />
-
 
 <div class="row">
     <div class="col-md-12 d-md-inline-block">
@@ -85,3 +83,21 @@
         {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     }
+
+<table class="table">
+    <thead>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Questions)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Answers" asp-action="Create" asp-route-id="@item.QuestionId">Answer     |</a>
+                    @(rowNo += 1).  
+                    @Html.DisplayFor(modelItem => item.QuestionText)
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

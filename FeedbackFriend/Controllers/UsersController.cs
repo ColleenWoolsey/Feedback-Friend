@@ -25,6 +25,11 @@ namespace FeedbackFriend.Controllers
             return View(await _context.ApplicationUsers.ToListAsync());
         }
 
+        public async Task<IActionResult> AssignFocus()
+        {
+            return View(await _context.ApplicationUsers.ToListAsync());
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {

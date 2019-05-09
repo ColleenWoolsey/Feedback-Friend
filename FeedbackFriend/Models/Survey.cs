@@ -9,11 +9,6 @@ namespace FeedbackFriend.Models
 {
     public class Survey
     {
-        public Survey()
-        {
-            Questions = new HashSet<Question>();
-        }
-
         [Key]
         public int SurveyId { get; set; }
 
@@ -36,7 +31,7 @@ namespace FeedbackFriend.Models
         [NotMapped]
         public int NumQuestions { get; set; }
         
-        public virtual ICollection<Question> Questions { get; set; }
-        public virtual ICollection<QuestionAssignment> QuestionAssignments { get; set; }
+        public List<Question> Questions { get; set; }
+        public List<SurveyAssignment> SurveyAssignments { get; set; }
     }
 }

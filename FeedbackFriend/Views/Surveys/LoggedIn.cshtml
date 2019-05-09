@@ -43,10 +43,11 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>                        
                 <td style="font-weight: bold;">
-                    <a asp-action="Details" asp-route-id="@item.SurveyId">EDIT Questions</a>                   
+                    <a asp-action="Details" asp-route-id="@item.SurveyId">EDIT Questions</a>
                     <a asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD Questions</a>
                     <a asp-action="Edit" asp-route-id="@item.SurveyId">EDIT Survey </a>
                     <a asp-action="Delete" asp-route-id="@item.SurveyId">DELETE Survey</a>
+                    <a asp-Controller="Answers" asp-action="ReturnSurvey" asp-route-id="@item.SurveyId">COMPLETE</a>
                 </td>
             </tr>        }
     </tbody>

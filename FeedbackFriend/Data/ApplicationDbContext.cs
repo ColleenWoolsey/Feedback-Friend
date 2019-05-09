@@ -107,7 +107,7 @@ namespace FeedbackFriend.Data
                 }
             );
 
-            // Create many questions
+            // Create 105 questions
             modelBuilder.Entity<Question>().HasData(
                 new Question()
                 {
@@ -743,5 +743,9 @@ namespace FeedbackFriend.Data
         }
                 
         public DbSet<FeedbackFriend.Models.ApplicationUser> ApplicationUser { get; set; }
+                
+        public DbSet<FeedbackFriend.Models.SurveysViewModel> SurveysViewModel { get; set; }
+                
+        public DbSet<FeedbackFriend.Models.GroupedQuestions> GroupedQuestions { get; set; }
     }
 }
