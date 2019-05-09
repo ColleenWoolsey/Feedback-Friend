@@ -21,10 +21,38 @@ namespace FeedbackFriend.Controllers
             _context = context;
         }
 
+        // ************************************************************************ REturn to Survey
         public async Task<IActionResult> ReturnToSurvey()
         {
             var applicationDbContext = _context.Answers.Include(a => a.Question);
             return View(await applicationDbContext.ToListAsync());
+        }
+
+
+        // *********************************************************************** Grouping
+        public async Task<IActionResult> Grouping()
+        {
+            var model = new SurveysViewModel();
+
+            // Build list of Question instances for display in view
+            // The LINQ statement groups theSurvey entities by enrollment date?, calculates the
+            // number of entities in each group, and stores the results in a collection of
+            // EnrollmentDateGroup view model objects.
+            // LINQ is awesome
+            model.GroupedQuestions = await (
+                from s in _context.Surveys                
+                join q in _context.Questions
+                on s.SurveyId equals q.SurveyId
+                group new { s, q } by new { s.SurveyId, s.SurveyName } into grouped
+                select new GroupedQuestions
+                {
+                    GroupedSurveyId = grouped.Key.SurveyId,
+                    GroupedSurveyName = grouped.Key.SurveyName,
+                    GroupedQuestionCount = grouped.Select(x => x.q.QuestionId).Count(),
+                    Questions = grouped.Select(x => x.q)
+                }).ToListAsync();
+
+            return View(model);
         }
 
 
@@ -33,8 +61,10 @@ namespace FeedbackFriend.Controllers
         public async Task<IActionResult> Index(int? surveyId)
         {
             var applicationDbContext = _context.Questions
+                .Include(q => q.Answer)
                .Include(q => q.Survey)
                .Where(q => q.SurveyId == surveyId);
+               
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -162,7 +192,7 @@ namespace FeedbackFriend.Controllers
             var surveyQuestionListViewModel = await _context.Surveys.FindAsync(id);
 
             surveyQuestionListViewModel = await _context.Surveys
-                        .Include(i => i.QuestionAssignments).ThenInclude(i => i.Question)
+                        .Include(i => i.SurveyAssignments).ThenInclude(i => i.Question)
                         .AsNoTracking()
                         .FirstOrDefaultAsync(i => i.SurveyId == id);
 

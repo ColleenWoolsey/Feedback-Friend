@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FeedbackFriend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190507212444_newERD")]
-    partial class newERD
+    [Migration("20190508152804_addanswer")]
+    partial class addanswer
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,11 +35,16 @@ namespace FeedbackFriend.Migrations
 
                     b.Property<int?>("Response");
 
+                    b.Property<int?>("SurveyId");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("AnswerId");
 
-                    b.HasIndex("QuestionId");
+                    b.HasIndex("QuestionId")
+                        .IsUnique();
+
+                    b.HasIndex("SurveyId");
 
                     b.HasIndex("UserId");
 
@@ -107,9 +112,9 @@ namespace FeedbackFriend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3accbec0-fb2f-47d7-bd92-1922f4e86886",
+                            Id = "b7842170-0c16-41fd-9a28-2f19eaa02534",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "049f74c4-9e47-43e7-a186-f5b80b41684c",
+                            ConcurrencyStamp = "a172c192-7f77-4655-8fc4-67385f77bc91",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Colleen",
@@ -117,13 +122,52 @@ namespace FeedbackFriend.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEEUXsYY8r6j6Ey344U44TSDQw0fn7AKxT3gF5mECYjLGObXNzcDMrPBvWwg1exVZeA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEFGxv7RI1cxHhjykXnR14Tt8tQ3ZscikQTFVa3t/9RQwA4DzlunnuyEwI+KLzdmWTw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "033b63ff-4f1f-44a8-a341-b9184185441a",
+                            SecurityStamp = "3c8ffab4-5344-4e18-9cb6-dc3897e3bbda",
                             TwoFactorEnabled = false,
                             UserId = 0,
                             UserName = "admin@admin.com"
                         });
+                });
+
+            modelBuilder.Entity("FeedbackFriend.Models.GroupedQuestions", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("GroupedFirstName");
+
+                    b.Property<string>("GroupedLastName");
+
+                    b.Property<int>("GroupedQuestionCount");
+
+                    b.Property<int>("GroupedQuestionId");
+
+                    b.Property<string>("GroupedQuestionText");
+
+                    b.Property<string>("GroupedSurveyDescription");
+
+                    b.Property<int>("GroupedSurveyId");
+
+                    b.Property<string>("GroupedSurveyInstructions");
+
+                    b.Property<string>("GroupedSurveyName");
+
+                    b.Property<int>("GroupedUserId");
+
+                    b.Property<int?>("SurveyAssignmentId");
+
+                    b.Property<int?>("SurveysViewModelSurveyId");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SurveyAssignmentId");
+
+                    b.HasIndex("SurveysViewModelSurveyId");
+
+                    b.ToTable("GroupedQuestions");
                 });
 
             modelBuilder.Entity("FeedbackFriend.Models.Question", b =>
@@ -132,12 +176,16 @@ namespace FeedbackFriend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("GroupedQuestionsID");
+
                     b.Property<string>("QuestionText")
                         .IsRequired();
 
                     b.Property<int>("SurveyId");
 
                     b.HasKey("QuestionId");
+
+                    b.HasIndex("GroupedQuestionsID");
 
                     b.HasIndex("SurveyId");
 
@@ -776,31 +824,6 @@ namespace FeedbackFriend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("FeedbackFriend.Models.QuestionAssignment", b =>
-                {
-                    b.Property<int>("SurveyId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("QuestionId");
-
-                    b.Property<int>("ResponderId");
-
-                    b.Property<int?>("SurveyId1");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("SurveyId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("SurveyId1");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("QuestionAssignment");
-                });
-
             modelBuilder.Entity("FeedbackFriend.Models.Survey", b =>
                 {
                     b.Property<int>("SurveyId")
@@ -834,7 +857,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.",
                             SurveyName = "Empathy",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -843,7 +866,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Listening vs hearing",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -852,7 +875,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess flexibility and responsiveness in communication.",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Just stop talking already",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -861,7 +884,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Presentation Feedback",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -870,7 +893,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Problem Solving",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -879,7 +902,7 @@ namespace FeedbackFriend.Migrations
                             Description = "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Influence",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -888,7 +911,7 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Change",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         },
                         new
                         {
@@ -897,8 +920,60 @@ namespace FeedbackFriend.Migrations
                             Description = "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?",
                             Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.",
                             SurveyName = "Decision Making",
-                            UserId = "3accbec0-fb2f-47d7-bd92-1922f4e86886"
+                            UserId = "b7842170-0c16-41fd-9a28-2f19eaa02534"
                         });
+                });
+
+            modelBuilder.Entity("FeedbackFriend.Models.SurveyAssignment", b =>
+                {
+                    b.Property<int>("SurveyAssignmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Assigned");
+
+                    b.Property<int>("FocusId");
+
+                    b.Property<int?>("QuestionId");
+
+                    b.Property<int>("ResponderId");
+
+                    b.Property<int>("SurveyId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("SurveyAssignmentId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("SurveyId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SurveyAssignment");
+                });
+
+            modelBuilder.Entity("FeedbackFriend.Models.SurveysViewModel", b =>
+                {
+                    b.Property<int>("SurveyId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("QuestionId");
+
+                    b.Property<int?>("SurveyId1");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("SurveyId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("SurveyId1");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("SurveysViewModel");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1018,37 +1093,40 @@ namespace FeedbackFriend.Migrations
             modelBuilder.Entity("FeedbackFriend.Models.Answer", b =>
                 {
                     b.HasOne("FeedbackFriend.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
+                        .WithOne("Answer")
+                        .HasForeignKey("FeedbackFriend.Models.Answer", "QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FeedbackFriend.Models.Survey", "Survey")
+                        .WithMany()
+                        .HasForeignKey("SurveyId");
 
                     b.HasOne("FeedbackFriend.Models.ApplicationUser", "User")
                         .WithMany("Answers")
                         .HasForeignKey("UserId");
                 });
 
+            modelBuilder.Entity("FeedbackFriend.Models.GroupedQuestions", b =>
+                {
+                    b.HasOne("FeedbackFriend.Models.SurveyAssignment")
+                        .WithMany("GroupedQuestions")
+                        .HasForeignKey("SurveyAssignmentId");
+
+                    b.HasOne("FeedbackFriend.Models.SurveysViewModel")
+                        .WithMany("GroupedQuestions")
+                        .HasForeignKey("SurveysViewModelSurveyId");
+                });
+
             modelBuilder.Entity("FeedbackFriend.Models.Question", b =>
                 {
+                    b.HasOne("FeedbackFriend.Models.GroupedQuestions")
+                        .WithMany("Questions")
+                        .HasForeignKey("GroupedQuestionsID");
+
                     b.HasOne("FeedbackFriend.Models.Survey", "Survey")
                         .WithMany("Questions")
                         .HasForeignKey("SurveyId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("FeedbackFriend.Models.QuestionAssignment", b =>
-                {
-                    b.HasOne("FeedbackFriend.Models.Question", "Question")
-                        .WithMany()
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("FeedbackFriend.Models.Survey", "Survey")
-                        .WithMany("QuestionAssignments")
-                        .HasForeignKey("SurveyId1");
-
-                    b.HasOne("FeedbackFriend.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("FeedbackFriend.Models.Survey", b =>
@@ -1057,6 +1135,37 @@ namespace FeedbackFriend.Migrations
                         .WithMany("Surveys")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("FeedbackFriend.Models.SurveyAssignment", b =>
+                {
+                    b.HasOne("FeedbackFriend.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
+                    b.HasOne("FeedbackFriend.Models.Survey", "Survey")
+                        .WithMany("SurveyAssignments")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FeedbackFriend.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("FeedbackFriend.Models.SurveysViewModel", b =>
+                {
+                    b.HasOne("FeedbackFriend.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
+                    b.HasOne("FeedbackFriend.Models.Survey", "Survey")
+                        .WithMany()
+                        .HasForeignKey("SurveyId1");
+
+                    b.HasOne("FeedbackFriend.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

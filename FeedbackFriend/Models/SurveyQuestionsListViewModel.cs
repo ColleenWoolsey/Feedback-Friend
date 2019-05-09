@@ -31,7 +31,5 @@ namespace FeedbackFriend.Models
 
         [Display(Name = "Instructions")]
         public string Instructions { get; set; }
-
-        public List<QuestionDisplayViewModel> Questions { get; set; }
     }
 }

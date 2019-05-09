@@ -10,13 +10,16 @@ namespace FeedbackFriend.Models
     public class Question
     {       
         [Key]
+        [Display(Name = "Question ID")]
         public int QuestionId { get; set; }
+
+        [Display(Name = "Question Text")]
+        public string QuestionText { get; set; }
 
         [Required]
         public int SurveyId { get; set; }
-        public virtual Survey Survey { get; set; }
 
-        [Required]
-        public string QuestionText { get; set; }
+        public Survey Survey { get; set; }
+        public Answer Answer { get; set; }
     }
 }

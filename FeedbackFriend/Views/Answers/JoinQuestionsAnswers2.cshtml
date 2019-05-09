@@ -1,0 +1,89 @@
+﻿@model IEnumerable<FeedbackFriend.Models.GroupedQuestions>
+
+@{
+    ViewData["Title"] = "JoinQuestionsAnswers";
+}
+
+<h1>JoinQuestionsAnswers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedSurveyId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedSurveyName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedSurveyDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedSurveyInstructions)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedQuestionId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedQuestionText)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedQuestionCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedUserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.GroupedLastName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedSurveyId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedSurveyName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedSurveyDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedSurveyInstructions)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedQuestionId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedQuestionText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedQuestionCount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedUserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GroupedLastName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

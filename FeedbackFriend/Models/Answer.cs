@@ -27,6 +27,7 @@ namespace FeedbackFriend.Models
         [Required]
         public int QuestionId { get; set; }
         public Question Question { get; set; }
+        public Survey Survey { get; set; }
 
         [Required]
         [Display(Name = "Feedback Recipient")]

@@ -1,0 +1,75 @@
+﻿@model FeedbackFriend.Models.GroupedQuestions
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<h4>GroupedQuestions</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="View">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="GroupedSurveyId" class="control-label"></label>
+                <input asp-for="GroupedSurveyId" class="form-control" />
+                <span asp-validation-for="GroupedSurveyId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedSurveyName" class="control-label"></label>
+                <input asp-for="GroupedSurveyName" class="form-control" />
+                <span asp-validation-for="GroupedSurveyName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedSurveyDescription" class="control-label"></label>
+                <input asp-for="GroupedSurveyDescription" class="form-control" />
+                <span asp-validation-for="GroupedSurveyDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedSurveyInstructions" class="control-label"></label>
+                <input asp-for="GroupedSurveyInstructions" class="form-control" />
+                <span asp-validation-for="GroupedSurveyInstructions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedQuestionId" class="control-label"></label>
+                <input asp-for="GroupedQuestionId" class="form-control" />
+                <span asp-validation-for="GroupedQuestionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedQuestionText" class="control-label"></label>
+                <input asp-for="GroupedQuestionText" class="form-control" />
+                <span asp-validation-for="GroupedQuestionText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedQuestionCount" class="control-label"></label>
+                <input asp-for="GroupedQuestionCount" class="form-control" />
+                <span asp-validation-for="GroupedQuestionCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedUserId" class="control-label"></label>
+                <input asp-for="GroupedUserId" class="form-control" />
+                <span asp-validation-for="GroupedUserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedFirstName" class="control-label"></label>
+                <input asp-for="GroupedFirstName" class="form-control" />
+                <span asp-validation-for="GroupedFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupedLastName" class="control-label"></label>
+                <input asp-for="GroupedLastName" class="form-control" />
+                <span asp-validation-for="GroupedLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

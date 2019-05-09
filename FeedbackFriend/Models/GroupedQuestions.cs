@@ -9,18 +9,27 @@ namespace FeedbackFriend.Models
     public class GroupedQuestions
     {       
         public int ID { get; set; }
-        public int SurveyId { get; set; }
-        public int QuestionId { get; set; }
-        public string QuestionText { get; set; }
+        public int GroupedSurveyId { get; set; }            
+        public string GroupedSurveyName { get; set; }
+        public string GroupedSurveyDescription { get; set; }
+        public string GroupedSurveyInstructions { get; set; }
 
-        public int SurveyDetailId { get; set; }
-        public string SurveyDetailName { get; set; }
-        public string SurveyDetailDescription { get; set; }
-        public string SurveyInstructions { get; set; }
-        public int QuestionCount { get; set; }
+        public int GroupedQuestionId { get; set; }
+        public string GroupedQuestionText { get; set; }
+        public int GroupedQuestionCount { get; set; }
 
-        public Question Question { get; set; }
-        public Survey Survey { get; set; }
+        public int GroupedUserId { get; set; }                
+        public string GroupedFirstName { get; set; }                
+        public string GroupedLastName { get; set; }        
+        public string GroupedFullName
+        {
+            get
+            {
+                return $"{GroupedFirstName} {GroupedLastName}";
+            }
+        }
+
+        public Answer Answer { get; set; }
         public IEnumerable<Question> Questions { get; set; }       
     }
 }

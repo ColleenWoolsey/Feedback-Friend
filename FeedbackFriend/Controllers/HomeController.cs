@@ -49,32 +49,6 @@ namespace FeedbackFriend.Controllers
         }
 
         // **********************************************
-        // GET: All Question Detail for each Survey
-        public async Task<IActionResult> QuestionsForEachSurvey()       
-        {
-            var model = new GroupedQuestionDetail();
-
-            // Build list of Survey instances for display in view
-            // The LINQ statement groups the survey entities by surveyId,
-            // calculates the number of questions in each group, 
-            // and stores the results in a collection of SurveyQuestionGroup view model objects.
-
-            model.GroupedQuestions = await (
-                from s in _context.Surveys
-                join q in _context.Questions
-                on s.SurveyId equals q.SurveyId                
-                group new { s, q } by new { s.SurveyId, s.SurveyName } into grouped
-                select new GroupedQuestions
-                {
-                    SurveyDetailId = grouped.Key.SurveyId,
-                    SurveyDetailName = grouped.Key.SurveyName,
-                    QuestionCount = grouped.Select(x => x.q.QuestionId).Count(),
-                    Questions = grouped.Select(x => x.q)
-                }).ToListAsync();
-
-            return View(model);
-        }
-
 
         // GET: Survey/Details/5
         
