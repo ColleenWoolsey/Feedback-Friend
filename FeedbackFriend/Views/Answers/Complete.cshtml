@@ -14,14 +14,12 @@
 <table class="table">
     <thead>
         <tr>
-            <th width="20%">@Html.DisplayNameFor(model => model.SurveyName)</th>
-            <th width="40%">@Html.DisplayNameFor(model => model.Description)</th>
-            <th width="40%">@Html.DisplayNameFor(model => model.Instructions)</th>
+            <th width="50%">@Html.DisplayNameFor(model => model.Description)</th>
+            <th width="50%">@Html.DisplayNameFor(model => model.Instructions)</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>@Html.DisplayFor(model => model.SurveyName)</td>
             <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
             <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
         </tr>
@@ -29,6 +27,15 @@
 </table>
 
 <form action=" Answers/IndexPost" method="post">
+
+    <div class="form-group">
+        @*@Html.LabelFor(x => Model.FocusUserId, htmlAttributes: new { @class = "control-label col-md-2" })*@
+        <div class="col-md-5">
+            @Html.DropDownListFor(x => Model.FocusUserId, new SelectList(Model.Recipients, "Value", "Text"), htmlAttributes: new { @class = "form-control", @id = "FocusId" })
+            @Html.ValidationMessageFor(x => x.FocusUserId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
     <table class="table">
         <tbody>
 
@@ -36,12 +43,18 @@
             {
 
                 <tr>
-                    @*<td>
-                            <input type="number" asp-for="Response[i]" />
-                        </td>*@
+                    <td>
+                        <input type="number" min="1" max="10" asp-for="AnswerQuestionViewModels[i].Response" />
+
+                        @*@Html.EditorFor(model => model.AnswerQuestionViewModels, new { Response = new { type = "number", min = "1", max = "10", @class = "form-control" } })*@
+
+                    </td>
                     <td>
                         @(rowNo += 1).
                         @Html.DisplayFor(modelItem => Model.AnswerQuestionViewModels[i].QuestionText)
+                    </td>
+                    <td>
+                        <input type="hidden" asp-for="AnswerQuestionViewModels[i].QuestionId" />
                     </td>
                     <td>
                         <input type="hidden" asp-for="AnswerQuestionViewModels[i].QuestionId" />
@@ -51,74 +64,55 @@
 
         </tbody>
     </table>
-
+    <input type="hidden" asp-for="FocusUserId" />
     <input type="Submit" value="Save" />
 </form>
+
+
 
 @*<div class="row">
         <div class="col-md-4">
             <form asp-action="Complete">
-                @foreach (var item in Model.AnswerQuestionViewModels)
-                {
-                    <div>
-                        <div class="form-group">
-                                <input asp-for="Response" class="form-control" />
-                                <span asp-validation-for="Response" class="text-danger"></span>
-                            </div>
-                        @(rowNo += 1).
-                        @Html.DisplayFor(modelItem => item.QuestionText)
-                    </div>
-                }
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="SurveyId" class="control-label"></label>
+                    <input asp-for="SurveyId" class="form-control" />
+                    <span asp-validation-for="SurveyId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SurveyName" class="control-label"></label>
+                    <input asp-for="SurveyName" class="form-control" />
+                    <span asp-validation-for="SurveyName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Instructions" class="control-label"></label>
+                    <input asp-for="Instructions" class="form-control" />
+                    <span asp-validation-for="Instructions" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FocusUserId" class="control-label"></label>
+                    <input asp-for="FocusUserId" class="form-control" />
+                    <span asp-validation-for="FocusUserId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Response" class="control-label"></label>
+                    <input asp-for="Response" class="form-control" />
+                    <span asp-validation-for="Response" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="QuestionText" class="control-label"></label>
+                    <input asp-for="QuestionText" class="form-control" />
+                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>*@
-
-@*<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Complete">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="SurveyId" class="control-label"></label>
-                <input asp-for="SurveyId" class="form-control" />
-                <span asp-validation-for="SurveyId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SurveyName" class="control-label"></label>
-                <input asp-for="SurveyName" class="form-control" />
-                <span asp-validation-for="SurveyName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Instructions" class="control-label"></label>
-                <input asp-for="Instructions" class="form-control" />
-                <span asp-validation-for="Instructions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FocusUserId" class="control-label"></label>
-                <input asp-for="FocusUserId" class="form-control" />
-                <span asp-validation-for="FocusUserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Response" class="control-label"></label>
-                <input asp-for="Response" class="form-control" />
-                <span asp-validation-for="Response" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuestionText" class="control-label"></label>
-                <input asp-for="QuestionText" class="form-control" />
-                <span asp-validation-for="QuestionText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>*@
 

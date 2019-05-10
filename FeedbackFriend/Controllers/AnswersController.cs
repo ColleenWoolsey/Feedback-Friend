@@ -43,43 +43,62 @@ namespace FeedbackFriend.Controllers
         {
             var model = new AnswerCreateViewModel();
 
-            var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);                    
-
-            var user = await GetCurrentUserAsync();
-            var userDB = await _context.Users.ToListAsync();
-            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+            var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);
 
             var questionDB = await _context.Questions.Where(q => q.SurveyId == id).ToListAsync();
 
+            // Get current user to assign ResponderUserId in VM
+            var user = await GetCurrentUserAsync();
+            model.ResponderUserId = user.UserId;
+
+            // Get ALL Users to create a Select List to choose FocusUser
+            var userDB = _context.Users;
+            
+            List<SelectListItem> recipientList = new List<SelectListItem>();
+
+            recipientList.Insert(0, new SelectListItem { Text = "REQUIRED!! Select a person to Receive Feedback", Value = "" });
+
+            foreach (var focusU in userDB)
+            {
+                SelectListItem li = new SelectListItem
+                {
+                    Value = focusU.UserId,
+                    Text = focusU.FullName
+                };
+                recipientList.Add(li);
+            }
+                       
             if (model == null)
             {
                 return NotFound();
             }
 
             var vmitem = new List<AnswerQuestionViewModel>();
-
-            foreach (var question in questionDB)
             {
-                AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
+                foreach (var question in questionDB)
                 {
-                    taco.QuestionId = question.QuestionId;
-                    taco.QuestionText = question.QuestionText;
-                    //taco.Response = question.Answer.Response;
-                };                
+                    AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
+                    {
+                        taco.QuestionId = question.QuestionId;
+                        taco.QuestionText = question.QuestionText;
+                        taco.Response = null;
+                    };
+                    vmitem.Add(taco);
+                }
 
-                vmitem.Add(taco);
+                var viewModel = new AnswerCreateViewModel();
+                viewModel.SurveyId = surveyDB.SurveyId;
+                viewModel.SurveyName = surveyDB.SurveyName;
+                viewModel.Description = surveyDB.Description;
+                viewModel.Instructions = surveyDB.Instructions;
+                viewModel.AnswerQuestionViewModels = vmitem;
+                viewModel.ResponderUserId = user.UserId;
+                viewModel.Recipients = recipientList;
+
+                ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
+
+                return View(viewModel);
             }
-
-            var viewModel = new AnswerCreateViewModel();
-            viewModel.SurveyId = surveyDB.SurveyId;
-            viewModel.SurveyName = surveyDB.SurveyName;
-            viewModel.Description = surveyDB.Description;
-            viewModel.Instructions = surveyDB.Instructions;
-            viewModel.AnswerQuestionViewModels = model.AnswerQuestionViewModels;
-
-            ViewData["ResponderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-
-            return View(viewModel);
         }
 
         [HttpPost]
@@ -87,15 +106,15 @@ namespace FeedbackFriend.Controllers
         {
             var user = await GetCurrentUserAsync();
             // for (int i = 0; i < ViewModel.AnswerQuestionViewModel.Count; i++)
-            {
-                Answer answer = new Answer
-                {
-                    ResponderId = user.UserId,
-                    QuestionId = ViewModel.AnswerQuestionViewModels[i].QuestionId,
-                    // Response = ViewModel.AnswerQuestionViewModels.Response[i],
-                };
-                _context.Add(answer);
-            }
+            //{
+            //    Answer answer = new Answer
+            //    {
+            //        ResponderId = user.UserId,
+            //        QuestionId = ViewModel.AnswerQuestionViewModels[i].QuestionId,
+            //        // Response = ViewModel.AnswerQuestionViewModels.Response[i],
+            //    };
+            //    _context.Add(answer);
+            //}
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");

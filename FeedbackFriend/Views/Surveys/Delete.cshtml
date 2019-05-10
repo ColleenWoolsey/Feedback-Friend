@@ -4,13 +4,10 @@
     ViewData["Title"] = "Delete";
 }
 
-<h3>
-    Delete Survey     |
-    <a asp-action="LoggedIn">Back to List</a>
-</h3>
-
 <p class="text-danger">@ViewData["ErrorMessage"]</p>
-<h4>Are you sure you want to delete this Survey?</h4>
+<h4>
+    Are you sure you want to delete the Survey: @Html.DisplayFor(model => model.SurveyName)?     |    <a asp-action="LoggedIn">Back to List</a>
+</h4>
 <div>
     <hr />
     <dl class="row">

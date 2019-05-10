@@ -5,7 +5,7 @@
 }
 
 <h3>
-    <a asp-action="Create">Create New Survey</a>
+    <a asp-action="Create">Create New Feedback Opportunity</a>
 </h3>
 
 <table class="table">
@@ -17,10 +17,10 @@
             <th width="15%">
                 @Html.DisplayNameFor(model => model.SurveyName)
             </th>
-            <th width="31%">
+            <th width="30%">
                 @Html.DisplayNameFor(model => model.Instructions)
             </th>
-            <th width="31%">
+            <th width="30%">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th></th>
@@ -47,7 +47,7 @@
                     <a asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD Questions</a>
                     <a asp-action="Edit" asp-route-id="@item.SurveyId">EDIT Survey </a>
                     <a asp-action="Delete" asp-route-id="@item.SurveyId">DELETE Survey</a>
-                    <a asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">COMPLETE</a>
+                    <a asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">OFFER FEEDBACK</a>
                 </td>
             </tr>        }
     </tbody>
