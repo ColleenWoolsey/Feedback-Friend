@@ -18,7 +18,7 @@ namespace FeedbackFriend.Models
         public string GroupedQuestionText { get; set; }
         public int GroupedQuestionCount { get; set; }
 
-        public int GroupedUserId { get; set; }                
+        public string GroupedUserId { get; set; }                
         public string GroupedFirstName { get; set; }                
         public string GroupedLastName { get; set; }        
         public string GroupedFullName

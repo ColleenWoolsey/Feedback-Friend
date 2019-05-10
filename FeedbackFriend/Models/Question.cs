@@ -18,8 +18,10 @@ namespace FeedbackFriend.Models
 
         [Required]
         public int SurveyId { get; set; }
-
+       
         public Survey Survey { get; set; }
         public Answer Answer { get; set; }
+
+       // public AnswerCreateViewModel AnswerCreateViewModel { get; set; }
     }
 }

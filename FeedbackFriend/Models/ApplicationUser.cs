@@ -10,7 +10,7 @@ namespace FeedbackFriend.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
         [Display(Name = "First Name")]
@@ -29,8 +29,8 @@ namespace FeedbackFriend.Models
             }
         }
 
-        public virtual ICollection<Survey> Surveys { get; set; }
+        public ICollection<Survey> Surveys { get; set; }
 
-        public virtual ICollection<Answer> Answers { get; set; }
+        public ICollection<Answer> Answers { get; set; }
     }
 }

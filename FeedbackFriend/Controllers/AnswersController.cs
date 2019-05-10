@@ -29,77 +29,83 @@ namespace FeedbackFriend.Controllers
         // !!!  Any method that needs to see who the user is can invoke the method
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        // GET: Answers
+
+        // ************************************************************************  INDEX
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Answers
-                .Include(a => a.User)
-                .Include(a => a.Question)
-                .ThenInclude(q => q.Survey);
+            var applicationDbContext = _context.Answers.Include(a => a.Question);
             return View(await applicationDbContext.ToListAsync());
         }
 
 
-        //------------------------------------------------------------------------------------ CompleteSurvey
-        public async Task<IActionResult> ContextAnswer(int? id)
+        // ************************************************************************  COMPLETE
+        public async Task<IActionResult> Complete(int? id)
         {
-            if (id == null)
+            var model = new AnswerCreateViewModel();
+
+            var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);                    
+
+            var user = await GetCurrentUserAsync();
+            var userDB = await _context.Users.ToListAsync();
+            ViewData["UserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+
+            var questionDB = await _context.Questions.Where(q => q.SurveyId == id).ToListAsync();
+
+            if (model == null)
             {
                 return NotFound();
             }
 
-            var question = await _context.Answers
-                .Include(a => a.Question)
-                .Where(q => q.QuestionId == id).ToListAsync();
+            var vmitem = new List<AnswerQuestionViewModel>();
 
-            if (question == null)
+            foreach (var question in questionDB)
             {
-                return NotFound();
+                AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
+                {
+                    taco.QuestionId = question.QuestionId;
+                    taco.QuestionText = question.QuestionText;
+                    //taco.Response = question.Answer.Response;
+                };                
+
+                vmitem.Add(taco);
             }
 
-            return View(question);
+            var viewModel = new AnswerCreateViewModel();
+            viewModel.SurveyId = surveyDB.SurveyId;
+            viewModel.SurveyName = surveyDB.SurveyName;
+            viewModel.Description = surveyDB.Description;
+            viewModel.Instructions = surveyDB.Instructions;
+            viewModel.AnswerQuestionViewModels = model.AnswerQuestionViewModels;
+
+            ViewData["ResponderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CompletePost(AnswerCreateViewModel ViewModel)
+        {
+            var user = await GetCurrentUserAsync();
+            // for (int i = 0; i < ViewModel.AnswerQuestionViewModel.Count; i++)
+            {
+                Answer answer = new Answer
+                {
+                    ResponderId = user.UserId,
+                    QuestionId = ViewModel.AnswerQuestionViewModels[i].QuestionId,
+                    // Response = ViewModel.AnswerQuestionViewModels.Response[i],
+                };
+                _context.Add(answer);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
 
 
-        //-------------------------------------------------------------------------------------- ReturnSurvey
-        public async Task<IActionResult> ContextSurvey(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var survey = await _context.Surveys
-                .Include(q => q.Questions)
-                .FirstOrDefaultAsync(m => m.SurveyId == id);
 
-            if (survey == null)
-            {
-                return NotFound();
-            }
 
-            return View(survey);
-        }
-
-        public async Task<IActionResult> ContextQuestion(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var survey = await _context.Surveys
-                .Include(q => q.Questions)
-                .FirstOrDefaultAsync(m => m.SurveyId == id);
-
-            if (survey == null)
-            {
-                return NotFound();
-            }
-
-            return View(survey);
-        }
 
         //------------------------------------------------------------------------------- JoinQuestionsAnswers
         public async Task<IActionResult> JoinQuestionsAnswers(int? id)
@@ -162,7 +168,7 @@ namespace FeedbackFriend.Controllers
         public async Task<IActionResult> Create(int id, [Bind("AnswerId,Response,QuestionId,FocusId,ResponderId")] Answer answer)
         {
             ModelState.Remove("User");
-            ModelState.Remove("responderId");
+            ModelState.Remove("ResponderId");
             var user = await GetCurrentUserAsync();
             answer.ResponderId = user.UserId;
 

@@ -30,8 +30,9 @@ namespace FeedbackFriend.Models
 
         [NotMapped]
         public int NumQuestions { get; set; }
-        
+
         public List<Question> Questions { get; set; }
+        
         public List<SurveyAssignment> SurveyAssignments { get; set; }
     }
 }
