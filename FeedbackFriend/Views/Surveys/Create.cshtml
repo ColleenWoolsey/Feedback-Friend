@@ -5,7 +5,8 @@
 }
 
 <h3>
-    Create Survey     |
+    @*Survey:      @Html.DisplayFor(model => model.Survey.SurveyName)     |
+    <a asp-controller="Questions" asp-action="Create" asp-route-id="@Model.SurveyId">Add a Question</a>*@
     <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
 </h3>
 
@@ -16,6 +17,7 @@
             @*<input type="hidden" asp-for="SurveyId" /> Only need for Edit?*@
 
             <div class="form-group" style="margin-bottom: 30px;">
+                <label asp-for="Survey.SurveyName" class="control-label"></label>
                 <input asp-for="Survey.SurveyName" class="form-control" />
                 <span asp-validation-for="Survey.SurveyName" class="text-danger"></span>
             </div>
