@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FeedbackFriend.Migrations
 {
-    public partial class addanswer : Migration
+    public partial class NewThursday : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -41,7 +41,7 @@ namespace FeedbackFriend.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false)
                 },
@@ -180,21 +180,79 @@ namespace FeedbackFriend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "GroupedQuestions",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    GroupedSurveyId = table.Column<int>(nullable: false),
+                    GroupedSurveyName = table.Column<string>(nullable: true),
+                    GroupedSurveyDescription = table.Column<string>(nullable: true),
+                    GroupedSurveyInstructions = table.Column<string>(nullable: true),
+                    GroupedQuestionId = table.Column<int>(nullable: false),
+                    GroupedQuestionText = table.Column<string>(nullable: true),
+                    GroupedQuestionCount = table.Column<int>(nullable: false),
+                    GroupedUserId = table.Column<string>(nullable: true),
+                    GroupedFirstName = table.Column<string>(nullable: true),
+                    GroupedLastName = table.Column<string>(nullable: true),
+                    AnswerId = table.Column<int>(nullable: true),
+                    SurveyAssignmentId = table.Column<int>(nullable: true),
+                    SurveysViewModelSurveyId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupedQuestions", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    QuestionId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    QuestionText = table.Column<string>(nullable: true),
+                    SurveyId = table.Column<int>(nullable: false),
+                    GroupedQuestionsID = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.QuestionId);
+                    table.ForeignKey(
+                        name: "FK_Questions_GroupedQuestions_GroupedQuestionsID",
+                        column: x => x.GroupedQuestionsID,
+                        principalTable: "GroupedQuestions",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Questions_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "SurveyId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Answers",
                 columns: table => new
                 {
                     AnswerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Response = table.Column<int>(nullable: true),
-                    ResponderId = table.Column<int>(nullable: false),
+                    ResponderId = table.Column<string>(nullable: false),
                     QuestionId = table.Column<int>(nullable: false),
                     SurveyId = table.Column<int>(nullable: true),
-                    FocusId = table.Column<int>(nullable: false),
+                    FocusId = table.Column<string>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Answers", x => x.AnswerId);
+                    table.ForeignKey(
+                        name: "FK_Answers_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "QuestionId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Answers_Surveys_SurveyId",
                         column: x => x.SurveyId,
@@ -216,15 +274,20 @@ namespace FeedbackFriend.Migrations
                     SurveyAssignmentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     SurveyId = table.Column<int>(nullable: false),
-                    ResponderId = table.Column<int>(nullable: false),
-                    FocusId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    FocusId = table.Column<string>(nullable: true),
                     Assigned = table.Column<bool>(nullable: false),
-                    QuestionId = table.Column<int>(nullable: true),
-                    UserId = table.Column<string>(nullable: true)
+                    QuestionId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SurveyAssignment", x => x.SurveyAssignmentId);
+                    table.ForeignKey(
+                        name: "FK_SurveyAssignment_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "QuestionId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SurveyAssignment_Surveys_SurveyId",
                         column: x => x.SurveyId,
@@ -245,6 +308,7 @@ namespace FeedbackFriend.Migrations
                 {
                     SurveyId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AnswerId = table.Column<int>(nullable: true),
                     QuestionId = table.Column<int>(nullable: true),
                     SurveyId1 = table.Column<int>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
@@ -252,6 +316,18 @@ namespace FeedbackFriend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SurveysViewModel", x => x.SurveyId);
+                    table.ForeignKey(
+                        name: "FK_SurveysViewModel_Answers_AnswerId",
+                        column: x => x.AnswerId,
+                        principalTable: "Answers",
+                        principalColumn: "AnswerId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SurveysViewModel_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Questions",
+                        principalColumn: "QuestionId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_SurveysViewModel_Surveys_SurveyId1",
                         column: x => x.SurveyId1,
@@ -266,87 +342,24 @@ namespace FeedbackFriend.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "GroupedQuestions",
-                columns: table => new
-                {
-                    ID = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    GroupedSurveyId = table.Column<int>(nullable: false),
-                    GroupedSurveyName = table.Column<string>(nullable: true),
-                    GroupedSurveyDescription = table.Column<string>(nullable: true),
-                    GroupedSurveyInstructions = table.Column<string>(nullable: true),
-                    GroupedQuestionId = table.Column<int>(nullable: false),
-                    GroupedQuestionText = table.Column<string>(nullable: true),
-                    GroupedQuestionCount = table.Column<int>(nullable: false),
-                    GroupedUserId = table.Column<int>(nullable: false),
-                    GroupedFirstName = table.Column<string>(nullable: true),
-                    GroupedLastName = table.Column<string>(nullable: true),
-                    SurveyAssignmentId = table.Column<int>(nullable: true),
-                    SurveysViewModelSurveyId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupedQuestions", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_GroupedQuestions_SurveyAssignment_SurveyAssignmentId",
-                        column: x => x.SurveyAssignmentId,
-                        principalTable: "SurveyAssignment",
-                        principalColumn: "SurveyAssignmentId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_GroupedQuestions_SurveysViewModel_SurveysViewModelSurveyId",
-                        column: x => x.SurveysViewModelSurveyId,
-                        principalTable: "SurveysViewModel",
-                        principalColumn: "SurveyId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Questions",
-                columns: table => new
-                {
-                    QuestionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    SurveyId = table.Column<int>(nullable: false),
-                    QuestionText = table.Column<string>(nullable: false),
-                    GroupedQuestionsID = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Questions", x => x.QuestionId);
-                    table.ForeignKey(
-                        name: "FK_Questions_GroupedQuestions_GroupedQuestionsID",
-                        column: x => x.GroupedQuestionsID,
-                        principalTable: "GroupedQuestions",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Questions_Surveys_SurveyId",
-                        column: x => x.SurveyId,
-                        principalTable: "Surveys",
-                        principalColumn: "SurveyId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserId", "UserName" },
-                values: new object[] { "b7842170-0c16-41fd-9a28-2f19eaa02534", 0, "a172c192-7f77-4655-8fc4-67385f77bc91", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEFGxv7RI1cxHhjykXnR14Tt8tQ3ZscikQTFVa3t/9RQwA4DzlunnuyEwI+KLzdmWTw==", null, false, "3c8ffab4-5344-4e18-9cb6-dc3897e3bbda", false, 0, "admin@admin.com" });
+                values: new object[] { "293e4264-cdc5-4f67-bb40-3470378f58c8", 0, "6ade6bce-410e-4c57-9283-b75725270be0", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEGhmxIuazhMhzyAqPQGA+pNxzDyckmyu/vYRMoZwpFxZRVTMQx0pOGyXVfLncXBJLw==", null, false, "6f940274-d4d4-4aad-8b57-a46c5df5bf7a", false, null, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Surveys",
                 columns: new[] { "SurveyId", "Assigned", "Description", "Instructions", "SurveyName", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "b7842170-0c16-41fd-9a28-2f19eaa02534" },
-                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "b7842170-0c16-41fd-9a28-2f19eaa02534" }
+                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "293e4264-cdc5-4f67-bb40-3470378f58c8" },
+                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "293e4264-cdc5-4f67-bb40-3470378f58c8" }
                 });
 
             migrationBuilder.InsertData(
@@ -517,6 +530,11 @@ namespace FeedbackFriend.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GroupedQuestions_AnswerId",
+                table: "GroupedQuestions",
+                column: "AnswerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_GroupedQuestions_SurveyAssignmentId",
                 table: "GroupedQuestions",
                 column: "SurveyAssignmentId");
@@ -557,6 +575,11 @@ namespace FeedbackFriend.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SurveysViewModel_AnswerId",
+                table: "SurveysViewModel",
+                column: "AnswerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SurveysViewModel_QuestionId",
                 table: "SurveysViewModel",
                 column: "QuestionId");
@@ -572,32 +595,36 @@ namespace FeedbackFriend.Migrations
                 column: "UserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Answers_Questions_QuestionId",
-                table: "Answers",
-                column: "QuestionId",
-                principalTable: "Questions",
-                principalColumn: "QuestionId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_SurveyAssignment_Questions_QuestionId",
-                table: "SurveyAssignment",
-                column: "QuestionId",
-                principalTable: "Questions",
-                principalColumn: "QuestionId",
+                name: "FK_GroupedQuestions_Answers_AnswerId",
+                table: "GroupedQuestions",
+                column: "AnswerId",
+                principalTable: "Answers",
+                principalColumn: "AnswerId",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_SurveysViewModel_Questions_QuestionId",
-                table: "SurveysViewModel",
-                column: "QuestionId",
-                principalTable: "Questions",
-                principalColumn: "QuestionId",
+                name: "FK_GroupedQuestions_SurveyAssignment_SurveyAssignmentId",
+                table: "GroupedQuestions",
+                column: "SurveyAssignmentId",
+                principalTable: "SurveyAssignment",
+                principalColumn: "SurveyAssignmentId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_GroupedQuestions_SurveysViewModel_SurveysViewModelSurveyId",
+                table: "GroupedQuestions",
+                column: "SurveysViewModelSurveyId",
+                principalTable: "SurveysViewModel",
+                principalColumn: "SurveyId",
                 onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Answers_Questions_QuestionId",
+                table: "Answers");
+
             migrationBuilder.DropForeignKey(
                 name: "FK_SurveyAssignment_Questions_QuestionId",
                 table: "SurveyAssignment");
@@ -605,9 +632,6 @@ namespace FeedbackFriend.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_SurveysViewModel_Questions_QuestionId",
                 table: "SurveysViewModel");
-
-            migrationBuilder.DropTable(
-                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -638,6 +662,9 @@ namespace FeedbackFriend.Migrations
 
             migrationBuilder.DropTable(
                 name: "SurveysViewModel");
+
+            migrationBuilder.DropTable(
+                name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "Surveys");

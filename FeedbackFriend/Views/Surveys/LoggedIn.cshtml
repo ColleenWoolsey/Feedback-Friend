@@ -47,7 +47,7 @@
                     <a asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD Questions</a>
                     <a asp-action="Edit" asp-route-id="@item.SurveyId">EDIT Survey </a>
                     <a asp-action="Delete" asp-route-id="@item.SurveyId">DELETE Survey</a>
-                    <a asp-Controller="Answers" asp-action="ReturnSurvey" asp-route-id="@item.SurveyId">COMPLETE</a>
+                    <a asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">COMPLETE</a>
                 </td>
             </tr>        }
     </tbody>

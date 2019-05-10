@@ -22,7 +22,7 @@ namespace FeedbackFriend.Models
 
         [Required]
         [Display(Name = "Feedback Provider")]
-        public int ResponderId { get; set; }
+        public string ResponderId { get; set; }
         
         [Required]
         public int QuestionId { get; set; }
@@ -31,8 +31,8 @@ namespace FeedbackFriend.Models
 
         [Required]
         [Display(Name = "Feedback Recipient")]
-        public int FocusId { get; set; }        
+        public string FocusId { get; set; }        
 
-        public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }       
     }    
 }

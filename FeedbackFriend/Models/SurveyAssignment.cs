@@ -11,8 +11,8 @@ namespace FeedbackFriend.Models
         [Key]
         public int SurveyAssignmentId { get; set; }
         public int SurveyId { get; set; }       
-        public int ResponderId { get; set; }
-        public int FocusId { get; set; }
+        public string UserId { get; set; }
+        public string FocusId { get; set; }
         public bool Assigned { get; set; }
 
         public Survey Survey { get; set; }
