@@ -6,6 +6,12 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        <li>
+            <a runat="server" href="~/Account/Manage" title="Manage your account">
+                Hello, ((YourIdentity)Context.User.Identity).FirstName!
+            </a>
+        </li>
+
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
         </li>
@@ -21,8 +27,8 @@
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         @*<li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>*@
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>*@
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("LoggedIn", "Surveys", new { area = "" })">
                 <button type="submit" class="nav-link btn btn-link text-dark">LogIn</button>
