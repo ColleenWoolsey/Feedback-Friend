@@ -49,11 +49,10 @@ namespace FeedbackFriend.Controllers
 
             // Get current user to assign ResponderUserId in VM
             var user = await GetCurrentUserAsync();
-            model.ResponderUserId = user.UserId;
-
+            
             // Get ALL Users to create a Select List to choose FocusUser
             var userDB = _context.Users;
-            
+
             List<SelectListItem> recipientList = new List<SelectListItem>();
 
             recipientList.Insert(0, new SelectListItem { Text = "REQUIRED!! Select a person to Receive Feedback", Value = "" });
@@ -62,12 +61,12 @@ namespace FeedbackFriend.Controllers
             {
                 SelectListItem li = new SelectListItem
                 {
-                    Value = focusU.UserId,
+                    Value = focusU.Id,
                     Text = focusU.FullName
                 };
                 recipientList.Add(li);
             }
-                       
+
             if (model == null)
             {
                 return NotFound();
@@ -93,6 +92,7 @@ namespace FeedbackFriend.Controllers
                 viewModel.Instructions = surveyDB.Instructions;
                 viewModel.AnswerQuestionViewModels = vmitem;
                 viewModel.ResponderUserId = user.UserId;
+                viewModel.ResponderUserName = user.FullName;
                 viewModel.Recipients = recipientList;
 
                 ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
@@ -102,28 +102,29 @@ namespace FeedbackFriend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CompletePost(AnswerCreateViewModel ViewModel)
+        public async Task<IActionResult> Complete(AnswerCreateViewModel viewModel)
         {
             var user = await GetCurrentUserAsync();
-            // for (int i = 0; i < ViewModel.AnswerQuestionViewModel.Count; i++)
-            //{
-            //    Answer answer = new Answer
-            //    {
-            //        ResponderId = user.UserId,
-            //        QuestionId = ViewModel.AnswerQuestionViewModels[i].QuestionId,
-            //        // Response = ViewModel.AnswerQuestionViewModels.Response[i],
-            //    };
-            //    _context.Add(answer);
-            //}
+            //var answer = new Answer();
+            //answer.ResponderId = user.Id;
+            //_context.Add(answer);
+
+            for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
+            {
+                Answer newAnswer = new Answer
+                {
+                    //ResponderId = viewModel.ResponderUserId,
+                    ResponderId = user.Id,
+                    FocusId = viewModel.FocusUserId,
+                    QuestionId = viewModel.AnswerQuestionViewModels[i].QuestionId,
+                    Response = viewModel.AnswerQuestionViewModels[i].Response
+                };
+                _context.Add(newAnswer);
+    }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("LoggedIn", "Surveys");
         }
-
-
-
-
-
 
 
         //------------------------------------------------------------------------------- JoinQuestionsAnswers
@@ -201,23 +202,8 @@ namespace FeedbackFriend.Controllers
             return View(answer);
         }
 
-        //        surveyQuestionsListViewModel.SurveyId = id;
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        var newQuestion = new Question();
-        //        newQuestion.SurveyId = surveyQuestionsListViewModel.SurveyId;
-        //        newQuestion.QuestionText = surveyQuestionsListViewModel.QuestionText;
-
-        //        _context.Add(newQuestion);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction("Details", "Surveys", new { id = newQuestion.SurveyId });
-        //    }
-        //    return View(surveyQuestionsListViewModel);
-        //}
-
-
-
+        // ************************************************************************ DETAILS
         // GET: Answers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -237,29 +223,8 @@ namespace FeedbackFriend.Controllers
             return View(answer);
         }
 
-        //// GET: Answers/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "QuestionText");
 
-        //    return View();
-        //}
-
-        //// POST: Answers/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("AnswerId,Response,ResponderId,QuestionId,FocusId")] Answer answer)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(answer);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["QuestionId"] = new SelectList(_context.Questions, "QuestionId", "QuestionText", answer.QuestionId);
-        //    return View(answer);
-        //}
-
+        // ********************************************************************************  EDIT
         // GET: Answers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
