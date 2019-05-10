@@ -64,7 +64,7 @@ namespace FeedbackFriend.Controllers
                 {
                     taco.QuestionId = question.QuestionId;
                     taco.QuestionText = question.QuestionText;
-                    //taco.Response = question.Answer.Response;
+                    taco.Response = null;
                 };                
 
                 vmitem.Add(taco);
@@ -75,7 +75,7 @@ namespace FeedbackFriend.Controllers
             viewModel.SurveyName = surveyDB.SurveyName;
             viewModel.Description = surveyDB.Description;
             viewModel.Instructions = surveyDB.Instructions;
-            viewModel.AnswerQuestionViewModels = model.AnswerQuestionViewModels;
+            viewModel.AnswerQuestionViewModels = vmitem;
 
             ViewData["ResponderId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
 
@@ -87,15 +87,15 @@ namespace FeedbackFriend.Controllers
         {
             var user = await GetCurrentUserAsync();
             // for (int i = 0; i < ViewModel.AnswerQuestionViewModel.Count; i++)
-            {
-                Answer answer = new Answer
-                {
-                    ResponderId = user.UserId,
-                    QuestionId = ViewModel.AnswerQuestionViewModels[i].QuestionId,
-                    // Response = ViewModel.AnswerQuestionViewModels.Response[i],
-                };
-                _context.Add(answer);
-            }
+            //{
+            //    Answer answer = new Answer
+            //    {
+            //        ResponderId = user.UserId,
+            //        QuestionId = ViewModel.AnswerQuestionViewModels[i].QuestionId,
+            //        // Response = ViewModel.AnswerQuestionViewModels.Response[i],
+            //    };
+            //    _context.Add(answer);
+            //}
 
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
