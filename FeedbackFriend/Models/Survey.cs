@@ -15,7 +15,7 @@ namespace FeedbackFriend.Models
         [Required]
         [Display(Name = "Created By")]
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public ApplicationUser User { get; set; }        
 
         [Required]
         [Display(Name = "Survey Name")]

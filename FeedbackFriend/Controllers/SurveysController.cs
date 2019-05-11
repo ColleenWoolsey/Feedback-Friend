@@ -53,187 +53,197 @@ namespace FeedbackFriend.Controllers
 
         // ********************************************************************************LoggedIn
         public async Task<IActionResult> LoggedIn()
-    {
-        var applicationDbContext = _context.Surveys
-           .Include(s => s.Questions)
-           .Include(s => s.User)
-           .OrderBy(s => s.SurveyName);
-        //.Take(20);
-
-        return View(await applicationDbContext.ToListAsync());
-    }
-
-
-
-    // ******************************************************************************** DETAILS
-    // GET: Surveys/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
         {
-            return NotFound();
+            var applicationDbContext = _context.Surveys
+               .Include(s => s.Questions)
+               .Include(s => s.User)
+               .OrderBy(s => s.SurveyName);
+            //.Take(20);
+
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        var survey = await _context.Surveys
-            .Include(q => q.Questions)
-            .FirstOrDefaultAsync(m => m.SurveyId == id);
-        if (survey == null)
+
+
+        // ******************************************************************************** DETAILS
+        // GET: Surveys/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var survey = await _context.Surveys
+                .Include(q => q.Questions)
+                .FirstOrDefaultAsync(m => m.SurveyId == id);
+            if (survey == null)
+            {
+                return NotFound();
+            }
+
+            return View(survey);
         }
 
-        return View(survey);
-    }
 
 
+        // ******************************************************************************** CREATE
+        // GET: Surveys/Create
 
-    // ******************************************************************************** CREATE
-    // GET: Surveys/Create
-
-    public async Task<IActionResult> Create()
-    {
-        var user = await GetCurrentUserAsync();
-        if (user == null)
+        public async Task<IActionResult> Create()
         {
-            return NotFound();
+            var user = await GetCurrentUserAsync();
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View();
         }
-        return View();
-    }
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
-    {
-        ModelState.Remove("User");
-        ModelState.Remove("userId");
-        var user = await GetCurrentUserAsync();
-        survey.UserId = user.Id;
-
-        if (ModelState.IsValid)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("SurveyId,UserId,SurveyName,Instructions,Description")] Survey survey)
         {
-            _context.Add(survey);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Create", "Questions", new { id = survey.SurveyId });
-        }
+            ModelState.Remove("User");
+            ModelState.Remove("userId");
+            var user = await GetCurrentUserAsync();
+            survey.UserId = user.Id;
 
-        return View(survey);
-    }
+            if (ModelState.IsValid)
+            {
+                _context.Add(survey);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Create", "Questions", new { id = survey.SurveyId });
+            }
 
-
-
-    // ********************************************************************************  DELETE
-    // GET: Surveys/Delete/5
-    // public async Task<IActionResult> Delete(int? id)
-    public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
-    {
-        if (id == null)
-        {
-            return NotFound();
+            return View(survey);
         }
 
-        var survey = await _context.Surveys
+
+
+        // ********************************************************************************  DELETE
+        // GET: Surveys/Delete/5
+        // public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await GetCurrentUserAsync();
+
+            var survey = await _context.Surveys
             .Include(s => s.User)
             .AsNoTracking()
             .FirstOrDefaultAsync(m => m.SurveyId == id);
-        if (survey == null)
-        {
-            return NotFound();
+
+            if (survey == null)
+            {
+                ViewData["ErrorMessage"] =
+                    "You may only delete surveys you created";
+                // return NotFound();
+            }
+
+            if (user.Id != survey.UserId)
+            {
+                return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "Delete failed. Try again, and if the problem persists " +
+                    "see your system administrator.";
+            }
+            return View(survey);
         }
-        if (saveChangesError.GetValueOrDefault())
+        // POST: Surveys/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            ViewData["ErrorMessage"] =
-                "Delete failed. Try again, and if the problem persists " +
-                "see your system administrator.";
-        }
-        return View(survey);
-    }
-    // POST: Surveys/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        var survey = await _context.Surveys.FindAsync(id);
-        if (survey == null)
-        {
-            return RedirectToAction(nameof(LoggedIn));
-        }
+            var survey = await _context.Surveys.FindAsync(id);
+            if (survey == null)
+            {
+                return RedirectToAction(nameof(LoggedIn));
+            }
 
-        try
-        {
-            _context.Surveys.Remove(survey);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(LoggedIn));
-        }
-        catch (DbUpdateException /* ex */)
-        {
-            //Log the error (uncomment ex variable name and write a log.)
-            return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
-        }
-    }
-    private bool SurveyExists(int id)
-    {
-        return _context.Surveys.Any(e => e.SurveyId == id);
-    }
-
-
-
-    // ****************************************************************************************  EDIT
-    // GET: Surveys/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var survey = await _context.Surveys.FindAsync(id);
-        if (survey == null)
-        {
-            return NotFound();
-        }
-
-        return View(survey);
-    }
-
-    // POST: Surveys/Edit/5
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("SurveyId,UserId,SurveyName,Description,Instructions")] Survey survey)
-    {
-        if (id != survey.SurveyId)
-        {
-            return NotFound();
-        }
-        ModelState.Remove("User");
-        ModelState.Remove("UserId");
-
-        ApplicationUser user = await GetCurrentUserAsync();
-
-        survey.User = user;
-        survey.UserId = user.Id;
-
-        if (ModelState.IsValid)
-        {
             try
             {
-                _context.Update(survey);
+                _context.Surveys.Remove(survey);
                 await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(LoggedIn));
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException /* ex */)
             {
-                if (!SurveyExists(survey.SurveyId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                //Log the error (uncomment ex variable name and write a log.)
+                return RedirectToAction(nameof(Delete), new { id = id, saveChangesError = true });
             }
-            return RedirectToAction(nameof(LoggedIn));
         }
-        return View(survey);
+        private bool SurveyExists(int id)
+        {
+            return _context.Surveys.Any(e => e.SurveyId == id);
+        }
+
+
+
+        // ****************************************************************************************  EDIT
+        // GET: Surveys/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var survey = await _context.Surveys.FindAsync(id);
+            if (survey == null)
+            {
+                return NotFound();
+            }
+
+            return View(survey);
+        }
+
+        // POST: Surveys/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("SurveyId,UserId,SurveyName,Description,Instructions")] Survey survey)
+        {
+            if (id != survey.SurveyId)
+            {
+                return NotFound();
+            }
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
+
+            ApplicationUser user = await GetCurrentUserAsync();
+
+            survey.User = user;
+            survey.UserId = user.Id;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(survey);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!SurveyExists(survey.SurveyId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(LoggedIn));
+            }
+            return View(survey);
+        }
     }
-}
 }
 
 
