@@ -29,7 +29,8 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-toggleable-lg bg-white border-bottom box-shadow mb-3">
+        @*<nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-light bg-light fixed-top border-bottom box-shadow mb-3">*@
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary box-shadow mb-4">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
 
@@ -39,23 +40,23 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <ul class="nav nav-tabs flex-grow-1">
-                        <li class="nav-item btn-primary">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    <ul class="nav flex-grow-1 nav-pills active">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Feedback Friend HOME</a>
                         </li>
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item btn-success">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Surveys" asp-action="LoggedIn">Survey List</a>
+                            <li class="nav-itemnav-pills">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Surveys" asp-action="LoggedIn">SURVEY LIST</a>
                             </li>
 
-                            <li class="nav-item btn-warning">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Surveys" asp-action="Create">Create Survey</a>
+                            <li class="nav-item nav-pills">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Surveys" asp-action="Create">CREATE SURVEY</a>
                             </li>
 
-                            <li class="nav-item btn-warning">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Answers" asp-action="Index">Results</a>
+                            <li class="nav-item nav-pills">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Answers" asp-action="Index">RESULTS</a>
                             </li>
                         }
                     </ul>
