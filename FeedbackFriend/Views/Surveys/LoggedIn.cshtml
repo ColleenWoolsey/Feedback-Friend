@@ -4,51 +4,57 @@
     ViewData["Title"] = "LoggedIn";
 }
 
-<h3>
-    <a asp-action="Create">Create New Feedback Opportunity</a>
-</h3>
-
 <table class="table">
     <thead>
-        <tr>
-            <th width="10%">
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th width="15%">
+        <tr style="background-color: #53afff; color: white; font-size:x-large;">
+            <th width="20%">
                 @Html.DisplayNameFor(model => model.SurveyName)
             </th>
-            <th width="30%">
+            <th width="39%">
                 @Html.DisplayNameFor(model => model.Instructions)
             </th>
-            <th width="30%">
+            <th width="39%">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th></th>
         </tr>
     </thead>
-    <tbody>
+
+    <tbody style="background-color: #c9e6ff;">
         @foreach (var item in Model)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.FullName)
-                </td>
-                <td>
+                <td style="background-color:aliceblue; font-size: larger; font-weight: 500;">
                     @Html.DisplayFor(modelItem => item.SurveyName)
                 </td>
+                <td style="background-color:aliceblue">
+                    <textarea style="border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Description) </textarea>
+                </td>
+                <td style="background-color:aliceblue">
+                    <textarea style="border: none; width: 100%; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Instructions) </textarea>
+                </td>
+            </tr>
+            <tr style="background-color: white;">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Instructions)
+                    <a style="background-color: aliceblue; font-size: larger; border: none;" asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">COMPLETE SURVEY</a>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>                        
-                <td style="font-weight: bold;">
-                    <a asp-action="Details" asp-route-id="@item.SurveyId">EDIT Questions</a>
-                    <a asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD Questions</a>
-                    <a asp-action="Edit" asp-route-id="@item.SurveyId">EDIT Survey </a>
-                    <a asp-action="Delete" asp-route-id="@item.SurveyId">DELETE Survey</a>
-                    <a asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">OFFER FEEDBACK</a>
+                    <strong>QUESTIONS</strong>
+                    <a style="background-color: aliceblue; font-size: larger;" asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD</a> *
+                    <a style="background-color: aliceblue; font-size: larger;" asp-action="Details" asp-route-id="@item.SurveyId">EDIT</a>
+
                 </td>
-            </tr>        }
+                <td>
+                    <strong>SURVEY</strong>
+                    <a style="background-color: aliceblue; font-size: larger;" asp-action="Edit" asp-route-id="@item.SurveyId">EDIT</a> *
+                    <a style="background-color: aliceblue; font-size: larger;" asp-action="Delete" asp-route-id="@item.SurveyId">DELETE</a>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        }
     </tbody>
 </table>
