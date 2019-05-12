@@ -6,80 +6,83 @@
 
 @{ int rowNo = 0; }
 
-<h3>
-    Add Question for Survey:      @Html.DisplayFor(model => model.SurveyName)     |
-    <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
-</h3>
+<div class="card" style="border: 3px solid #6c757d; padding: 20px 25px 20px 25px; background-color: #c4e1ff;">
+    <div class="card-header" style="background-color: #f0f1f2;">
+        <h3>
+            Add Question for Survey:      @Html.DisplayFor(model => model.SurveyName)     |
+            <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
+        </h3>
 
-    <table class="table card-header">
-        <thead>            
-            <tr>
-                <th width="50%">@Html.DisplayNameFor(model => model.Description)</th>
-                <th width="50%">@Html.DisplayNameFor(model => model.Instructions)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
-                <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
-            </tr>
-        </tbody>
-    </table>
-    <hr />
+        <table class="table card-header" style="background-color: #0062cc; color:white;">
+            <thead>
+                <tr>
+                    <th width="50%">@Html.DisplayNameFor(model => model.Description)</th>
+                    <th width="50%">@Html.DisplayNameFor(model => model.Instructions)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
+                    <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
+                </tr>
+            </tbody>
+        </table>
+        <hr style="font-weight:900;" />
 
 
-    <div class="row">
-        <div class="col-md-12 d-md-inline-block">
-            <form asp-action="Create">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-12 d-md-inline-block">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                <div class="form-group">
-                    <label asp-for="QuestionText" class="control-label"></label>
-                    <input asp-for="QuestionText" class="form-control" />
-                    <span asp-validation-for="QuestionText" class="text-danger"></span>
-                </div>
-
-                <div class="form-group">
-                    <input type="hidden" asp-for="QuestionId" />
-                    <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
-                </div>
-
-                <div class="form-group">
-                    @*<div class="col-md-offset-2 col-md-10">*@
-                    <div class="col-md-10">
-                        <table>
-                            <tr>
-                                @{
-                                    int cnt = 0;
-                                    List<FeedbackFriend.Models.Question> questions = ViewBag.Questions;
-
-                                    if (questions != null)
-                                    {
-
-                                        foreach (var question in questions)
-                                        {
-                                            if (cnt++ % 1 == 0)
-                                            {
-                                            @:</tr><tr>
-                                            }
-                                            <td>
-                                                @(rowNo += 1).
-                                            </td>
-                                            @:<td>
-                                                @Html.DisplayFor(modelItem => question.QuestionText)
-                                            @:</td>
-                                        }
-                                    @:</tr>
-                                }
-                                }
-                            </table>
-                        </div>
+                    <div class="form-group">
+                        <label asp-for="QuestionText" class="control-label"></label>
+                        <input asp-for="QuestionText" class="form-control" />
+                        <span asp-validation-for="QuestionText" class="text-danger"></span>
                     </div>
-                </form>
+
+                    <div class="form-group">
+                        <input type="hidden" asp-for="QuestionId" />
+                        <input type="submit" value="Add Question to Survey" class="btn btn-primary" />
+                    </div>
+
+                    <div class="form-group">
+                        @*<div class="col-md-offset-2 col-md-10">*@
+                        <div class="col-md-10">
+                            <table>
+                                <tr>
+                                    @{
+                                        int cnt = 0;
+                                        List<FeedbackFriend.Models.Question> questions = ViewBag.Questions;
+
+                                        if (questions != null)
+                                        {
+
+                                            foreach (var question in questions)
+                                            {
+                                                if (cnt++ % 1 == 0)
+                                                {
+                                                @:</tr><tr>
+                                                }
+                                                <td>
+                                                    @(rowNo += 1).
+                                                </td>
+                                                @:<td>
+                                                    @Html.DisplayFor(modelItem => question.QuestionText)
+                                                @:</td>
+                                            }
+                                        @:</tr>
+                                    }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-
-        @section Scripts
-            {
-            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        }
+    </div>
+    @section Scripts
+        {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

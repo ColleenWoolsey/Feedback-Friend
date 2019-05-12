@@ -136,16 +136,9 @@ namespace FeedbackFriend.Controllers
             .AsNoTracking()
             .FirstOrDefaultAsync(m => m.SurveyId == id);
 
-            if (survey == null)
+            if (survey == null || survey.UserId != user.Id)
             {
-                ViewData["ErrorMessage"] =
-                    "You may only delete surveys you created";
-                // return NotFound();
-            }
-
-            if (user.Id != survey.UserId)
-            {
-                return NotFound();
+                 return NotFound();
             }
 
             if (saveChangesError.GetValueOrDefault())

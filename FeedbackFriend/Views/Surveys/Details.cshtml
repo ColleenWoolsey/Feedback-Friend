@@ -5,43 +5,46 @@
 }
 @{ int rowNo = 0; }
 
-<h3>
-    Survey:      @Html.DisplayFor(model => model.SurveyName)     |
-    <a asp-controller="Questions" asp-action="Create" asp-route-id="@Model.SurveyId">Add a Question</a>     |
-    <a asp-action="LoggedIn">Back to List</a>     |
-</h3>
+<div class="card">
+    <div class="card-header" style="background-color: #d2d5d8;">
+        <h3>
+            Survey:      @Html.DisplayFor(model => model.SurveyName)     |
+            <a asp-controller="Questions" asp-action="Create" asp-route-id="@Model.SurveyId">Add a Question</a>     |
+            <a asp-action="LoggedIn">Back to List</a>
+        </h3>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th width="50%">@Html.DisplayNameFor(model => model.Description)</th>
-            <th width="50%">@Html.DisplayNameFor(model => model.Instructions)</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
-            <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
-        </tr>
-    </tbody>
-</table>
+        <table class="table card-header"style="background-color: #0062cc; color:white;">
+            <tbody>
+                <tr>
+                    <td style="font-size:small;">@Html.DisplayFor(model => model.Description)</td>
+                    <td style="font-size:small;">@Html.DisplayFor(model => model.Instructions)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
+    <div>
+        <table class="table">
+            <tbody class="card-body">
+                @foreach (var item in Model.Questions)
+                {
+                    <tr style="background-color: #f0f1f2;">
+                        <td>
+                            <a  style="background-color: white;;" class="btn btn-outline-secondary offset-2" asp-controller="Questions" asp-action="Edit" asp-route-id="@item.QuestionId">*EDIT*</a>
+                        </td>
+                        <td>
+                            <a  style="background-color: white;" class="btn btn-outline-secondary" asp-controller="Questions" asp-action="Delete" asp-route-id="@item.QuestionId">DELETE</a>
+                        </td>
+                        <td style="font-weight:600;">
+                            @(rowNo += 1).
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuestionText)
+                        </td>                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
-<table class="table">
-    <thead>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Questions)
-        {
-            <tr>
-                <td>
-                    <a asp-controller="Questions" asp-action="Edit" asp-route-id="@item.QuestionId">Edit</a>     |
-                    <a asp-controller="Questions" asp-action="Delete" asp-route-id="@item.QuestionId">Delete</a>     |
-                    @(rowNo += 1).
-                    @Html.DisplayFor(modelItem => item.QuestionText)
-
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>

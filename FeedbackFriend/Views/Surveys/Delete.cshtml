@@ -4,36 +4,37 @@
     ViewData["Title"] = "Delete";
 }
 
-<p class="text-danger">@ViewData["ErrorMessage"]</p>
-<h4>
-    Are you sure you want to delete the Survey: @Html.DisplayFor(model => model.SurveyName)?     |    <a asp-action="LoggedIn">Back to List</a>
-</h4>
-<div>
-    <hr />
-    <dl class="row">
-        
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SurveyName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SurveyName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Instructions)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Instructions)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="SurveyId" />
-        <input type="submit" value="Delete" class="btn btn-danger" />
-    </form>
+<div style="border: 3px solid #dc3545; padding: 20px 25px 20px 25px;">
+    <p class="text-danger">@ViewData["ErrorMessage"]</p>
+    <h4>
+        Are you sure you want to delete the Survey: @Html.DisplayFor(model => model.SurveyName)?     |    <a asp-action="LoggedIn">Back to List</a>
+    </h4>
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.SurveyName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.SurveyName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Instructions)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Instructions)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="SurveyId" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        </form>
+    </div>
 </div>
