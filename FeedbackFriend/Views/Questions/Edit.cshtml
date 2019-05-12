@@ -4,35 +4,32 @@
     ViewData["Title"] = "Edit";
 }
 
-<h3>
-    Edit Question for Survey:      @Html.DisplayFor(model => model.Survey.SurveyName)     |
-    <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
-</h3>
+<div class="card" style="border: 3px solid #6c757d; padding: 10px 10px 10px 10px; background-color: #0062cc;">
+    <div class="card-header" style="background-color: #d2d5d8; padding: 10px 10px 10px 10px;">
+        <h3>
+            Edit Question for Survey:      @Html.DisplayFor(model => model.Survey.SurveyName)     |
+            <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
+        </h3>
+    </div>
+    <div class="container" style="background-color: #ebf5ff; padding: 0px 10px 10px 10px;">
+        <div class="col-md-12 card-body" style="background-color: #f0f1f2;">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="QuestionId" />
+                <input type="hidden" asp-for="SurveyId" />
 
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="QuestionId" />
-            <input type="hidden" asp-for="SurveyId" />
-
-            <div class="form-group">
-                <label asp-for="QuestionText" class="control-label"></label>
-                <input asp-for="QuestionText" class="form-control" />
-                <span asp-validation-for="QuestionText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="QuestionText" class="control-label"></label>
+                    <input asp-for="QuestionText" class="form-control" />
+                    <span asp-validation-for="QuestionText" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="col-lg-2 offset-1" style="background-color: #0062cc; font-size:larger; color: white;" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-
-<div>
-    <a asp-controller="Surveys" asp-action="Details" asp-route-id="@Model.SurveyId">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

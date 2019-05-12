@@ -33,10 +33,6 @@
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css" />
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.css.map" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css" />
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map" />
     <None Include="wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js" />
