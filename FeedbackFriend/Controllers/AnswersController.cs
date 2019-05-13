@@ -40,7 +40,10 @@ namespace FeedbackFriend.Controllers
         // ************************************************************************  RESULTS
         public async Task<IActionResult> Results()
         {
-            var applicationDbContext = _context.Answers.Include(a => a.Question);
+            var applicationDbContext = _context.Answers
+                .Include(a => a.Question)
+                .Include(a => a.User);
+            
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -88,6 +91,8 @@ namespace FeedbackFriend.Controllers
                 return NotFound();
             }
 
+            var currentDateTime = DateTime.Now;
+
             var vmitem = new List<AnswerQuestionViewModel>();
             {
                 foreach (var question in questionDB)
@@ -110,6 +115,7 @@ namespace FeedbackFriend.Controllers
                 viewModel.ResponderUserId = user.UserId;
                 viewModel.ResponderUserName = user.FullName;
                 viewModel.Recipients = recipientList;
+                viewModel.ResponseDate = currentDateTime;
 
                 ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
 
@@ -121,19 +127,24 @@ namespace FeedbackFriend.Controllers
         public async Task<IActionResult> Complete(AnswerCreateViewModel viewModel)
         {
             var user = await GetCurrentUserAsync();
-            //var answer = new Answer();
-            //answer.ResponderId = user.Id;
-            //_context.Add(answer);
+
+            var noDuplicate = await _context.Answers.FirstOrDefaultAsync(a => a.FocusId == viewModel.FocusUserId && a.ResponderId == user.Id);
+            if (noDuplicate.FocusId != null)
+            {
+                ViewBag.Message = String.Format("You have already given feedback to this Recipient");
+            }
+
+            var currentDateTime = DateTime.Now;
 
             for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
             {
                 Answer newAnswer = new Answer
                 {
-                    //ResponderId = viewModel.ResponderUserId,
                     ResponderId = user.Id,
                     FocusId = viewModel.FocusUserId,
                     QuestionId = viewModel.AnswerQuestionViewModels[i].QuestionId,
-                    Response = viewModel.AnswerQuestionViewModels[i].Response
+                    Response = viewModel.AnswerQuestionViewModels[i].Response,
+                    ResponseDate = currentDateTime
                 };
                 _context.Add(newAnswer);
             }
@@ -143,114 +154,14 @@ namespace FeedbackFriend.Controllers
         }
 
         // ************************************************************************  COMPLETE
-        public async Task<IActionResult> Complete2(int? id)
-        {
-            var model = new AnswerCreateViewModel();
+        
+        
+            //if (viewModel.FocusUserId == null)
+            //{
+            //    ViewBag.Message = String.Format("Did you choose a feedback recipient?");
+            //    var userDB = _context.Users;
 
-            var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);
-
-            var questionDB = await _context.Questions.Where(q => q.SurveyId == id).ToListAsync();
-
-            // Get current user to assign ResponderUserId in VM
-            var user = await GetCurrentUserAsync();
-
-            // Get ALL Users to create a Select List to choose FocusUser
-            var userDB = _context.Users;
-
-            List<SelectListItem> recipientList = new List<SelectListItem>();
-
-            recipientList.Insert(0, new SelectListItem { Text = "REQUIRED! Please Select a person to Receive Feedback", Value = "" });
-
-            foreach (var focusU in userDB)
-            {
-                SelectListItem li = new SelectListItem
-                {
-                    Value = focusU.Id,
-                    Text = focusU.FullName
-                };
-                recipientList.Add(li);
-            }
-
-            if (model == null)
-            {
-                return NotFound();
-            }
-
-            var vmitem = new List<AnswerQuestionViewModel>();
-            {
-                foreach (var question in questionDB)
-                {
-                    AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
-                    {
-                        taco.QuestionId = question.QuestionId;
-                        taco.QuestionText = question.QuestionText;
-                        taco.Response = null;
-                    };
-                    vmitem.Add(taco);
-                }
-
-                var viewModel = new AnswerCreateViewModel();
-
-                viewModel.SurveyId = surveyDB.SurveyId;
-                viewModel.SurveyName = surveyDB.SurveyName;
-                viewModel.Description = surveyDB.Description;
-                viewModel.Instructions = surveyDB.Instructions;
-                viewModel.AnswerQuestionViewModels = vmitem;
-                viewModel.ResponderUserId = user.UserId;
-                viewModel.ResponderUserName = user.FullName;
-                viewModel.Recipients = recipientList;
-
-                ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
-
-                return View(viewModel);
-
-            }
-        }
-
-
-        [HttpPost]
-        public async Task<IActionResult> Complete2(AnswerCreateViewModel viewModel)
-        {
-            if (viewModel.FocusUserId == null)
-            {
-                ViewBag.Message = String.Format("Did you choose a feedback recipient?");
-                var userDB = _context.Users;
-
-                List<SelectListItem> recipientList = new List<SelectListItem>();
-
-                recipientList.Insert(0, new SelectListItem { Text = "REQUIRED! Please Select a person to Receive Feedback", Value = "" });
-
-                foreach (var focusU in userDB)
-                {
-                    SelectListItem li = new SelectListItem
-                    {
-                        Value = focusU.Id,
-                        Text = focusU.FullName
-                    };
-                    recipientList.Add(li);
-                }
-            }
-
-            var user = await GetCurrentUserAsync();
-            var currentDateTime = DateTime.Now;
-
-
-            for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
-                {
-                    Answer newAnswer = new Answer
-                    {
-                        ResponderId = user.Id,
-                        FocusId = viewModel.FocusUserId,
-                        QuestionId = viewModel.AnswerQuestionViewModels[i].QuestionId,
-                        Response = viewModel.AnswerQuestionViewModels[i].Response,
-                        ResponseDate = currentDateTime
-                    };
-                    _context.Add(newAnswer);
-                }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction("LoggedIn", "Surveys");
-        }
+           
 
 
         //------------------------------------------------------------------------------- JoinQuestionsAnswers
