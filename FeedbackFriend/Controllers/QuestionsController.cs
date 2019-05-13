@@ -61,7 +61,6 @@ namespace FeedbackFriend.Controllers
         public async Task<IActionResult> Index(int? surveyId)
         {
             var applicationDbContext = _context.Questions
-                .Include(q => q.Answer)
                .Include(q => q.Survey)
                .Where(q => q.SurveyId == surveyId);
                

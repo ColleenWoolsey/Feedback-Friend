@@ -13,6 +13,7 @@ namespace FeedbackFriend.Models
         [Display(Name = "Question ID")]
         public int QuestionId { get; set; }
 
+        [Required]
         [Display(Name = "Question Text")]
         public string QuestionText { get; set; }
 
@@ -20,8 +21,5 @@ namespace FeedbackFriend.Models
         public int SurveyId { get; set; }
        
         public Survey Survey { get; set; }
-        public Answer Answer { get; set; }
-
-       // public AnswerCreateViewModel AnswerCreateViewModel { get; set; }
     }
 }
