@@ -1,16 +1,18 @@
-﻿@model FeedbackFriend.Models.Survey
+﻿
+@{
+    ViewData["Title"] = "NoDelete";
+}
+
+<h1>NoDelete</h1>
+
+@model FeedbackFriend.Models.Survey
 
 @{
     ViewData["Title"] = "Delete";
 }
 
 <div style="border: 3px solid #dc3545; padding: 20px 25px 20px 25px;">
-
-    <p class="text-danger">@ViewData["ErrorMessage"]</p>
-    @*<div class="alert alert-danger alert-dismissible fade show" style="text-emphasis-style">
-        <strong>YOU MAY ONLY DELETE SURVEYS YOU AUTHORED!</strong>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>*@
+    <h3 class="text-danger">@ViewData["ErrorMessage"]</h3>
     <h4>
         Are you sure you want to delete the Survey: @Html.DisplayFor(model => model.SurveyName)?     |    <a asp-action="LoggedIn">Back to List</a>
     </h4>
@@ -37,21 +39,9 @@
             </dd>
         </dl>
 
-        @if (ViewBag.Message != null)
-        {
-            <script type="text/javascript">
-
-            window.onload = function () {
-                alert("@ViewBag.Message");
-            };
-            </script>
-        }
-        else
-        {
-        <form asp-action="Delete">
+        @*<form asp-action="Delete">
             <input type="hidden" asp-for="SurveyId" />
             <input type="submit" value="Delete" class="btn btn-danger" />
-        </form>
-        }
+        </form>*@
     </div>
 </div>
