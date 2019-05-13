@@ -22,16 +22,17 @@ namespace FeedbackFriend.Models
 
         [Required]
         [Display(Name = "Feedback Provider")]
-        public string ResponderId { get; set; }
-        
-        [Required]
+        public string ResponderId { get; set; }        
+       
         public int QuestionId { get; set; }
         public Question Question { get; set; }
         public Survey Survey { get; set; }
 
         [Required]
         [Display(Name = "Feedback Recipient")]
-        public string FocusId { get; set; }        
+        public string FocusId { get; set; } 
+        
+        public DateTime ResponseDate { get; set; }
 
         public ApplicationUser User { get; set; }       
     }    

@@ -48,14 +48,102 @@ namespace FeedbackFriend.Controllers
         private void PopulateFocusSelectList(object selectedPerson = null)
         {
             var focusQuery = from au in _context.ApplicationUsers
-                                   orderby au.FirstName
-                                   select au;
+                             orderby au.FirstName
+                             select au;
             ViewBag.FocusId = new SelectList(focusQuery.AsNoTracking(), "FocusId", "FullName", selectedPerson);
         }
 
 
         // ************************************************************************  COMPLETE
         public async Task<IActionResult> Complete(int? id)
+        {
+            var model = new AnswerCreateViewModel();
+
+            var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);
+
+            var questionDB = await _context.Questions.Where(q => q.SurveyId == id).ToListAsync();
+
+            // Get current user to assign ResponderUserId in VM
+            var user = await GetCurrentUserAsync();
+
+            // Get ALL Users to create a Select List to choose FocusUser
+            var userDB = _context.Users;
+
+            List<SelectListItem> recipientList = new List<SelectListItem>();
+
+            recipientList.Insert(0, new SelectListItem { Text = "REQUIRED!! Select a person to Receive Feedback", Value = "" });
+
+            foreach (var focusU in userDB)
+            {
+                SelectListItem li = new SelectListItem
+                {
+                    Value = focusU.Id,
+                    Text = focusU.FullName
+                };
+                recipientList.Add(li);
+            }
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            var vmitem = new List<AnswerQuestionViewModel>();
+            {
+                foreach (var question in questionDB)
+                {
+                    AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
+                    {
+                        taco.QuestionId = question.QuestionId;
+                        taco.QuestionText = question.QuestionText;
+                        taco.Response = null;
+                    };
+                    vmitem.Add(taco);
+                }
+
+                var viewModel = new AnswerCreateViewModel();
+                viewModel.SurveyId = surveyDB.SurveyId;
+                viewModel.SurveyName = surveyDB.SurveyName;
+                viewModel.Description = surveyDB.Description;
+                viewModel.Instructions = surveyDB.Instructions;
+                viewModel.AnswerQuestionViewModels = vmitem;
+                viewModel.ResponderUserId = user.UserId;
+                viewModel.ResponderUserName = user.FullName;
+                viewModel.Recipients = recipientList;
+
+                ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
+
+                return View(viewModel);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Complete(AnswerCreateViewModel viewModel)
+        {
+            var user = await GetCurrentUserAsync();
+            //var answer = new Answer();
+            //answer.ResponderId = user.Id;
+            //_context.Add(answer);
+
+            for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
+            {
+                Answer newAnswer = new Answer
+                {
+                    //ResponderId = viewModel.ResponderUserId,
+                    ResponderId = user.Id,
+                    FocusId = viewModel.FocusUserId,
+                    QuestionId = viewModel.AnswerQuestionViewModels[i].QuestionId,
+                    Response = viewModel.AnswerQuestionViewModels[i].Response
+                };
+                _context.Add(newAnswer);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("LoggedIn", "Surveys");
+        }
+
+        // ************************************************************************  COMPLETE
+        public async Task<IActionResult> Complete2(int? id)
         {
             var model = new AnswerCreateViewModel();
 
@@ -102,6 +190,7 @@ namespace FeedbackFriend.Controllers
                 }
 
                 var viewModel = new AnswerCreateViewModel();
+
                 viewModel.SurveyId = surveyDB.SurveyId;
                 viewModel.SurveyName = surveyDB.SurveyName;
                 viewModel.Description = surveyDB.Description;
@@ -112,96 +201,114 @@ namespace FeedbackFriend.Controllers
                 viewModel.Recipients = recipientList;
 
                 ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
-                                
+
                 return View(viewModel);
+
             }
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Complete([Bind("QuestionId, ResponderId, FocusId")]AnswerCreateViewModel viewModel)
+        public async Task<IActionResult> Complete2(AnswerCreateViewModel viewModel)
         {
-            if (viewModel.FocusUserId == null || Response == null)
+            if (viewModel.FocusUserId == null)
             {
-                ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
-                ViewBag.Message = String.Format("Did you choose a feedback recipient? Do all questions have a response?");
-                return View(viewModel);
+                ViewBag.Message = String.Format("Did you choose a feedback recipient?");
+                var userDB = _context.Users;
+
+                List<SelectListItem> recipientList = new List<SelectListItem>();
+
+                recipientList.Insert(0, new SelectListItem { Text = "REQUIRED! Please Select a person to Receive Feedback", Value = "" });
+
+                foreach (var focusU in userDB)
+                {
+                    SelectListItem li = new SelectListItem
+                    {
+                        Value = focusU.Id,
+                        Text = focusU.FullName
+                    };
+                    recipientList.Add(li);
+                }
             }
 
-                var user = await GetCurrentUserAsync();
+            var user = await GetCurrentUserAsync();
+            var currentDateTime = DateTime.Now;
 
-                for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
+
+            for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
                 {
                     Answer newAnswer = new Answer
                     {
                         ResponderId = user.Id,
                         FocusId = viewModel.FocusUserId,
                         QuestionId = viewModel.AnswerQuestionViewModels[i].QuestionId,
-                        Response = viewModel.AnswerQuestionViewModels[i].Response
+                        Response = viewModel.AnswerQuestionViewModels[i].Response,
+                        ResponseDate = currentDateTime
                     };
                     _context.Add(newAnswer);
                 }
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction("LoggedIn", "Surveys");
-            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("LoggedIn", "Surveys");
+        }
 
 
-            //------------------------------------------------------------------------------- JoinQuestionsAnswers
-            public async Task<IActionResult> JoinQuestionsAnswers(int? id)
+        //------------------------------------------------------------------------------- JoinQuestionsAnswers
+        public async Task<IActionResult> JoinQuestionsAnswers(int? id)
+        {
+            if (id == null)
             {
-                if (id == null)
-                {
-                    return NotFound();
-                }
-                var model = new SurveysViewModel();
-
-                model.GroupedQuestions = await (
-                    from q in _context.Questions
-                    join s in _context.Surveys
-                    on q.SurveyId equals s.SurveyId
-                    join a in _context.Answers
-                    on q.QuestionId equals a.QuestionId
-                    group new { s, q } by new { s.SurveyId, s.SurveyName } into grouped
-                    select new GroupedQuestions
-                    {
-                        GroupedSurveyId = grouped.Key.SurveyId,
-                        GroupedSurveyName = grouped.Key.SurveyName,
-                        GroupedQuestionCount = grouped.Select(x => x.q.QuestionId).Count(),
-                        Questions = grouped.Select(x => x.q)
-                    }).ToListAsync();
-
-                return View(model);
+                return NotFound();
             }
+            var model = new SurveysViewModel();
 
-            //--------------------------------------------------------------------------------------------- CREATE
-            public async Task<IActionResult> Create(int? id)
+            model.GroupedQuestions = await (
+                from q in _context.Questions
+                join s in _context.Surveys
+                on q.SurveyId equals s.SurveyId
+                join a in _context.Answers
+                on q.QuestionId equals a.QuestionId
+                group new { s, q } by new { s.SurveyId, s.SurveyName } into grouped
+                select new GroupedQuestions
+                {
+                    GroupedSurveyId = grouped.Key.SurveyId,
+                    GroupedSurveyName = grouped.Key.SurveyName,
+                    GroupedQuestionCount = grouped.Select(x => x.q.QuestionId).Count(),
+                    Questions = grouped.Select(x => x.q)
+                }).ToListAsync();
+
+            return View(model);
+        }
+
+        //--------------------------------------------------------------------------------------------- CREATE
+        public async Task<IActionResult> Create(int? id)
+        {
+            var user = await GetCurrentUserAsync();
+            if (user == null)
             {
-                var user = await GetCurrentUserAsync();
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                var surveyQuestionListViewModel = await _context.Surveys.FindAsync(id);
-
-                surveyQuestionListViewModel = await _context.Surveys
-                            .Include(i => i.SurveyAssignments).ThenInclude(i => i.Question)
-                            .AsNoTracking()
-                            .FirstOrDefaultAsync(i => i.SurveyId == id);
-
-
-                if (surveyQuestionListViewModel == null)
-                {
-                    return NotFound();
-                }
-                var viewModel = new SurveyQuestionsListViewModel();
-                viewModel.SurveyId = surveyQuestionListViewModel.SurveyId;
-                viewModel.SurveyName = surveyQuestionListViewModel.SurveyName;
-                viewModel.Description = surveyQuestionListViewModel.Description;
-                viewModel.Instructions = surveyQuestionListViewModel.Instructions;
-
-                return View(viewModel);
+                return NotFound();
             }
+
+            var surveyQuestionListViewModel = await _context.Surveys.FindAsync(id);
+
+            surveyQuestionListViewModel = await _context.Surveys
+                        .Include(i => i.SurveyAssignments).ThenInclude(i => i.Question)
+                        .AsNoTracking()
+                        .FirstOrDefaultAsync(i => i.SurveyId == id);
+
+
+            if (surveyQuestionListViewModel == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new SurveyQuestionsListViewModel();
+            viewModel.SurveyId = surveyQuestionListViewModel.SurveyId;
+            viewModel.SurveyName = surveyQuestionListViewModel.SurveyName;
+            viewModel.Description = surveyQuestionListViewModel.Description;
+            viewModel.Instructions = surveyQuestionListViewModel.Instructions;
+
+            return View(viewModel);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int id, [Bind("AnswerId,Response,QuestionId,FocusId,ResponderId")] Answer answer)

@@ -32,6 +32,8 @@ namespace FeedbackFriend.Models
                        
         public string QuestionText { get; set; }
 
+        public DateTime ResponseDate { get; set; }
+
         public List<AnswerQuestionViewModel> AnswerQuestionViewModels { get; set; }
     }
 }
