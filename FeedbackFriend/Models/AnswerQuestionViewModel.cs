@@ -10,6 +10,7 @@ namespace FeedbackFriend.Models
     {
         public int QuestionId { get; set; }
 
+        [Required]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
         public int? Response { get; set; }
 
