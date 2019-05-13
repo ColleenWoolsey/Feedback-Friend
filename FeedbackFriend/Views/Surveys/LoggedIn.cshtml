@@ -6,7 +6,7 @@
 
 <table class="table"  style="margin-top: 10px; border: none;">
     <thead >
-        <tr style="background-color: #0062cc; color: white; font-size:x-large; border: none;">
+        <tr style="background-color: #0062cc; color: white; font-size:x-large; border: 2px solid #0062cc;">
             <th width="20%" style="border: none;">
                 @Html.DisplayNameFor(model => model.SurveyName)
             </th>
@@ -19,11 +19,11 @@
         </tr>
     </thead>
 
-    <tbody style="background-color: #f0f1f2; border: none;">
+    <tbody style="background-color: #f0f1f2; border: 2px solid #0062cc;">
         @foreach (var item in Model)
         {
             <tr style="border: none;">
-                <td style="background-color: #f0f1f2; border: none; font-size: larger; font-weight: 400;">
+                <td style="background-color: #f0f1f2; border: none; font-size: larger; font-weight: 600;">
                     @Html.DisplayFor(modelItem => item.SurveyName)
                 </td>
                 <td style="background-color: #f0f1f2; border: none;">
@@ -46,13 +46,13 @@
                 <td>
                     <span style="font-size:larger;">SURVEY</span>
                     <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.SurveyId">EDIT</a>
-                    <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@item.SurveyId">DELETE</a>
+                    <a class="btn btn-outline-primary" asp-action="Delete" asp-route-id="@item.SurveyId">DELETE</a>                    
                 </td>
             </tr>
             <tr style="border: none;">
-                <td style="border: none;"></td>
-                <td style="border: none;"></td>
-                <td style="border: none;"></td>
+                <td style="border-top: 2px solid #0062cc;"></td>
+                <td style="border-top: 2px solid #0062cc;"></td>
+                <td style="border-top: 2px solid #0062cc;"></td>
             </tr>
 
         }

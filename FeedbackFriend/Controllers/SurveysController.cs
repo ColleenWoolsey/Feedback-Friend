@@ -136,7 +136,7 @@ namespace FeedbackFriend.Controllers
             .AsNoTracking()
             .FirstOrDefaultAsync(m => m.SurveyId == id);
 
-            if (survey == null || survey.UserId != user.Id)
+            if (survey == null)
             {
                  return NotFound();
             }
@@ -144,11 +144,26 @@ namespace FeedbackFriend.Controllers
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewData["ErrorMessage"] =
-                    "Delete failed. Try again, and if the problem persists " +
-                    "see your system administrator.";
+                    "Delete failed";
             }
+            
+
+            if (survey.UserId != user.Id)
+            {
+                {
+                    ViewBag.Message = String.Format("You may only delete surveys you have authored");
+                    return View(survey);
+                }
+            }
+
             return View(survey);
         }
+
+        private object NoDelete()
+        {
+            throw new NotImplementedException();
+        }
+
         // POST: Surveys/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
