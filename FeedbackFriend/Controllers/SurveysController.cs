@@ -138,7 +138,7 @@ namespace FeedbackFriend.Controllers
 
             if (survey == null)
             {
-                 return NotFound();
+                return NotFound();
             }
 
             if (saveChangesError.GetValueOrDefault())
@@ -146,14 +146,12 @@ namespace FeedbackFriend.Controllers
                 ViewData["ErrorMessage"] =
                     "Delete failed";
             }
-            
+
 
             if (survey.UserId != user.Id)
             {
-                {
-                    ViewBag.Message = String.Format("You may only delete surveys you have authored");
-                    return View(survey);
-                }
+                ViewBag.Message = String.Format("You may only delete surveys you have authored");
+                return View(survey);
             }
 
             return View(survey);
