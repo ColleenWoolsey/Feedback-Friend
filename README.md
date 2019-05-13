@@ -1,4 +1,6 @@
-![ERD](/FeedbackFriendDbdiagram.pdf?raw=true)
 
-User Logon: emailone@gmail.com
+
+User Logon: admin@admin
 Password: Pone8*
+UserLogin: tom@smith
+Password: TomSmith8*
