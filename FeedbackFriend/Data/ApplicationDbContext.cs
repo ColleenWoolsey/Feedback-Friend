@@ -110,16 +110,16 @@ namespace FeedbackFriend.Data
                     SurveyId = 9,
                     UserId = user.Id,
                     SurveyName = "Feedback - Giving it",
-                    Description = "",
-                    Instructions = ""
+                    Description = "The primary objective of this survey is to assess capacity for creating constructive feedback opportunities.",
+                    Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
                 },
                 new Survey()
                 {
                     SurveyId = 10,
                     UserId = user.Id,
                     SurveyName = "Feedback - Receiving it",
-                    Description = "",
-                    Instructions = ""
+                    Description = "The primary objective of this survey is to assess capacity for optimizing the receipt of feedback.",
+                    Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
                 }
             );
 
