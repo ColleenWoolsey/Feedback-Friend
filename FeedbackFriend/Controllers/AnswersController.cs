@@ -40,18 +40,20 @@ namespace FeedbackFriend.Controllers
         // ************************************************************************  RESULTS
         public async Task<IActionResult> Results(int id) //SurveyId
         {
-            var results = await _context.Answers                
-                .Include(a => a.Question)
-                .Where(a => a.Question.SurveyId == id).ToListAsync();
+            var user = await GetCurrentUserAsync();
 
-            var focusUserId = await GetCurrentUserAsync();
-            //The focusId = the UserId because you can only see your own feedback
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-            var responderUserId = await _context.Users.FirstOrDefaultAsync.(u => u.UserId == );
+            var focusId = user.Id;
 
+            var applicationDbContext = _context.Answers.Include(a => a.User)
+                .Include(a => a.Question).Where(a => a.Question.SurveyId == id);
 
-
-            return View(results);
+            return View(await _context.Answers.Where(a => a.FocusId == focusId).ToListAsync());
+                        
         }
 
         // ************************************************************************  PopulateFocusSelectList
