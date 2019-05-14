@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace FeedbackFriend.Models
     {
         [Key]
         public int AnswerId { get; set; }
-        [Required]
+
+       // [Required(ErrorMessage = "A Response is Required")]
         [Display(Name = "Feedback")]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
         public int? Response { get; set; }
@@ -23,8 +25,8 @@ namespace FeedbackFriend.Models
         public int QuestionId { get; set; }
         public Question Question { get; set; }
 
-        [Required]
-        [Display(Name = "Feedback Recipient")]
+       // [Required(ErrorMessage = "A Feedback Recipient must be Selected")]
+        [Display(Name = "Feedback Recipient")]        
         public string FocusId { get; set; } 
         
         public DateTime ResponseDate { get; set; }

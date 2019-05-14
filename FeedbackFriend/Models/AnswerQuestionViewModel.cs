@@ -9,7 +9,8 @@ namespace FeedbackFriend.Models
     public class AnswerQuestionViewModel
     {
         public int QuestionId { get; set; }
-                
+
+       // [Required(ErrorMessage = "A Response is Required")]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
         public int? Response { get; set; }
 
