@@ -5,6 +5,14 @@
 }
 
 @{ int rowNo = 0; }
+@Html.ValidationMessage("ModelName")
+@ViewData["ErrorMessage"]
+@ViewBag.ErrorMessage
+
+@if (ViewBag.Error != null)
+{
+    <h3 style="color:red">@ViewBag.Error</h3>
+}
 
 <div class="card">
     <div class="card-header" style="background-color: #d2d5d8;">
@@ -24,11 +32,11 @@
     </div>
 
     <div class="table card-header">
-        <form action="Complete" method="post">
+        <form asp-action="Complete">
 
             <div class="form-group">
                 @*@Html.LabelFor(x => Model.FocusUserId, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                <div class="col-md-5 offset-1" style="border: 5px solid #0062cc; background-color: #0062cc;">
+                <div class="col-md-5 offset-1" style="border: 5px solid #0062cc;">
                     @Html.DropDownListFor(x => Model.FocusUserId, new SelectList(Model.Recipients, "Value", "Text"), htmlAttributes: new { @class = "form-control", @id = "FocusId" })
                     @Html.ValidationMessageFor(x => x.FocusUserId, "", new { @class = "text-danger" })
                 </div>
@@ -36,44 +44,43 @@
 
             <table class="table">
                 <tbody>
-
-                    @for (int i = 0; i < Model.AnswerQuestionViewModels.Count; i++)
+                    @if (Model != null && Model.AnswerQuestionViewModels != null)
                     {
-                    <tr style="background-color: #f0f1f2;">
-                        <td>
-                            <input type="number" min="1" max="10" asp-for="AnswerQuestionViewModels[i].Response" />
+                        @for (int i = 0; i < Model.AnswerQuestionViewModels.Count; i++)
+                        {
+                            <tr style="background-color: #f0f1f2;">
+                                <td>
+                                    <input type="number" min="1" max="10" asp-for="AnswerQuestionViewModels[i].Response" />
 
-                            @*@Html.EditorFor(model => model.AnswerQuestionViewModels, new { Response = new { type = "number", min = "1", max = "10", @class = "form-control" } })*@
+                                    @*@Html.EditorFor(model => model.AnswerQuestionViewModels, new { Response = new { type = "number", min = "1", max = "10", @class = "form-control" } })*@
 
-                        </td>
-                        <td>
-                            @(rowNo += 1).
-                            @Html.DisplayFor(modelItem => Model.AnswerQuestionViewModels[i].QuestionText)
-                        </td>
-                        <td>
-                            <input type="hidden" asp-for="AnswerQuestionViewModels[i].QuestionId" />
-                        </td>
-                        <td>
-                            <input type="hidden" asp-for="ResponderUserId" />
-                        </td>
-                        <td>
-                            <input type="hidden" asp-for="FocusUserId" />
-                        </td>
-                       
-
-                    </tr>
+                                </td>
+                                <td>
+                                    @(rowNo += 1).
+                                    @Html.DisplayFor(modelItem => Model.AnswerQuestionViewModels[i].QuestionText)
+                                </td>
+                                <td>                                   
+                                    <input type="hidden" asp-for="AnswerQuestionViewModels[i].QuestionId" />
+                                </td>
+                                <td>                                   
+                                    <input type="hidden" asp-for="ResponderUserId" />
+                                </td>
+                                <td>
+                                    <input type="hidden" asp-for="FocusUserId" />
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
             @*@if (Model.FocusUserId == null || Model.Response == null)
-            {
-                <script type="text/javascript">
-                    window.onload = function () {
-                    alert("@ViewBag.Message");};
-                </script>
-            }*@
-            <input type="Submit" value="Save" class="col-lg-2 offset-1" style="background-color: #0062cc; font-size:larger; color: white;" />
-            }
+                {
+                    <script type="text/javascript">
+                        window.onload = function () {
+                        alert("@ViewBag.Message");};
+                    </script>
+                }*@
+            <input type="Submit" value="Save" class="col-lg-2 offset-1" style="background-color: #0062cc; font-size:larger; color: white;" />            
         </form>
     </div>
 </div>

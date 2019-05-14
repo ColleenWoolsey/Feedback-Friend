@@ -16,7 +16,7 @@ namespace FeedbackFriend.Data
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
-        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -104,6 +104,22 @@ namespace FeedbackFriend.Data
                     SurveyName = "Decision Making",
                     Description = "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
+                },
+                new Survey()
+                {
+                    SurveyId = 9,
+                    UserId = user.Id,
+                    SurveyName = "Feedback - Giving it",
+                    Description = "",
+                    Instructions = ""
+                },
+                new Survey()
+                {
+                    SurveyId = 10,
+                    UserId = user.Id,
+                    SurveyName = "Feedback - Receiving it",
+                    Description = "",
+                    Instructions = ""
                 }
             );
 
@@ -738,14 +754,98 @@ namespace FeedbackFriend.Data
                     QuestionId = 105,
                     SurveyId = 8,
                     QuestionText = "In your experience, does this person become more reckless and overconfident when in the midst of conflict?"
+                },
+                new Question()
+                {
+                    QuestionId = 106,
+                    SurveyId = 9,
+                    QuestionText = "How likely are you to overcome the assumption that you won't be heard?"
+                },
+                new Question()
+                {
+                    QuestionId = 107,
+                    SurveyId = 9,
+                    QuestionText = "How likely are you to overcome the desire to know and be right before you give feedback?"
+                },
+                new Question()
+                {
+                    QuestionId = 108,
+                    SurveyId = 9,
+                    QuestionText = "Does your feedback sound like a judgement - 'You are ... '?"
+                },
+                new Question()
+                {
+                    QuestionId = 109,
+                    SurveyId = 9,
+                    QuestionText = "Does your feedback sound like advice - 'You should ... '?"
+                },
+                new Question()
+                {
+                    QuestionId = 110,
+                    SurveyId = 9,
+                    QuestionText = "Is your feedback metaphoric and open to interpretation?"
+                },
+                new Question()
+                {
+                    QuestionId = 111,
+                    SurveyId = 9,
+                    QuestionText = "Do you see feedback as informative rather than positive or negative?"
+                },
+                new Question()
+                {
+                    QuestionId = 112,
+                    SurveyId = 9,
+                    QuestionText = "To what degree do you experience yourself as censoring or holding back?"
+                },
+                new Question()
+                {
+                    QuestionId = 113,
+                    SurveyId = 10,
+                    QuestionText = "To what degree do you experience feedback as informative rather than good or bad?"
+                },
+                new Question()
+                {
+                    QuestionId = 114,
+                    SurveyId = 10,
+                    QuestionText = "If someone said hard to hear words that caused you to change would you experience that as good?"
+                },
+                new Question()
+                {
+                    QuestionId = 115,
+                    SurveyId = 10,
+                    QuestionText = "How likely are you to adopt the fig-leaf stance when receiving feedback - Hands protectively in front"
+                },
+                new Question()
+                {
+                    QuestionId = 116,
+                    SurveyId = 10,
+                    QuestionText = "How likely are you to adopt the cover my a-- stance when receiving feedback?"
+                },
+                new Question()
+                {
+                    QuestionId = 117,
+                    SurveyId = 10,
+                    QuestionText = "How likely are you to receive feedback with your body position open and hands at side?"
+                },
+                new Question()
+                {
+                    QuestionId = 118,
+                    SurveyId = 10,
+                    QuestionText = "How likely are you to thank the person giving you feedback?"
+                },
+                new Question()
+                {
+                    QuestionId = 119,
+                    SurveyId = 10,
+                    QuestionText = "How likely are you to dismiss feedback?"
                 }
             );
         }
-                
+
         public DbSet<FeedbackFriend.Models.ApplicationUser> ApplicationUser { get; set; }
-                
+
         public DbSet<FeedbackFriend.Models.SurveysViewModel> SurveysViewModel { get; set; }
-                
+
         public DbSet<FeedbackFriend.Models.GroupedQuestions> GroupedQuestions { get; set; }
     }
 }

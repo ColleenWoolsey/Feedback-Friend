@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FeedbackFriend.Models.Question>
+
+@{
+    ViewData["Title"] = "Receiving";
+}
+
+@{ int rowNo = 0; }
+
+<h3>How do You receive Feedback?   |    <a asp-action="Index">Back to Home</a></h3>
+
+<div class="container" style="border: 5px solid #0062cc;">
+    <div class="Card">
+        
+        <table class="table card-body">
+            
+            <tbody class="card-body">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="font-weight:600;">
+                            @(rowNo += 1).
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.QuestionText)
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

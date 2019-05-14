@@ -15,8 +15,10 @@ namespace FeedbackFriend.Models
 
         public string Instructions { get; set; }
 
-        public string Description { get; set; }        
-       
+        public string Description { get; set; }
+
+       // [Required(ErrorMessage = "A Feedback Recipient must be Selected")]
+        [Display(Name = "Feedback Recipient")]
         public string FocusUserId { get; set; }
         public string FocusUserName { get; set; }
         public IEnumerable<SelectListItem> Recipients { get; set; }
@@ -24,7 +26,8 @@ namespace FeedbackFriend.Models
         public string ResponderUserId { get; set; }
         public string ResponderUserName { get; set; }
         public ApplicationUser ResponderUser { get; set; }
-        
+
+       // [Required(ErrorMessage = "A Response is Required")]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
         public int? Response { get; set; }
                        

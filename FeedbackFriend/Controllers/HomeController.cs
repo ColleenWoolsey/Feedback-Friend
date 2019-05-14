@@ -43,7 +43,24 @@ namespace FeedbackFriend.Controllers
                .Include(s => s.Questions)
                .Include(s => s.User)
                .OrderBy(s => s.SurveyName);
-               //.Take(20);
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Giving()
+        {
+            var num = 9;
+            var applicationDbContext = _context.Questions
+               .Where(s => s.SurveyId == num);
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Receiving()
+        {
+            var num = 10;
+            var applicationDbContext = _context.Questions          
+               .Where(s => s.SurveyId == num);
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -51,7 +68,7 @@ namespace FeedbackFriend.Controllers
         // **********************************************
 
         // GET: Survey/Details/5
-        
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
