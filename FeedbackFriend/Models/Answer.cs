@@ -12,7 +12,7 @@ namespace FeedbackFriend.Models
         [Key]
         public int AnswerId { get; set; }
 
-       // [Required(ErrorMessage = "A Response is Required")]
+        [Required(ErrorMessage = "A Response is Required")]
         [Display(Name = "Feedback")]
         [Range(1, 10, ErrorMessage = "The value must be between 1 and 10")]
         public int? Response { get; set; }
@@ -25,7 +25,7 @@ namespace FeedbackFriend.Models
         public int QuestionId { get; set; }
         public Question Question { get; set; }
 
-       // [Required(ErrorMessage = "A Feedback Recipient must be Selected")]
+        [Required(ErrorMessage = "A Feedback Recipient must be Selected")]
         [Display(Name = "Feedback Recipient")]        
         public string FocusId { get; set; } 
         

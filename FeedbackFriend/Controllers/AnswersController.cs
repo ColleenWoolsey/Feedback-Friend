@@ -43,7 +43,7 @@ namespace FeedbackFriend.Controllers
             var applicationDbContext = _context.Answers
                 .Include(a => a.Question)
                 .Include(a => a.User);
-            
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -112,7 +112,7 @@ namespace FeedbackFriend.Controllers
                 viewModel.Description = surveyDB.Description;
                 viewModel.Instructions = surveyDB.Instructions;
                 viewModel.AnswerQuestionViewModels = vmitem;
-                viewModel.ResponderUserId = user.UserId;
+                viewModel.ResponderUserId = user.Id;
                 viewModel.ResponderUserName = user.FullName;
                 viewModel.Recipients = recipientList;
                 viewModel.ResponseDate = currentDateTime;
@@ -124,17 +124,70 @@ namespace FeedbackFriend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Complete(AnswerCreateViewModel viewModel)
+        public async Task<IActionResult> Complete(int id, AnswerCreateViewModel viewModel)
         {
             var user = await GetCurrentUserAsync();
+            var currentDateTimeTwo = DateTime.Now;
+            var userDB = _context.Users;
+            var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);
+            var questionDB = await _context.Questions.Where(q => q.SurveyId == id).ToListAsync();
 
-            var noDuplicate = await _context.Answers.FirstOrDefaultAsync(a => a.FocusId == viewModel.FocusUserId && a.ResponderId == user.Id);
-            if (noDuplicate.FocusId != null)
+            //var aqVM = viewModel.AnswerQuestionViewModels;
+
+            List<SelectListItem> recipientList = new List<SelectListItem>();
+
+            recipientList.Insert(0, new SelectListItem { Text = "REQUIRED!! Select a person to Receive Feedback", Value = "" });
+
+            foreach (var focusU in userDB)
             {
-                ViewBag.Message = String.Format("You have already given feedback to this Recipient");
+                SelectListItem li = new SelectListItem
+                {
+                    Value = focusU.Id,
+                    Text = focusU.FullName
+                };
+                recipientList.Add(li);
             }
 
-            var currentDateTime = DateTime.Now;
+            var nullResponse = false;
+
+            var vmitem = new List<AnswerQuestionViewModel>();
+            {
+                
+                foreach (var aqVM in viewModel.AnswerQuestionViewModels)
+                {
+                    var oldResponse = aqVM.Response;
+                    var oldQuestionId = aqVM.QuestionId;
+                    var oldQuestiontext = await _context.Answers.FindAsync(oldQuestionId);
+
+                    AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
+                    {
+                        taco.QuestionId = oldQuestionId;
+                       // taco.QuestionText = oldQuestionText;
+                        taco.Response = oldResponse;
+                    };
+                    vmitem.Add(taco);
+
+                    if (taco.Response == null)
+                    {
+                        nullResponse = true;
+                    }
+                }
+            }
+
+            viewModel.SurveyId = surveyDB.SurveyId;
+            viewModel.SurveyName = surveyDB.SurveyName;
+            viewModel.Description = surveyDB.Description;
+            viewModel.Instructions = surveyDB.Instructions;
+            viewModel.ResponderUserId = user.Id;
+            viewModel.ResponderUserName = user.FullName;
+            viewModel.ResponseDate = DateTime.Now;
+            viewModel.Recipients = recipientList;
+            ViewData["Recipients"] = new SelectList(_context.ApplicationUsers, "FocusUserId", "FullName");
+
+            if (nullResponse == true || viewModel.FocusUserId == null)
+            {
+                return View(viewModel);
+            }
 
             for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
             {
@@ -144,7 +197,7 @@ namespace FeedbackFriend.Controllers
                     FocusId = viewModel.FocusUserId,
                     QuestionId = viewModel.AnswerQuestionViewModels[i].QuestionId,
                     Response = viewModel.AnswerQuestionViewModels[i].Response,
-                    ResponseDate = currentDateTime
+                    ResponseDate = viewModel.ResponseDate
                 };
                 _context.Add(newAnswer);
             }
@@ -153,16 +206,16 @@ namespace FeedbackFriend.Controllers
             return RedirectToAction("LoggedIn", "Surveys");
         }
 
-        // ************************************************************************  COMPLETE
-        
-        
-            //if (viewModel.FocusUserId == null)
-            //{
-            //    ViewBag.Message = String.Format("Did you choose a feedback recipient?");
-            //    var userDB = _context.Users;
 
-           
 
+
+        //var duplicate = await _context.Answers.FirstOrDefaultAsync(a => a.FocusId == viewModel.FocusUserId && a.ResponderId == user.Id);
+        //if (duplicate.FocusId != null)
+        //{
+        //    return RedirectToAction("LoggedIn", "Surveys");
+        //}
+
+        // FINALLY ADD THE ANSWER!!!!!
 
         //------------------------------------------------------------------------------- JoinQuestionsAnswers
         public async Task<IActionResult> JoinQuestionsAnswers(int? id)
