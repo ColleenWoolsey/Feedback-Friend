@@ -15,6 +15,9 @@ namespace FeedbackFriend.Models
         public string FocusUserId { get; set; }
         public string FocusUserName { get; set; }
 
+        public string ResponderUserId { get; set; }
+        public string ResponderUserName { get; set; }
+
         public int Response { get; set; }
         public int QuestionId { get; set; }
         public string QuestionText { get; set; }

@@ -38,13 +38,20 @@ namespace FeedbackFriend.Controllers
         }
 
         // ************************************************************************  RESULTS
-        public async Task<IActionResult> Results()
+        public async Task<IActionResult> Results(int id) //SurveyId
         {
-            var applicationDbContext = _context.Answers
+            var results = await _context.Answers                
                 .Include(a => a.Question)
-                .Include(a => a.User);
+                .Where(a => a.Question.SurveyId == id).ToListAsync();
 
-            return View(await applicationDbContext.ToListAsync());
+            var focusUserId = await GetCurrentUserAsync();
+            //The focusId = the UserId because you can only see your own feedback
+
+            var responderUserId = await _context.Users.FirstOrDefaultAsync.(u => u.UserId == );
+
+
+
+            return View(results);
         }
 
         // ************************************************************************  PopulateFocusSelectList
@@ -151,29 +158,37 @@ namespace FeedbackFriend.Controllers
             var nullResponse = false;
 
             var vmitem = new List<AnswerQuestionViewModel>();
-            {
-                
+            {                
                 foreach (var aqVM in viewModel.AnswerQuestionViewModels)
                 {
                     var oldResponse = aqVM.Response;
                     var oldQuestionId = aqVM.QuestionId;
-                    var oldQuestiontext = await _context.Answers.FindAsync(oldQuestionId);
+
+                    Question oldQuestion = await _context.Questions.FindAsync(oldQuestionId);
 
                     AnswerQuestionViewModel taco = new AnswerQuestionViewModel();
                     {
                         taco.QuestionId = oldQuestionId;
-                       // taco.QuestionText = oldQuestionText;
+                        taco.QuestionText = oldQuestion.QuestionText;
                         taco.Response = oldResponse;
                     };
                     vmitem.Add(taco);
-
+                    
                     if (taco.Response == null)
                     {
                         nullResponse = true;
                     }
+                    //Answer duplicate = await _context.Answers
+                    //    .FirstOrDefaultAsync(a => a.FocusId == viewModel.FocusUserId
+                    //    && viewModel.ResponderUserId == user.Id && taco.QuestionId == a.QuestionId);
+                    //if (duplicate != null)
+                    //{
+                    //    return RedirectToAction("LoggedIn", "Surveys");
+                    //}
                 }
             }
 
+            viewModel.AnswerQuestionViewModels = vmitem;
             viewModel.SurveyId = surveyDB.SurveyId;
             viewModel.SurveyName = surveyDB.SurveyName;
             viewModel.Description = surveyDB.Description;
@@ -187,7 +202,7 @@ namespace FeedbackFriend.Controllers
             if (nullResponse == true || viewModel.FocusUserId == null)
             {
                 return View(viewModel);
-            }
+            }         
 
             for (int i = 0; i < viewModel.AnswerQuestionViewModels.Count; i++)
             {
@@ -205,15 +220,6 @@ namespace FeedbackFriend.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("LoggedIn", "Surveys");
         }
-
-
-
-
-        //var duplicate = await _context.Answers.FirstOrDefaultAsync(a => a.FocusId == viewModel.FocusUserId && a.ResponderId == user.Id);
-        //if (duplicate.FocusId != null)
-        //{
-        //    return RedirectToAction("LoggedIn", "Surveys");
-        //}
 
         // FINALLY ADD THE ANSWER!!!!!
 

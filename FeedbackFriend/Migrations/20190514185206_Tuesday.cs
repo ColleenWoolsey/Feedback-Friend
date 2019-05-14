@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FeedbackFriend.Migrations
 {
-    public partial class MondayFour : Migration
+    public partial class Tuesday : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -237,10 +237,10 @@ namespace FeedbackFriend.Migrations
                 {
                     AnswerId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Response = table.Column<int>(nullable: true),
+                    Response = table.Column<int>(nullable: false),
                     ResponderId = table.Column<string>(nullable: false),
                     QuestionId = table.Column<int>(nullable: false),
-                    FocusId = table.Column<string>(nullable: true),
+                    FocusId = table.Column<string>(nullable: false),
                     ResponseDate = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<string>(nullable: true)
                 },
@@ -339,23 +339,23 @@ namespace FeedbackFriend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserId", "UserName" },
-                values: new object[] { "e46c6653-c934-4c15-a5ec-fdda912f9235", 0, "44a81072-64b9-42b5-8eca-79290b5974ab", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEM5q2cX2c0bfI9mhYd5dvAK9CPuv8Q1c3XSLGrqfnKYxKn8QN4ALXr8VYV6h7g05Jg==", null, false, "f92e6153-37c1-491a-b1fc-6675800bbf2f", false, null, "admin@admin.com" });
+                values: new object[] { "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc", 0, "7d414fda-d9b9-4e16-9c12-988461cb46dc", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEC7rjUF3Q2JEk8bAdPNQqBYZiTzo6Dn7k+VWFSii6+sM53eAk/yfGppecjmfmX+vAw==", null, false, "b810b0c9-6eb1-4ca0-9bcc-c0161496ec55", false, null, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Surveys",
                 columns: new[] { "SurveyId", "Assigned", "Description", "Instructions", "SurveyName", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 9, false, "", "", "Feedback - Giving it", "e46c6653-c934-4c15-a5ec-fdda912f9235" },
-                    { 10, false, "", "", "Feedback - Receiving it", "e46c6653-c934-4c15-a5ec-fdda912f9235" }
+                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 9, false, "The primary objective of this survey is to assess capacity for creating constructive feedback opportunities.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Feedback - Giving it", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
+                    { 10, false, "The primary objective of this survey is to assess capacity for optimizing the receipt of feedback.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Feedback - Receiving it", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" }
                 });
 
             migrationBuilder.InsertData(
