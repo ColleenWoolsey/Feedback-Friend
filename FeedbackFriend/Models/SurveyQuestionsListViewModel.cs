@@ -16,7 +16,7 @@ namespace FeedbackFriend.Models
         [Display(Name = "Question Text")]
         public string QuestionText { get; set; }
 
-        public bool Assigned { get; set; }        
+        public bool Assigned { get; set; }
 
         public string UserId { get; set; }
 

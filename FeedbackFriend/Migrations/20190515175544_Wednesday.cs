@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FeedbackFriend.Migrations
 {
-    public partial class Tuesday : Migration
+    public partial class Wednesday : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +48,22 @@ namespace FeedbackFriend.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GroupedAnswers",
+                columns: table => new
+                {
+                    QuestionId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    QuestionText = table.Column<string>(nullable: true),
+                    FocusResponse = table.Column<int>(nullable: false),
+                    ResponseSum = table.Column<int>(nullable: false),
+                    QuestionAverage = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GroupedAnswers", x => x.QuestionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -339,23 +355,24 @@ namespace FeedbackFriend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserId", "UserName" },
-                values: new object[] { "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc", 0, "7d414fda-d9b9-4e16-9c12-988461cb46dc", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEC7rjUF3Q2JEk8bAdPNQqBYZiTzo6Dn7k+VWFSii6+sM53eAk/yfGppecjmfmX+vAw==", null, false, "b810b0c9-6eb1-4ca0-9bcc-c0161496ec55", false, null, "admin@admin.com" });
+                values: new object[] { "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5", 0, "f248e85b-2fc6-48b2-861f-d51bc57e8f8e", "admin@admin.com", true, "Colleen", "Woolsey", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEPOxEBA+vhfaC9I334J7dxXC5WzJzcvkvb0J9mF8Tvba8siXmAWQazZJBTuIcdMePw==", null, false, "3d59e587-1ed4-41ce-87b5-b3996b52c51e", false, null, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Surveys",
                 columns: new[] { "SurveyId", "Assigned", "Description", "Instructions", "SurveyName", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 9, false, "The primary objective of this survey is to assess capacity for creating constructive feedback opportunities.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Feedback - Giving it", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" },
-                    { 10, false, "The primary objective of this survey is to assess capacity for optimizing the receipt of feedback.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Feedback - Receiving it", "a858a037-92a4-4cc3-a4bd-0ba109e0d2cc" }
+                    { 1, false, "The primary objective of this survey is to collect feedback relative to a person's capacity for walking in another's shoes and how others experience their balance of analysis and sympathy.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree. Consider your experience of this individual relative to the way they balance analysis and sympathy and relative to your experience of their capacity for walking in another's shoes.", "Empathy", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 2, false, "The primary objective of this survey is twofold. 1. To collect feedback relative to a persons' capacity for passive hearing vs active listening. 2. To asses their attunement to the reality that it's not about what we tell people, but what they hear.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Listening vs hearing", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 3, false, "The primary objective of this survey is to assess flexibility and responsiveness in communication.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Just stop talking already", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 4, false, "The primary objective of this survey is to assess capacity for navigating emotional safety needs. How did this person balance the need to avoid pain and potential loss of what they value, danger and insecurity with the objective they were committed to?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Presentation Feedback", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 5, false, "The primary objective of this survey is to assess the balance between approaching problems aggressively vs reflectively. How much does the need to gain control of one's time factor in problem solving?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Problem Solving", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 6, false, "What is this person's style of influence? Primarily feeling, or fact? Can they move flexibly between them when it's called for? How much does the need to gain approval factor in their style of influence?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Influence", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 7, false, "The primary objective of this survey is to assess the balance between necessary stability and unnecessary resistance to change - Does this person prefer the certainty of misery or the misery of uncertainty?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Change", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 8, false, "The primary objective of this survey is to assess caution vs spontaneity in the quest for excellence. How does this person live in the time warp between carefully weighing options and possibly missing opportunities?", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Decision Making", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 9, false, "The primary objective of this survey is to assess capacity for creating constructive feedback opportunities.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Feedback - Giving it", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 10, false, "The primary objective of this survey is to assess capacity for optimizing the receipt of feedback.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "Feedback - Receiving it", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" },
+                    { 11, false, "The primary objective of this survey is to assess capacity for optimizing feedback opportunities.", "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree.", "A Short Sample Survey", "bef35377-9c9f-4349-8ffa-50e7c3e3c6f5" }
                 });
 
             migrationBuilder.InsertData(
@@ -364,6 +381,10 @@ namespace FeedbackFriend.Migrations
                 values: new object[,]
                 {
                     { 1, null, "In your experience, is this person attentive to the schedules of others?", 1 },
+                    { 91, null, "In your experience, does this person become more intense and reckless under stress?", 7 },
+                    { 90, null, "In your experience, does this person become slow-paced and inflexible under stress?", 7 },
+                    { 89, null, "To what degree do you experience them as flexible?", 7 },
+                    { 88, null, "To what degree do you experience them as spontaneous?", 7 },
                     { 87, null, "To what degree do you experience them as energetic?", 7 },
                     { 86, null, "To what degree do you experience this person as methodical?", 7 },
                     { 85, null, "To what degree do you experience this person as a team-player?", 7 },
@@ -376,8 +397,8 @@ namespace FeedbackFriend.Migrations
                     { 78, null, "In your experience of them, does this person become impulsive and unrealistic when under stress?", 6 },
                     { 77, null, "To what extent do you experience this person as friendly and outgoing?", 6 },
                     { 76, null, "To what extent do you experience this person as calm and introspective?", 6 },
-                    { 88, null, "To what degree do you experience them as spontaneous?", 7 },
                     { 75, null, "How likely is this person to say, 'Let's stop and look at all the evidence'?", 6 },
+                    { 74, null, "How likely is this person to say, 'Trust me, it will work great'?", 6 },
                     { 73, null, "To what extent do you experience this person as an adept negotiator?", 6 },
                     { 72, null, "To what extent do you experience this person as optimistic and enthusiastic?", 6 },
                     { 71, null, "To what extent do you experience this person as unreliable?", 6 },
@@ -387,14 +408,16 @@ namespace FeedbackFriend.Migrations
                     { 67, null, "In your experience, does this person miss opportunities?", 5 },
                     { 66, null, "In your experience, is this person adept at gathering information?", 5 },
                     { 65, null, "Do you experience this person as valuing function over relationship - achieving goals over valuing people?", 5 },
+                    { 92, null, "In your experience, does this person tend toward sullen and stubborn in the midst of conflict?", 7 },
                     { 64, null, "Do you experience this person as indecisive?", 5 },
-                    { 63, null, "Do you experience this person as apt to waste time and resources?", 5 },
-                    { 62, null, "Do you experience this person as direct?", 5 },
-                    { 74, null, "How likely is this person to say, 'Trust me, it will work great'?", 6 },
-                    { 61, null, "In your experience, does this person listen as slowly as they speak?", 5 },
-                    { 89, null, "To what degree do you experience them as flexible?", 7 },
-                    { 91, null, "In your experience, does this person become more intense and reckless under stress?", 7 },
-                    { 117, null, "How likely are you to receive feedback with your body position open and hands at side?", 10 },
+                    { 93, null, "In your experience, does this person become distracted and impulsive in the midst of conflict?", 7 },
+                    { 95, null, "How likely is this person to say, 'Let's go for it'?", 8 },
+                    { 122, null, "How likely are you to thank the person giving you feedback?", 11 },
+                    { 121, null, "If someone said hard to hear words that caused you to change would you experience that as good?", 11 },
+                    { 120, null, "How likely are you to dismiss feedback?", 10 },
+                    { 119, null, "How likely are you to thank the person giving you feedback?", 10 },
+                    { 118, null, "How likely are you to receive feedback with your body position open and hands at side?", 10 },
+                    { 117, null, "How likely are you to receive feedback with your arms crossed saying, Go ahead ... Make my day?", 10 },
                     { 116, null, "How likely are you to adopt the cover my a-- stance when receiving feedback?", 10 },
                     { 115, null, "How likely are you to adopt the fig-leaf stance when receiving feedback - Hands protectively in front", 10 },
                     { 114, null, "If someone said hard to hear words that caused you to change would you experience that as good?", 10 },
@@ -406,8 +429,8 @@ namespace FeedbackFriend.Migrations
                     { 108, null, "Does your feedback sound like a judgement - 'You are ... '?", 9 },
                     { 107, null, "How likely are you to overcome the desire to know and be right before you give feedback?", 9 },
                     { 106, null, "How likely are you to overcome the assumption that you won't be heard?", 9 },
-                    { 90, null, "In your experience, does this person become slow-paced and inflexible under stress?", 7 },
                     { 105, null, "In your experience, does this person become more reckless and overconfident when in the midst of conflict?", 8 },
+                    { 104, null, "In your experience, does this person become more indecisive and unyielding in the midst of conflict?", 8 },
                     { 103, null, "In your experience, does this person become more controversial and insensitive when under stress?", 8 },
                     { 102, null, "In your experience, does this person become more exacting and perfectionistic when under stress?", 8 },
                     { 101, null, "To what degree do you experience this person as independent?", 8 },
@@ -416,14 +439,11 @@ namespace FeedbackFriend.Migrations
                     { 98, null, "To what degree do you experience this person as having high standards?", 8 },
                     { 97, null, "To what degree do you experience this person as bold?", 8 },
                     { 96, null, "To what degree do you experience this person as conscientious?", 8 },
-                    { 95, null, "How likely is this person to say, 'Let's go for it'?", 8 },
                     { 94, null, "How likely is this person to say, 'I'm not sure yet'?", 8 },
-                    { 93, null, "In your experience, does this person become distracted and impulsive in the midst of conflict?", 7 },
-                    { 92, null, "In your experience, does this person tend toward sullen and stubborn in the midst of conflict?", 7 },
-                    { 104, null, "In your experience, does this person become more indecisive and unyielding in the midst of conflict?", 8 },
-                    { 118, null, "How likely are you to thank the person giving you feedback?", 10 },
-                    { 60, null, "In your experience, does this person display irritation when interrupted?", 5 },
-                    { 58, null, "In your experience, does this person become intimidating and confrontational in the midst of conflict?", 5 },
+                    { 63, null, "Do you experience this person as apt to waste time and resources?", 5 },
+                    { 62, null, "Do you experience this person as direct?", 5 },
+                    { 61, null, "In your experience, does this person listen as slowly as they speak?", 5 },
+                    { 28, null, "In your experience, does this person stop talking when the focus of the group shifts from the topic at hand?", 3 },
                     { 27, null, "In your experience, what is this person's capacity to create a refuge of silence when others are being unreasonable or irrational?", 3 },
                     { 26, null, "In your experience, is this person likely to stop talking in order to negotiate time to compose a thoughtful response?", 3 },
                     { 25, null, "In your experience, how much attunement does this person show to others' receptivity?", 3 },
@@ -436,8 +456,8 @@ namespace FeedbackFriend.Migrations
                     { 18, null, "In your experience, was this person attentive to what wasn't being said?", 2 },
                     { 17, null, "In your experience, did this person show appreciation for the strengths/pros of others' points of view?", 2 },
                     { 16, null, "In your experience, did this person validate the concerns of others?", 2 },
-                    { 28, null, "In your experience, does this person stop talking when the focus of the group shifts from the topic at hand?", 3 },
                     { 15, null, "In your experience, did this person acknowledge the concerns of others?", 2 },
+                    { 14, null, "In your experience, was this person easily distracted?", 2 },
                     { 13, null, "In your experience, how attentively did this person listen?", 2 },
                     { 12, null, "In your experience, what is their capacity for seeing differing opinions as complimentary rather than adversarial?", 1 },
                     { 11, null, "In your experience, is this person aware of, and responsive to the level of team morale?", 1 },
@@ -450,10 +470,13 @@ namespace FeedbackFriend.Migrations
                     { 4, null, "In your experience, how informed is this person about the responsibilities and job scope of others?", 1 },
                     { 3, null, "In your experience, what is this person's level of focus on measuring appreciable progress toward company objectives?", 1 },
                     { 2, null, "In your experience, what is this person's level of focus on company objectives?", 1 },
-                    { 14, null, "In your experience, was this person easily distracted?", 2 },
-                    { 59, null, "In your experience, does this person become anxious, slow, or withdrawn in the midst of conflict?", 5 },
                     { 29, null, "In your experience, does this person have a tendency to offer unsolicited advice?", 3 },
+                    { 30, null, "In your experience, does this person have a tendency to offer unsolicited critique?", 3 },
                     { 31, null, "In your experience, how likely is this person to substitute conversation for action - suffer from the paralysis of analysis?", 3 },
+                    { 32, null, "In your experience, how likely is this person to agree with and act on the phrase, 'Delay is the deadliest form of denial'?", 3 },
+                    { 60, null, "In your experience, does this person display irritation when interrupted?", 5 },
+                    { 59, null, "In your experience, does this person become anxious, slow, or withdrawn in the midst of conflict?", 5 },
+                    { 58, null, "In your experience, does this person become intimidating and confrontational in the midst of conflict?", 5 },
                     { 57, null, "How likely are you to describe this person as considerate, self-controlled, patient and cooperative?", 5 },
                     { 56, null, "How likely are you to describe this person as a self-starter, bold, determined and tenacious?", 5 },
                     { 55, null, "In your experience, how likely is this person to say, 'Let's give it some time'?", 5 },
@@ -464,10 +487,10 @@ namespace FeedbackFriend.Migrations
                     { 50, null, "In your experience, what was this person's level of defensiveness relative to questions?", 4 },
                     { 49, null, "In your experience, did this person fidget and/or have other distracting gestures?", 4 },
                     { 48, null, "In your experience, was this person's posture open, relaxed and receptive?", 4 },
+                    { 123, null, "When giving Feedback, to what degree do you experience yourself as censoring or holding back?", 11 },
                     { 47, null, "In your experience, did this person maintain good eye contact?", 4 },
-                    { 46, null, "In your opinion, was the material organized?", 4 },
-                    { 30, null, "In your experience, does this person have a tendency to offer unsolicited critique?", 3 },
                     { 45, null, "In your opinion, was there mastery of the subject matter?", 4 },
+                    { 44, null, "In your opinion, was preparation for this presentation in evidence?", 4 },
                     { 43, null, "In your opinion, was the pace of the presentation hurried?", 4 },
                     { 42, null, "In your opinion, did the presentation wander off course?", 4 },
                     { 41, null, "In your experience, did this person deal well with distractions?", 4 },
@@ -479,9 +502,8 @@ namespace FeedbackFriend.Migrations
                     { 35, null, "In your experience, how successful was this person in communicating expectations for action/response?", 4 },
                     { 34, null, "In your experience, how successful was this person in communicating context?", 4 },
                     { 33, null, "In your opinion, how informative was this presentation?", 4 },
-                    { 32, null, "In your experience, how likely is this person to agree with and act on the phrase, 'Delay is the deadliest form of denial'?", 3 },
-                    { 44, null, "In your opinion, was preparation for this presentation in evidence?", 4 },
-                    { 119, null, "How likely are you to dismiss feedback?", 10 }
+                    { 46, null, "In your opinion, was the material organized?", 4 },
+                    { 124, null, "How likely are you to overcome the assumption that you won't be heard?", 11 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -651,6 +673,9 @@ namespace FeedbackFriend.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "GroupedAnswers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

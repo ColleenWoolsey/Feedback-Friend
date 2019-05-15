@@ -1,63 +1,62 @@
-﻿@model IEnumerable<FeedbackFriend.Models.Answer>
+﻿@model FeedbackFriend.Models.ResultsViewModel
 
 @{
     ViewData["Title"] = "Results";
 }
 
-<h1>Results</h1>
+<div class="card">
+    <div class="card-header" style="background-color: #d2d5d8;">
+        <h3>
+            Survey:      @Html.DisplayFor(model => model.SurveyName)     |
+            <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
+        </h3>
 
-<h3>
-    <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
-</h3>
+        </div>
+    <div>
+            <h4>ResultsViewModel</h4>
+            <hr />
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.SurveyName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.SurveyName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+            </dl>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Response)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ResponderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Question)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FocusId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ResponseDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Response)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResponderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Question.QuestionText)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FocusId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ResponseDate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.AnswerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AnswerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AnswerId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+        <div>
+            <table class="table">
+                <thead class="d-table-row">
+                    <tr>
+                        @*<th></th>*@
+                        <th width="3%">My Response</th>
+                        <th width="3%">Feedback</th>
+                        <th>Question</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.GroupedAnswers)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FocusResponse)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuestionAverage)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuestionText)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>

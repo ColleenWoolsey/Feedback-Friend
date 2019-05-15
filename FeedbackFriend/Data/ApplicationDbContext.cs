@@ -120,10 +120,18 @@ namespace FeedbackFriend.Data
                     SurveyName = "Feedback - Receiving it",
                     Description = "The primary objective of this survey is to assess capacity for optimizing the receipt of feedback.",
                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
-                }
+                },
+                 new Survey()
+                 {
+                     SurveyId = 11,
+                     UserId = user.Id,
+                     SurveyName = "A Short Sample Survey",
+                     Description = "The primary objective of this survey is to assess capacity for optimizing feedback opportunities.",
+                     Instructions = "Responses are on a scale of 1 - 10 where 1 is never/little/strongly disagree and 10 is always/much/strongly agree."
+                 }
             );
 
-            // Create 105 questions
+            // Create 124 questions
             modelBuilder.Entity<Question>().HasData(
                 new Question()
                 {
@@ -825,20 +833,50 @@ namespace FeedbackFriend.Data
                 {
                     QuestionId = 117,
                     SurveyId = 10,
-                    QuestionText = "How likely are you to receive feedback with your body position open and hands at side?"
+                    QuestionText = "How likely are you to receive feedback with your arms crossed saying, Go ahead ... Make my day?"
                 },
                 new Question()
                 {
                     QuestionId = 118,
                     SurveyId = 10,
-                    QuestionText = "How likely are you to thank the person giving you feedback?"
+                    QuestionText = "How likely are you to receive feedback with your body position open and hands at side?"
                 },
                 new Question()
                 {
                     QuestionId = 119,
                     SurveyId = 10,
+                    QuestionText = "How likely are you to thank the person giving you feedback?"
+                },
+                new Question()
+                {
+                    QuestionId = 120,
+                    SurveyId = 10,
                     QuestionText = "How likely are you to dismiss feedback?"
-                }
+                },
+                new Question()
+                {
+                    QuestionId = 121,
+                    SurveyId = 11,
+                    QuestionText = "If someone said hard to hear words that caused you to change would you experience that as good?"
+                },
+                new Question()
+                {
+                    QuestionId = 122,
+                    SurveyId = 11,
+                    QuestionText = "How likely are you to thank the person giving you feedback?"
+                },
+                new Question()
+                {
+                    QuestionId = 123,
+                    SurveyId = 11,
+                    QuestionText = "When giving Feedback, to what degree do you experience yourself as censoring or holding back?"
+                },
+                 new Question()
+                 {
+                     QuestionId = 124,
+                     SurveyId = 11,
+                     QuestionText = "How likely are you to overcome the assumption that you won't be heard?"
+                 }
             );
         }
 
@@ -847,5 +885,7 @@ namespace FeedbackFriend.Data
         public DbSet<FeedbackFriend.Models.SurveysViewModel> SurveysViewModel { get; set; }
 
         public DbSet<FeedbackFriend.Models.GroupedQuestions> GroupedQuestions { get; set; }
+
+        public DbSet<FeedbackFriend.Models.GroupedAnswers> GroupedAnswers { get; set; }
     }
 }
