@@ -14,6 +14,7 @@ namespace FeedbackFriend.Models
 
         public int FocusResponse { get; set; }
 
+        public int ResponderCount { get; set; }
         public int ResponseSum { get; set; }
         public int QuestionAverage { get; set; }
         

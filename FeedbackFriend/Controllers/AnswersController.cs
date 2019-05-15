@@ -87,6 +87,8 @@ namespace FeedbackFriend.Controllers
                 pizza.QuestionId = aa.Question.QuestionId;
                 pizza.QuestionText = aa.Question.QuestionText;
                 pizza.FocusResponse = aa.FocusResponseAnswer?.Response ?? 0;
+                pizza.ResponderCount = numOfResponders;
+                pizza.ResponseSum = aa.ResponseSumAll;
                 pizza.QuestionAverage = questionAverage ?? 0;
 
 
