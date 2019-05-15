@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace FeedbackFriend.Models
 {
     public class GroupedQuestions
-    {       
+    {
         public int ID { get; set; }
-        public int GroupedSurveyId { get; set; }            
+        public int GroupedSurveyId { get; set; }
         public string GroupedSurveyName { get; set; }
         public string GroupedSurveyDescription { get; set; }
         public string GroupedSurveyInstructions { get; set; }
@@ -18,9 +18,9 @@ namespace FeedbackFriend.Models
         public string GroupedQuestionText { get; set; }
         public int GroupedQuestionCount { get; set; }
 
-        public string GroupedUserId { get; set; }                
-        public string GroupedFirstName { get; set; }                
-        public string GroupedLastName { get; set; }        
+        public string GroupedUserId { get; set; }
+        public string GroupedFirstName { get; set; }
+        public string GroupedLastName { get; set; }
         public string GroupedFullName
         {
             get
@@ -30,6 +30,6 @@ namespace FeedbackFriend.Models
         }
 
         public Answer Answer { get; set; }
-        public IEnumerable<Question> Questions { get; set; }       
+        public IEnumerable<Question> Questions { get; set; }
     }
 }
