@@ -1,6 +1,3 @@
+![Main Page](CapstoneMain.png?raw=true)
 
 
-User Logon: admin@admin
-Password: Pone8*
-UserLogin: tom@smith
-Password: TomSmith8*
