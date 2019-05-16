@@ -53,6 +53,15 @@ namespace FeedbackFriend.Controllers
             }
             var focusId = user.Id;
 
+            // check to see if current user has completed a survey
+            var checkFocusCompleted = await _context.Answers
+             .Where(a => a.Question.SurveyId == id && a.ResponderId == focusId)
+             .ToListAsync();
+            if (checkFocusCompleted.Count == 0)
+            {
+                return RedirectToAction("LoggedIn", "Surveys");
+            }
+
             var surveyDB = await _context.Surveys.FirstOrDefaultAsync(m => m.SurveyId == id);
 
             var answersForResponders = await _context.Answers

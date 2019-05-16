@@ -1,5 +1,11 @@
 ﻿@model IEnumerable<FeedbackFriend.Models.Survey>
 
+@using Microsoft.AspNetCore.Identity
+@using FeedbackFriend.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
 @{
     ViewData["Title"] = "LoggedIn";
 }
@@ -7,6 +13,8 @@
 @Html.ValidationMessage("ModelName")
 @ViewData["ErrorMessage"]
 @ViewBag.ErrorMessage
+
+
 
 @if (ViewBag.Error != null)
 {
@@ -31,39 +39,73 @@
     <tbody style="background-color: #f0f1f2; border: 2px solid #0062cc;">
         @foreach (var item in Model)
         {
-            <tr style="border: none;">
-                <td class="bg-light" style="border: none; font-size: larger; font-weight: 600;">
-                    @Html.DisplayFor(modelItem => item.SurveyName)
-                </td>
-                <td class="bg-light" style="background-color: #d2d5d8; border: none;">
-                    <textarea class="bg-light" style="border: none; width: 100%; color: #808080; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Description) </textarea>
-                </td>
-                <td class="bg-light" style="background-color: #d2d5d8; border: none;">
-                    <textarea  class="bg-light" style="border: none; width: 100%; color: #808080; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Instructions) </textarea>
-                </td>
-            </tr>
-            <tr style="background-color: #d2d5d8; border: none;">
-                <td>
-                    <a class="btn btn-outline-primary bg-light" style="font-size: larger;" asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">COMPLETE </a>
-                    <a class="btn btn-outline-success bg-light" style="font-size: larger;" asp-Controller="Answers" asp-action="Results" asp-route-id="@item.SurveyId">RESULTS</a>
-                </td>
-                <td>
-                    <span style="font-size:larger;">QUESTIONS</span>
-                    <a class="btn btn-outline-secondary bg-light" asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD</a>
-                    <a class="btn btn-outline-warning bg-light" asp-action="Details" asp-route-id="@item.SurveyId">EDIT</a>
+            @if (item.UserId == @ViewBag.user.Id)
+            {
+                <tr style="border: none;">
+                    <td class="bg-light" style="border: none; font-size: larger; font-weight: 600;">
+                        @Html.DisplayFor(modelItem => item.SurveyName) / @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td class="bg-light" style="background-color: #d2d5d8; border: none;">
+                        <textarea class="bg-light" style="border: none; width: 100%; color: #808080; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Description) </textarea>
+                    </td>
+                    <td class="bg-light" style="background-color: #d2d5d8; border: none;">
+                        <textarea class="bg-light" style="border: none; width: 100%; color: #808080; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Instructions) </textarea>
+                    </td>
+                </tr>
+                <tr style="background-color: #d2d5d8; border: none;">
+                    <td>
+                        <a class="btn btn-outline-primary bg-light" style="font-size: larger;" asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">COMPLETE </a>
 
-                </td>
-                <td>
-                    <span style="font-size:larger;">SURVEY</span>
-                    <a class="btn btn-outline-warning bg-light" asp-action="Edit" asp-route-id="@item.SurveyId">EDIT</a>
-                    <a class="btn btn-outline-danger bg-light" asp-action="Delete" asp-route-id="@item.SurveyId">DELETE</a>
-                </td>
-            </tr>
-            <tr style="border: none;">
-                <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
-                <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
-                <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
-            </tr>
+                        <a class="btn btn-outline-success bg-light" style="font-size: larger;" asp-Controller="Answers" asp-action="Results" asp-route-id="@item.SurveyId">RESULTS</a>
+                    </td>
+                    <td>
+                        <span style="font-size:larger;"></span>
+                        <a class="btn btn-outline-secondary bg-light" asp-controller="Questions" asp-action="Create" asp-route-id="@item.SurveyId">ADD Questions</a>
+                        <a class="btn btn-outline-warning bg-light" asp-action="Details" asp-route-id="@item.SurveyId">EDIT Questions</a>
+                    </td>
+                    <td>
+                        <span style="font-size:larger;"></span>
+                        <a class="btn btn-outline-warning bg-light" asp-action="Edit" asp-route-id="@item.SurveyId">EDIT Survey</a>
+                        <a class="btn btn-outline-danger bg-light" asp-action="Delete" asp-route-id="@item.SurveyId">DELETE Survey</a>
+                    </td>
+                </tr>
+                <tr style="border: none;">
+                    <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
+                    <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
+                    <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
+                </tr>
+            }
+            else
+            {
+                <tr style="border: none;">
+                    <td class="bg-light" style="border: none; font-size: larger; font-weight: 600;">
+                        @Html.DisplayFor(modelItem => item.SurveyName) / @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+
+                    <td class="bg-light" style="background-color: #d2d5d8; border: none;">
+                        <textarea class="bg-light" style="border: none; width: 100%; color: #808080; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Description) </textarea>
+                    </td>
+                    <td class="bg-light" style="background-color: #d2d5d8; border: none;">
+                        <textarea class="bg-light" style="border: none; width: 100%; color: #808080; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: content-box;">@Html.DisplayFor(modelItem => item.Instructions) </textarea>
+                    </td>
+                </tr>
+                <tr style="background-color: #d2d5d8; border: none;">
+                    <td>
+                        <a class="btn btn-outline-primary bg-light" style="font-size: larger;" asp-Controller="Answers" asp-action="Complete" asp-route-id="@item.SurveyId">COMPLETE </a>
+                        <a class="btn btn-outline-success bg-light" style="font-size: larger;" asp-Controller="Answers" asp-action="Results" asp-route-id="@item.SurveyId">RESULTS</a>
+
+                    </td>
+                    <td style="background-color: #d2d5d8;"></td>
+
+                    <td style="background-color: #d2d5d8;"></td>
+                </tr>
+                <tr style="border: none;">
+                    <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
+                    <td style="border-top: 2px solid #0062cc; background-color: #f0f1f2;"></td>
+                    <td style="border-top: 2px solid #0062cc; border-right: 2px solid #0062cc; background-color: #f0f1f2;"></td>
+                </tr>
+            }
         }
     </tbody>
+
 </table>
