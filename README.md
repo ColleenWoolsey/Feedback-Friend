@@ -1,3 +1,3 @@
-![Main Page](CapstoneMain.png?raw=true)
+![Main Page](CapstoneMain.PNG?raw=true)
 
 
