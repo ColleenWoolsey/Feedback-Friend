@@ -54,12 +54,16 @@ namespace FeedbackFriend.Controllers
         // ********************************************************************************LoggedIn
         public async Task<IActionResult> LoggedIn()
         {
+            ApplicationUser user = await GetCurrentUserAsync();
+            var userCheck = user.Id;
+
             var applicationDbContext = _context.Surveys
                .Include(s => s.Questions)
                .Include(s => s.User)
                .OrderBy(s => s.SurveyName);
-            //.Take(20);
 
+            ViewBag.User = user;
+            
             return View(await applicationDbContext.ToListAsync());
         }
 

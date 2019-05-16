@@ -9,32 +9,30 @@
 
 <div class="container bg-secondary" style="border-top: 15px solid #6c757d; border-bottom: 15px solid #6c757d;">
     <div class="card-columns">
+        <div class="card m-0">
+            <div class="card-header">
+                <h5 class="card-title text-center text-danger"><a asp-action="Giving">How well do YOU give feedback?</a> </h5>
+            </div>
+            <img class="card-img-bottom" alt="present" src="~/css/presentoutlineStraight.jpg" width="300" height="300" />
+        </div>
 
         <div class="card m-0">
             <div class="card-header mb-0">
-                <h5 class="card-title text-center text-success"><a asp-action="Receiving">Assess your Receiving</a> </h5>
+                <h5 class="text-lg-center"><-- Assess you skills --></h5>
+            </div>
+            <img class="card-img-top mb-xl-5" alt="present" src="~/css/presentoutlineFlip.jpg" width="225" height="225" />
+            <div class="card-header mb-1">
+                @*<p><a class="btn btn-default text-center" href="https://github.com/ColleenWoolsey/Feedback-Friend">GitHub Link: See project source code &raquo;</a></p>*@
+            </div>
+        </div>
+
+        <div class="card m-0">
+            <div class="card-header mb-0">
+                <h5 class="card-title text-center text-success"><a asp-action="Receiving">How well do YOU respond?</a> </h5>
             </div>
             <div>
-                <img class="card-img-bottom" alt="present" src="~/css/presentoutlineStraight.jpg" width="300" height="300" />
+                <img class="card-img-bottom" alt="present" src="~/css/presentoutlineFlip.jpg" width="300" height="300" />
             </div>
-        </div>
-
-        <div class="card m-0">
-            <div class="card-header mb-0">
-                <p><a class="btn btn-default text-center" href="https://github.com/ColleenWoolsey/Feedback-Friend">GitHub Link: See project source code &raquo;</a></p>
-                @*<h6 class="card-title text-center text-primary" style="font-size: medium;">https://github.com/ColleenWoolsey/Feedback-Friend</h6>*@
-            </div>
-            <img class="card-img-top mb-3" alt="present" src="~/css/presentoutlineFlip.jpg" width="225" height="225" />
-            <div class="card-header">
-                <p class="card-title mb-0 text-center" style="font-size:x-small;">ASP.NET Core MVC with Entity and Identity Framework</p>
-            </div>
-        </div>
-
-        <div class="card m-0">
-            <div class="card-header">
-                <h5 class="card-title text-center text-danger"><a asp-action="Giving">Assess your Giving</a> </h5>
-            </div>
-            <img class="card-img-bottom" alt="present" src="~/css/presentoutline.jpg" width="300" height="300" />
         </div>
     </div>
 </div>
