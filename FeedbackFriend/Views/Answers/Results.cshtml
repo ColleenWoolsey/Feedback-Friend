@@ -11,7 +11,9 @@
             Survey: @Html.DisplayFor(model => model.SurveyName)     |
             <a asp-controller="Surveys" asp-action="LoggedIn">Back to List</a>
         </h3>
-        <p></p>
+        <h5>
+           You have @Html.DisplayFor(model => model.ResponderCount) feedback responses.
+        </h5>
 
         <table class="table card-header" style="background-color: #0062cc; color:white;">            
             <tbody>

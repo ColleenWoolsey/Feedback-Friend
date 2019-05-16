@@ -9,6 +9,8 @@ namespace FeedbackFriend.Models
     {        
         public string SurveyName { get; set; }       
         public string Description { get; set; }
+        public int ResponderCount { get; set; }
+
         public IList<GroupedAnswers> GroupedAnswers { get; set; }
     }
 }

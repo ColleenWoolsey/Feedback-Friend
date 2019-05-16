@@ -63,7 +63,7 @@ namespace FeedbackFriend.Controllers
             var numOfResponders = answersForResponders.Count();
             if (numOfResponders == 0)
             {
-                return NotFound();
+                return RedirectToAction("LoggedIn", "Surveys");
             }
 
             var answerAll = await _context.Answers
@@ -98,6 +98,7 @@ namespace FeedbackFriend.Controllers
             var viewModel = new ResultsViewModel();
             viewModel.SurveyName = surveyDB.SurveyName;
             viewModel.Description = surveyDB.Description;
+            viewModel.ResponderCount = numOfResponders;
             viewModel.GroupedAnswers = vmitem;
 
             return View(viewModel);
